@@ -1,6 +1,6 @@
 # Nemo
 
-Nemo Provides a simple way to add selenium automation to your NodeJS web projects. Provides plugin architecture to
+Nemo provides a simple way to add selenium automation to your NodeJS web projects. Provides plugin architecture to
 incorporate custom features to your tests.
 
 Nemo works best with a test runner and task runner. But in this README we will only cover setup and architecture of Nemo
