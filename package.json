@@ -23,7 +23,7 @@
     "grunt-contrib-jshint": "~0.7.1",
     "nemo-drivex": "git+ssh://git@github.com:paypal/nemo-view.git",
     "nemo-view": "git+ssh://git@github.com:paypal/nemo-view.git",
-    "nemo-locatex": "^0.3.0-beta"
+    "nemo-locatex": "git+ssh://git@github.com:paypal/nemo-locatex.git"
   },
   "repository": {
     "type": "git",
