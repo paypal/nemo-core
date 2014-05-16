@@ -4,7 +4,9 @@ Nemo provides a simple way to add selenium automation to your NodeJS web project
 incorporate custom features to your tests.
 
 Nemo works best with a test runner and task runner. But in this README we will only cover setup and architecture of Nemo
-as a standalone entity. Please see additional examples plugin READMEs for more information.
+as a standalone entity.
+
+For a holistic guide to using Nemo as an overall automation solution, [please start here](https://github.com/paypal/nemo-docs)
 
 [![Build Status](https://magnum.travis-ci.com/paypal/nemo.svg?token=wkfLgEAgy8eZBxUbnTsB&branch=master)](https://magnum.travis-ci.com/paypal/nemo)
 
@@ -12,46 +14,16 @@ as a standalone entity. Please see additional examples plugin READMEs for more i
 
 ### Pre-requisites
 
-You need to install some local webdriver or have access to a remote webdriver.
+#### Webdriver
 
-Running automation tests locally requires a browser (safari, firefox, chrome, internet explorer, phantomjs, etc) and usually some webdriver. You will need to complete one or more of the below installations depending on which browser/s you want to automate.
-
-#### Using phantomjs and ghostdriver
-
-By far the quickest way to get a test to run locally is by installing phantomjs.
-
-Mac folks will find that "brew install phantomjs" works quite well to install phantomjs. Just make sure the installation is somewhere on your $PATH environment variable.
-
-#### Setting up a local selenium webdriver
-
-For browsers, besides Chrome and PhantomJS, you will need the selenium standalone server. Download the latest here:
-https://code.google.com/p/selenium/downloads/list
-
-As of this edit, the latest is: selenium-server-standalone-2.39.0.jar
-
-Make sure that you use a value of SELENIUM_JAR that is an absolute path to where you've stored the executable. For teams it is recommended that everyone set up an alias to the JAR file (like /usr/bin/selenium-standalone.jar) such that everyone can share the default value found in the Gruntfile.js config.
-
-There are other "drivers", like Appium or ios-driver, which can be used to automate iOS/Android simulators and devices. That setup is covered elsewhere.
-
-A useful convention for teams would be to add a versionless symbolic link to a directory in your path. E.g.
-
-```bash
-$ ln -s /Users/yourname/path/to/selenium-server-standalone-2.39.0.jar /usr/bin/selenium-server-standalone.jar
-```
-
-#### Getting chromedriver
-For Chrome, you will need the chromedriver binary, which is maintained by the Chromium project. Find the latest here:
-http://chromedriver.storage.googleapis.com/index.html
-
-Make sure the chromedriver binary is exposed via your PATH variable. Otherwise Selenium will not be able to locate it.
-
+[Please see here for more information about setting up a webdriver](https://github.com/paypal/nemo-docs/blob/master/driver-setup.md). Your choice of webdriver will influence some of your settings below.
 
 #### package.json changes
 
 add the following to package.json devDependencies (assuming mocha is already integrated to your project):
 
 ```javascript
-"nemo": "git://github.paypal.com/NodeTestTools/nemo.git#v0.6-beta",
+"nemo": "git://github.com/paypal/nemo.git#master",
 ```
 
 Then `npm install`
@@ -81,8 +53,8 @@ process.env.nemoData = JSON.stringify({
 });
 ```
 
-You can see a versioned copy of this file within the nemo examples directory:
-https://github.paypal.com/NodeTestTools/nemo/blob/v0.6-beta/examples/setup.js
+You can see this file within the nemo examples directory:
+https://github.com/paypal/nemo/examples/setup.js
 
 Now, assuming you've set up a driver which matches the above requirements, you can run the following, with the following result:
 
@@ -130,6 +102,6 @@ Path to your selenium-standalone server Jar file. Leave unset if you aren't usin
 ## Why Nemo?
 
 Because we NEed MOre automation testing!
-<img src="http://www.bestcoloringpagesforkids.com/wp-content/uploads/2013/07/Nemo-Coloring-Pages-Pictures.gif" height=80 width=70/>
+
 
 
