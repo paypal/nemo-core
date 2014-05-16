@@ -21,13 +21,13 @@
     "grunt-simple-mocha": "~0.4.0",
     "grunt-loop-mocha": "^0.3.0",
     "grunt-contrib-jshint": "~0.7.1",
-    "nemo-drivex": "^0.1.0",
-    "nemo-view": "git://github.paypal.com/NodeTestTools/nemo-view.git#v0.3-beta",
+    "nemo-drivex": "git://github.com/paypal/nemo-view.git#master",
+    "nemo-view": "git://github.com/paypal/nemo-view.git#master",
     "nemo-locatex": "^0.3.0-beta"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.paypal.com/NodeTestTools/nemo.git"
+    "url": "git://github.com/paypal/nemo.git"
   },
   "keywords": [
     "Selenium, Automation"
@@ -36,5 +36,5 @@
     "node": ">= 0.8.0"
   },
   "author": "Matt Edelman <medelman@paypal.com>",
-  "license": "MIT"
+  "license": "http://www.apache.org/licenses/LICENSE-2.0"
 }
