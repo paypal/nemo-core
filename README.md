@@ -6,6 +6,8 @@ incorporate custom features to your tests.
 Nemo works best with a test runner and task runner. But in this README we will only cover setup and architecture of Nemo
 as a standalone entity. Please see additional examples plugin READMEs for more information.
 
+[![Build Status](https://travis-ci.org/paypal/nemo.png)](https://travis-ci.org/paypal/nemo)
+
 ## Getting started
 
 ### Pre-requisites
