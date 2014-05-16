@@ -1,0 +1,40 @@
+{
+  "name": "nemo",
+  "version": "0.6.2-beta",
+  "description": "Abstraction for automation test components",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "dependencies": {
+    "selenium-webdriver": "^2.39.0",
+    "xunit-file": "~0.0.4",
+    "async": "0.1.x",
+    "nconf": "~0.6.7",
+    "lodash": "^2.4.0"
+  },
+  "main": "index.js",
+  "devDependencies": {
+    "async": "~0.2.8",
+    "mocha": "~1.10.0",
+    "chai": "~1.6.0",
+    "grunt": "~0.4.1",
+    "grunt-simple-mocha": "~0.4.0",
+    "grunt-loop-mocha": "^0.3.0",
+    "grunt-contrib-jshint": "~0.7.1",
+    "nemo-drivex": "^0.1.0",
+    "nemo-view": "git://github.paypal.com/NodeTestTools/nemo-view.git#v0.3-beta",
+    "nemo-locatex": "^0.3.0-beta"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.paypal.com/NodeTestTools/nemo.git"
+  },
+  "keywords": [
+    "Selenium, Automation"
+  ],
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "author": "Matt Edelman <medelman@paypal.com>",
+  "license": "MIT"
+}
