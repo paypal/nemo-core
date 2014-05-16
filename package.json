@@ -21,8 +21,8 @@
     "grunt-simple-mocha": "~0.4.0",
     "grunt-loop-mocha": "^0.3.0",
     "grunt-contrib-jshint": "~0.7.1",
-    "nemo-drivex": "git://github.com/paypal/nemo-view.git#master",
-    "nemo-view": "git://github.com/paypal/nemo-view.git#master",
+    "nemo-drivex": "git+ssh://git@github.com:paypal/nemo-view.git",
+    "nemo-view": "git+ssh://git@github.com:paypal/nemo-view.git",
     "nemo-locatex": "^0.3.0-beta"
   },
   "repository": {
