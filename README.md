@@ -12,7 +12,7 @@ as a standalone entity. Please see additional examples plugin READMEs for more i
 
 ### Pre-requisites
 
-You will need to install some local webdriver or have access to a remote webdriver.
+You need to install some local webdriver or have access to a remote webdriver.
 
 Running automation tests locally requires a browser (safari, firefox, chrome, internet explorer, phantomjs, etc) and usually some webdriver. You will need to complete one or more of the below installations depending on which browser/s you want to automate.
 
