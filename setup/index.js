@@ -1,24 +1,35 @@
+/*───────────────────────────────────────────────────────────────────────────*\
+│  Copyright (C) 2014 eBay Software Foundation                                │
+│                                                                             │
+│                                                                             │
+│   Licensed under the Apache License, Version 2.0 (the "License"); you may   │
+│   not use this file except in compliance with the License. You may obtain   │
+│   a copy of the License at http://www.apache.org/licenses/LICENSE-2.0       │
+│                                                                             │
+│   Unless required by applicable law or agreed to in writing, software       │
+│   distributed under the License is distributed on an "AS IS" BASIS,         │
+│   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  │
+│   See the License for the specific language governing permissions and       │
+│   limitations under the License.                                            │
+\*───────────────────────────────────────────────────────────────────────────*/
 /* global require,module */
 'use strict';
-//console.log(process.env)
 var fs = require('fs'),
 	webdriver = require('selenium-webdriver'),
 	SeleniumServer = require('selenium-webdriver/remote').SeleniumServer,
 	nemoData = {},
 	driver;
-//console.log("ping");
-var Setup = function () {
+var Setup = function() {
 	//constructor
 };
 Setup.prototype = {
-	doSetup: function (_wd, callback) {
+	doSetup: function(_wd, callback) {
 		//look for nemoData env variable, error out if missing
-		nemoData =  JSON.parse(process.env.nemoData || {});
+		nemoData = JSON.parse(process.env.nemoData || {});
 		if (nemoData === {} || nemoData.targetBrowser === undefined) {
 			callback(new Error('[Nemo::doSetup] The nemoData environment variable is missing or not fully defined!'));
 			return;
 		}
-		nemoData = JSON.parse(process.env.nemoData);
 		var caps,
 			tgtBrowser = nemoData.targetBrowser,
 			customCaps = nemoData.serverCaps,
@@ -28,7 +39,6 @@ Setup.prototype = {
 			errorObject = null;
 
 		function getServer() {
-
 			if (serverProps && (serverUrl.indexOf('127.0.0.1') !== -1 || serverUrl.indexOf('localhost') !== -1)) {
 				//chrome and phantomjs are supported natively. i.e. no webdriver required. chromedriver or phantomjs executables must be in PATH though
 				if (tgtBrowser !== 'chrome' && tgtBrowser !== 'phantomjs') {
@@ -44,7 +54,6 @@ Setup.prototype = {
 					serverUrl = null;
 				}
 			}
-
 			return serverUrl;
 		}
 
@@ -56,21 +65,19 @@ Setup.prototype = {
 			caps = new webdriver.Capabilities();
 
 			if (customCaps) {
-				customCaps = JSON.parse(customCaps);
-				Object.keys(customCaps).forEach(function (key) {
+				Object.keys(customCaps).forEach(function(key) {
 					caps.set(key, customCaps[key]);
 				});
 			}
 			caps.merge(webdriver.Capabilities[tgtBrowser]());
-
 			return caps;
 		}
 
 
 		try {
 			driver = new _wd.Builder().
-				usingServer(getServer()).
-				withCapabilities(getCapabilities()).build();
+			usingServer(getServer()).
+			withCapabilities(getCapabilities()).build();
 		} catch (err) {
 			errorObject = err;
 		}
