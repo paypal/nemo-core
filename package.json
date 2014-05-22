@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Abstraction for automation test components",
   "scripts": {
-    "test": "grunt test"
+    "test": "grunt"
   },
   "dependencies": {
     "selenium-webdriver": "^2.39.0",
