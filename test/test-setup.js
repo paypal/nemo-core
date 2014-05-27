@@ -34,8 +34,8 @@ describe("nemo setup", function () {
 		//console.log(su)
 		su.then(function (result) {
 			nemo = result;
-			nemo.props.targetBrowser.should.equal("firefox");
-			nemo.props.targetServer.should.equal("http://127.0.0.1:4444/wd/hub");
+			nemo.props.targetBrowser.should.equal("phantomjs");
+			//nemo.props.targetServer.should.equal("http://127.0.0.1:4444/wd/hub");
 			nemo.props.targetBaseUrl.should.equal("https://www.paypal.com");
 			//nemo.noValue.should.equal(true);
 			nemo.samplePlugin.sampleoptions.option1.should.equal("value1");
