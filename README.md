@@ -8,7 +8,6 @@ as a standalone entity.
 
 For a holistic guide to using Nemo as an overall automation solution, [please start here](https://github.com/paypal/nemo-docs)
 
-[![Build Status](https://magnum.travis-ci.com/paypal/nemo.svg?token=wkfLgEAgy8eZBxUbnTsB&branch=master)](https://magnum.travis-ci.com/paypal/nemo)
 
 ## Getting started
 
