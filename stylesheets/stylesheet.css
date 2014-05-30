@@ -297,6 +297,12 @@ Full-Width Styles
   padding: 50px 10px 30px 10px;
 }
 
+#header_wrap .icon {
+  width:150px;
+  height:150px;
+  border:none;
+  float:left;
+}
 #project_title {
   margin: 0;
   color: #fff;
