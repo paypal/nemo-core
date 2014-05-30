@@ -287,7 +287,7 @@ Full-Width Styles
   background-repeat: no-repeat;
   background-position: 10px 20px;
 }
-#header_wrap h3, #header_wrap h4 {
+#header_wrap h1, #header_wrap h2 {
   margin:0;
 }
 
