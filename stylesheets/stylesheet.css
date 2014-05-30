@@ -281,7 +281,9 @@ Full-Width Styles
 
 #header_wrap .inner {
   padding: 50px 10px 30px 10px;
-  background: url('../images/helmet.png') no-repeat 0 0 150px 150px;
+  background-image: url('../images/helmet.png');
+  background-size: 20%;
+  background-repeat: no-repeat;
 }
 
 #header_wrap .helmet {
