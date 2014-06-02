@@ -282,7 +282,8 @@ Full-Width Styles
 #header_wrap .inner {
   padding: 50px 10px 30px 160px;
   /* margin: 0 0 0 150px; */
-  background-image: url('../images/helmet.png');
+  /*background-image: url('../images/helmet.png');*/
+  background-image: url('../images/NemoLogo3.svg');
   background-size: 150px;
   background-repeat: no-repeat;
   background-position: 10px -20px;
