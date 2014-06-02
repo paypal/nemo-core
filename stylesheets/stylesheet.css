@@ -269,11 +269,14 @@ Full-Width Styles
   top:0;
   right: 10px;
   z-index: 10;
-  padding: 10px 50px 10px 10px;
+  padding: 0 50px 10px 10px;
   color: #fff;
   font-weight: 700;
 }
 
+#paypalos_banner img {
+  margin-top:0;
+}
 #header_wrap {
   background: #FFFFFF;
   padding-top:15px;
