@@ -263,7 +263,7 @@ Full-Width Styles
   margin: 0 auto;
 }
 
-#forkme_banner {
+#paypalos_banner {
   display: block;
   position: absolute;
   top:0;
@@ -271,7 +271,6 @@ Full-Width Styles
   z-index: 10;
   padding: 10px 50px 10px 10px;
   color: #fff;
-  background: url('../images/blacktocat.png') no-repeat 95% 50%;
   font-weight: 700;
 }
 
