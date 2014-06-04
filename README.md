@@ -100,6 +100,32 @@ you have to minimally specify the port number. Leave unset if you aren't specify
 
 Path to your selenium-standalone server Jar file. Leave unset if you aren't using a local selenium-standalone Jar.
 
+## Anatomy of a Nemo instance
+
+When you call 'setup' on a Nemo instance, what happens? The answer is important if you plan to write your own plugins or place Nemo in a new context outside of the examples already provided. Here is a plain English description of what happens:
+
+1. caller calls Nemo.setup(obj), obj being optional for when you are passing in plugins and/or plugin config
+2. Nemo.setup unpacks the nemoData environment variable, converts it to a JSON object
+3. Nemo.setup creates a return object (returnObj), and assigns the nemoData JSON data to the returnObj.props namespace
+2. Nemo.setup creates an array (waterFallArray) of setup functions, with the first one being 'driversetup'
+   * driversetup will instantiate the selenium-webdriver session, and add it to 'result' as result.driver
+   * driversetup will also add the selenium-webdriver module as result.wd (so other components can access the module)
+3. Nemo.setup loops through the 'obj.plugins' object, if passed in, and adds each plugin's 'setup' method to waterFallArray
+   * each plugin (besides a 'view' plugin) must have a 'setup' method with signature (config, result, callback)
+   * the 'setup' method may add an object to the 'result' namespace
+   * the 'setup' method must call the callback function with config and result
+4. Nemo.setup adds 'viewsetup' to the waterFallArray, if obj.view was passed in
+   * viewsetup will add result.view.<current view name> object for each string element in the obj.view array
+   * if a 'view' plugin was specified, then Nemo will defer to that plugins 'addView' method
+   * if no 'view' plugin was specified, then Nemo will look for modules in the targetBaseDir/view/ directory
+5. Nemo.setup adds 'locatorsetup' to the waterFallArray, if obj.locator was passed in
+   * locatorsetup will add result.locator.<current locator name> for each string element in the obj.locator array
+6. Nemo.setup executes the waterFallArray methods using async.waterfall
+7. Nemo.setup returns a selenium-webdriver promise to the caller
+7. Each waterFallArray method, including the plugin setup methods, has the signature (config, result, callback)
+8. Each waterFallArray method can add to the 'result' object, and must pass along the config and result object in the callback
+9. The final callback in async.waterfall fulfills the promise from step 7, passing along the final 'result' object
+
 ## Why Nemo?
 
 Because we NEed MOre automation testing!
