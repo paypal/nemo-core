@@ -100,7 +100,42 @@ you have to minimally specify the port number. Leave unset if you aren't specify
 
 Path to your selenium-standalone server Jar file. Leave unset if you aren't using a local selenium-standalone Jar.
 
-## Anatomy of a Nemo instance
+## API
+
+### Nemo constructor
+
+```javascript
+/**
+ * Represents a Nemo instance
+ * @constructor
+ * @param {Object} config - Object which contains any plugin registration
+ *
+ */
+```
+
+### Nemo.setup
+
+```javascript
+/**
+*
+* Nemo.setup
+*@param {Object} config -
+*  {
+*    'view': ['example-login', 'serviceError']   //optional
+*    ,'locator': ['wallet']                      //optional
+*    ,<plugin config namespace>: <plugin config> //optional, depends on plugin setup
+*  }
+*@returns webdriver.promise - successful fulfillment will return an {Object} as below:
+*  {
+*    'view': {}                           //view instances if specified in config
+*    ,'locator': {}                       //locator instances if specified in config
+*    ,'driver': {}                        //driver instance. ALWAYS
+*    ,'wd': {}                            //static reference to selenium-webdriver. ALWAYS
+*    ,<plugin namespace>: <plugin object> //if plugin registers
+*  }
+*/
+```
+## Breaking down the setup method
 
 When you call 'setup' on a Nemo instance, what happens? The answer is important if you plan to write your own plugins or place Nemo in a new context outside of the examples already provided. Here is a plain English description of what happens:
 
