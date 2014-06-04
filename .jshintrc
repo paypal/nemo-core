@@ -94,7 +94,7 @@
 	"validthis": false,
 	// Whether smarttabs should be allowed
 	// (http://www.emacswiki.org/emacs/SmartTabs).
-	"smarttabs": true,
+	"smarttabs": false,
 	// Whether the `__proto__` property should be allowed.
 	"proto": false,
 	// Whether one-case switch statements should be allowed.
@@ -136,7 +136,7 @@
 	// Whether trailing whitespace rules apply.
 	"trailing": false,
 	// Specify indentation.
-	"indent": 4,
+	"indent": 2,
 	// Whether strict whitespace rules apply.
 	"white": false,
 	// Quote formatting
