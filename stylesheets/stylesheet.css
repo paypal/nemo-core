@@ -139,7 +139,7 @@ img {
   max-width: 739px;
   padding: 5px;
   margin: 10px 0 10px 0;
-  
+
 }
 
 p img {
@@ -307,6 +307,10 @@ Full-Width Styles
   font-weight: 700;
 }
 
+#project_title span {
+  color: rgba(61, 122, 59, 0.50);
+  margin-left: 3px;
+}
 #project_tagline {
   color: #3D7A3B;
   font-size: 18px;
