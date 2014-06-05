@@ -100,6 +100,19 @@ you have to minimally specify the port number. Leave unset if you aren't specify
 
 Path to your selenium-standalone server Jar file. Leave unset if you aren't using a local selenium-standalone Jar.
 
+### serverCaps (optional)
+
+serverCaps would map to the capabilities here: http://selenium.googlecode.com/git/docs/api/javascript/source/lib/webdriver/capabilities.js.src.html
+
+Some webdrivers (for instance ios-driver, or appium) would have additional capabilities which can be set via this variable. As an example, you can connect to saucelabs by adding this serverCaps:
+
+```javascript
+"serverCaps": {
+	"username": "medelman",
+	"accessKey": "b38e179e-079a-417d-beb8-xyz" //not my real access key
+}
+```
+
 ## API
 
 ### Nemo constructor
