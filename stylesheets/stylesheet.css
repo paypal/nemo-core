@@ -367,6 +367,10 @@ Full-Width Styles
   padding-top: 40px;
 }
 
+#main_content a[name] {
+  color:inherit;
+  text-decoration:none;
+}
 #footer_wrap {
   background: #FFFFFF;
 }
@@ -394,7 +398,22 @@ Small Device Styles
   #project_title {
   font-size: 32px;
   }
-
+  #header_wrap .inner {
+    padding: 30px 10px 20px 10px;
+    /* margin: 0 0 0 150px; */
+    /* background-image: url('../images/helmet.png'); */
+    background:none;
+  }
+  #paypalos_banner {
+    display: block;
+    position: absolute;
+    top:0;
+    right: 0px;
+    z-index: 10;
+    padding: 0 10px 10px 10px;
+    color: #fff;
+    font-weight: 700;
+  }
   h1 {
     font-size: 28px;
   }
