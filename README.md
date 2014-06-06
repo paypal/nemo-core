@@ -96,6 +96,16 @@ Leave unset if you are using chrome or phantomjs on your local machine
 Additional server properties required of the 'targetServer'. If you are using a selenium-standalone driver on your local machine,
 you have to minimally specify the port number. Leave unset if you aren't specifying a targetServer.
 
+You can also set args and jvmArgs to the selenium jar process as follows:
+
+```javascript
+'serverProps': {
+  'port': 4444,
+  'args': ['-firefoxProfileTemplate','/Users/medelman/Desktop/ffprofiles'],
+  'jvmArgs': ['-someJvmArg', 'someJvmArgValue']
+}
+```
+
 ### seleniumJar (optional/conditional)
 
 Path to your selenium-standalone server Jar file. Leave unset if you aren't using a local selenium-standalone Jar.
