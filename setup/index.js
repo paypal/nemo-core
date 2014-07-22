@@ -23,9 +23,7 @@ var Setup = function() {
   //constructor
 };
 Setup.prototype = {
-  doSetup: function(_wd, callback) {
-    //look for nemoData env variable, error out if missing
-    nemoData = JSON.parse(process.env.nemoData || {});
+  doSetup: function(_wd, nemoData, callback) {
     if (nemoData === {} || nemoData.targetBrowser === undefined) {
       callback(new Error('[Nemo::doSetup] The nemoData environment variable is missing or not fully defined!'));
       return;

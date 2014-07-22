@@ -3,7 +3,9 @@ module.exports = {
 	"setup": function(config, result, callback) {
 		//console.log(config);
 		var returnObj = result;
-		returnObj.autoRegPlugin = true;
+		returnObj.autoRegPlugin = {};
+		returnObj.autoRegPlugin.isDriverSetup = (returnObj.driver.get !== undefined);
+
 		//array for waterfall methods
 		var sampleCalls = [
 			function(cbk) {

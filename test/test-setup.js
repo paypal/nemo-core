@@ -39,7 +39,7 @@ describe("nemo setup", function() {
       nemo.props.targetBaseUrl.should.equal("https://www.paypal.com");
       //nemo.noValue.should.equal(true);
       nemo.samplePlugin.sampleoptions.option1.should.equal("value1");
-      nemo.autoRegPlugin.should.equal(true);
+      //nemo.autoRegPlugin.should.exist();
       driver = nemo.driver;
       done();
     }, function(err) {
@@ -53,6 +53,18 @@ describe("nemo setup", function() {
     }, function(err) {
       done(err);
     });
+  });
+  it("should register plugin with priority < 100 prior to driver setup", function() {
+    nemo.samplePlugin.isDriverSetup.should.equal(false);
+    return true;
+  });
+  it("should take props values from plugin registration", function() {
+    nemo.props.fromSamplePlugin.should.equal(true);
+    return true;
+  });
+  it("should register plugin with no priority after driver setup", function() {
+    nemo.autoRegPlugin.isDriverSetup.should.equal(true);
+    return true;
   });
   describe("nemo.locator", function() {
     it("should have pulled in the myView locator", function(done) {

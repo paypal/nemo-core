@@ -1,5 +1,4 @@
 before(function(done) {
-  console.log("doing before");
   process.env.nemoData = JSON.stringify({
     "autoBaseDir": process.cwd() + "/test",
     "targetBrowser": "phantomjs",
@@ -9,6 +8,5 @@ before(function(done) {
     //"serverProps":  {"port": 4444},
     "locale": "FR"
   });
-  console.log(process.env.nemoData);
   done();
 });

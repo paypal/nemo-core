@@ -17,6 +17,9 @@
 var async = require('async'),
   Setup = require('./setup'),
   nemoData = {},
+  waterFallArray = [],
+  preDriverArray = [],
+  postDriverArray = [],
   _ = require('lodash'),
   webdriver = require('selenium-webdriver');
 
@@ -29,7 +32,6 @@ var async = require('async'),
 
 function Nemo(config) {
 
-  //console.log('Nemo constructor config: ', config);
   this.plugins = {};
   //config is for registering plugins
   if (config && config.plugins) {
@@ -61,13 +63,14 @@ Nemo.prototype = {
     config = config || {};
     var that = this,
       returnObj = {
+        'props': nemoData,
         'view': {},
         'locator': {},
         'driver': {},
         'wd': {}
       },
       d = webdriver.promise.defer(),
-      waterFallArray = [driversetup];
+      preDriverArray = [datasetup];
 
     Object.keys(that.plugins).forEach(function(key) {
       var modulePath,
@@ -79,9 +82,14 @@ Nemo.prototype = {
         pluginConfig = that.plugins[key];
         modulePath = pluginConfig.module;
         pluginModule = require(modulePath);
-        waterFallArray.push(pluginModule.setup);
+        if (that.plugins[key].priority && that.plugins[key].priority < 100) {
+          preDriverArray.push(pluginModule.setup);
+        } else {
+          postDriverArray.push(pluginModule.setup); 
+        }
       }
     });
+    waterFallArray = preDriverArray.concat([driversetup], postDriverArray);
     if (config.view) {
       waterFallArray.push(viewsetup);
     }
@@ -89,7 +97,6 @@ Nemo.prototype = {
       waterFallArray.push(locatorsetup);
     }
     async.waterfall(waterFallArray, function(err, result) {
-      //console.log('waterfall result: ', result);
       if (err) {
         d.reject(err);
       } else {
@@ -99,20 +106,18 @@ Nemo.prototype = {
     return d;
 
     //waterfall functions
-
-    function driversetup(callback) {
-      var toCamelCase = function(match, group1) {
-        return group1.toUpperCase();
-      };
+    function datasetup(callback) {
+      callback(null, config, returnObj);
+    }
+    function driversetup(config, result, callback) {
       //do driver/view/locator/vars setup
-      (new Setup()).doSetup(webdriver, function(err, result) {
+      (new Setup()).doSetup(webdriver, result.props, function(err, result) {
         if (err) {
           callback(err);
         } else {
           //set driver
           returnObj.driver = result.driver;
           returnObj.wd = webdriver;
-          returnObj.props = nemoData;
           callback(null, config, returnObj);
         }
       });
@@ -130,7 +135,6 @@ Nemo.prototype = {
       var viewConfig = result;
       //setup views
       config.view.forEach(function(key) {
-        //console.log('key is: ' + key)
         if (that.plugins.view) {
           //process with the view interface
           returnObj.view[(key.constructor === String) ? key : key.name] = require(that.plugins.view.module).addView(key, result);
