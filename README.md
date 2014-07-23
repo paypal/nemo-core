@@ -161,6 +161,12 @@ A `priority` value of < 100 will register this plugin BEFORE the selenium driver
 
 Setting `register: true` will cause this plugin to register whether or not you supply any accompanying configuration in the Nemo.setup config object.
 
+### More on plugins
+
+More on plugin authoring can be found here: https://github.com/paypal/nemo-docs/blob/master/plugins.md
+
+File issues for new plugin creation here: https://github.com/paypal/nemo-plugin-registry/issues
+
 ## API
 
 ### Nemo constructor
