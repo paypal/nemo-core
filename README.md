@@ -123,6 +123,44 @@ Some webdrivers (for instance ios-driver, or appium) would have additional capab
 }
 ```
 
+## Plugins
+
+You can author or use plugins to enhance your test suite. Something important to know about plugins is how you register them. Provide JSON like this to the Nemo constructor:
+
+```javascript
+{
+	"plugins": {
+		"samplePlugin": {
+			"module": "./test/plugin/sample-plugin",
+			"priority": 99
+		},
+		"drivex": {
+			"module": "nemo-drivex",
+			"register": true
+		},
+		"autoRegPlugin": {
+			"module": "./test/plugin/autoreg-plugin",
+			"register": true
+		},
+		"locatex": {
+			"module": "nemo-locatex",
+			"register": true
+		},
+		"view": {
+			"module": "nemo-view"
+		}
+	}
+}
+```
+
+### priority
+
+A `priority` value of < 100 will register this plugin BEFORE the selenium driver object is created. This means that such a plugin can modify properties of the driver (such as `serverProps`). It also means that any other elements of the Nemo setup will NOT be available to that plugin. Leaving `priority` unset will register the plugin after the driver object is created.
+
+### register
+
+Setting `register: true` will cause this plugin to register whether or not you supply any accompanying configuration in the Nemo.setup config object.
+
 ## API
 
 ### Nemo constructor
