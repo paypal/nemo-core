@@ -24,7 +24,7 @@ For a holistic guide to using Nemo as an overall automation solution, [please st
 add the following to package.json devDependencies (assuming mocha is already integrated to your project):
 
 ```javascript
-"nemo": "^0.1.0",
+"nemo": "^0.1.2",
 ```
 
 Then `npm install`
@@ -121,7 +121,7 @@ Some webdrivers (for instance ios-driver, or appium) would have additional capab
 	"username": "medelman",
 	"accessKey": "b38e179e-079a-417d-beb8-xyz", //not my real access key
 	"name": "Test Suite Name", //sauce labs session name
-	"tags": ['tag1','tag2'] //sauce labds tag names
+	"tags": ['tag1','tag2'] //sauce labs tag names
 }
 ```
 ## API
