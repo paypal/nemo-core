@@ -119,10 +119,11 @@ Some webdrivers (for instance ios-driver, or appium) would have additional capab
 ```javascript
 "serverCaps": {
 	"username": "medelman",
-	"accessKey": "b38e179e-079a-417d-beb8-xyz" //not my real access key
+	"accessKey": "b38e179e-079a-417d-beb8-xyz", //not my real access key
+	"name": "Test Suite Name",
+	"tags": ['tag1','tag2']
 }
 ```
-
 ## API
 
 ### Nemo constructor
