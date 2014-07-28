@@ -120,8 +120,8 @@ Some webdrivers (for instance ios-driver, or appium) would have additional capab
 "serverCaps": {
 	"username": "medelman",
 	"accessKey": "b38e179e-079a-417d-beb8-xyz", //not my real access key
-	"name": "Test Suite Name",
-	"tags": ['tag1','tag2']
+	"name": "Test Suite Name", //sauce labs session name
+	"tags": ['tag1','tag2'] //sauce labds tag names
 }
 ```
 ## API
