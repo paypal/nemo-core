@@ -91,6 +91,8 @@ Browser you wish to automate. Make sure that your chosen webdriver has this brow
 Webdriver server you wish to use. Set as simply "localhost" if you are using a selenium-standalone driver on your local machine.
 Leave unset if you are using chrome or phantomjs on your local machine
 
+If you are using sauce labs, make sure to have the correct url like `"http://yourkey:yoursecret@ondemand.saucelabs.com:80/wd/hub"`
+
 ### serverProps (optional/conditional)
 
 Additional server properties required of the 'targetServer'. If you are using a selenium-standalone driver on your local machine,
