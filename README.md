@@ -24,7 +24,7 @@ For a holistic guide to using Nemo as an overall automation solution, [please st
 add the following to package.json devDependencies (assuming mocha is already integrated to your project):
 
 ```javascript
-"nemo": "^0.1.0",
+"nemo": "^0.1.2",
 ```
 
 Then `npm install`
@@ -91,6 +91,8 @@ Browser you wish to automate. Make sure that your chosen webdriver has this brow
 Webdriver server you wish to use. Set as simply "localhost" if you are using a selenium-standalone driver on your local machine.
 Leave unset if you are using chrome or phantomjs on your local machine
 
+If you are using sauce labs, make sure `targetServer` is set to correct url like `"http://yourkey:yoursecret@ondemand.saucelabs.com:80/wd/hub"`
+
 ### serverProps (optional/conditional)
 
 Additional server properties required of the 'targetServer'. If you are using a selenium-standalone driver on your local machine,
@@ -119,10 +121,11 @@ Some webdrivers (for instance ios-driver, or appium) would have additional capab
 ```javascript
 "serverCaps": {
 	"username": "medelman",
-	"accessKey": "b38e179e-079a-417d-beb8-xyz" //not my real access key
+	"accessKey": "b38e179e-079a-417d-beb8-xyz", //not my real access key
+	"name": "Test Suite Name", //sauce labs session name
+	"tags": ['tag1','tag2'] //sauce labs tag names
 }
 ```
-
 ## API
 
 ### Nemo constructor
