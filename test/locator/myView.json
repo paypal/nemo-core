@@ -1,0 +1,46 @@
+{
+  "fname": {
+    "locator": "first-name",
+    "type": "id"
+  },
+  "lname": {
+    "locator": "last-name",
+    "type": "id"
+  },
+  "bmonth": {
+    "locator": "month",
+    "type": "id"
+  },
+  "bday": {
+    "locator": "day",
+    "type": "id"
+  },
+  "byear": {
+    "locator": "year",
+    "type": "id"
+  },
+  "maleradio": {
+    "locator": "label[for='male']",
+    "type": "css"
+  },
+  "cityOption": {
+    "default": {
+      "locator": "select[name='ddlTown'] option[value='Swindon']",
+      "type": "css"
+    }                ,
+    "FR": {
+      "locator": "select[name='ddlTown'] option[value='Burkino Faso']",
+      "type": "css"
+    }
+  },
+  "noFRyesDefault": {
+    "default": {
+      "locator": "defaultId",
+      "type": "id"
+    }
+  },
+  "noFRnoDefault": {
+    "locator": "onlyId",
+    "type": "id"
+  }
+}

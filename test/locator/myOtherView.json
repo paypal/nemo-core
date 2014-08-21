@@ -1,0 +1,22 @@
+{
+	"cityOption": {
+		"default": {
+			"locator": "select[name='ddlTown'] option[value='Swindon']",
+			"type": "css"
+		}                ,
+		"FR": {
+			"locator": "select[name='ddlTown'] option[value='Burkino Faso']",
+			"type": "css"
+		}
+	},
+	"noFRyesDefault": {
+		"default": {
+			"locator": "defaultId",
+			"type": "id"
+		}
+	},
+	"noFRnoDefault": {
+		"locator": "onlyId",
+		"type": "id"
+	}
+}

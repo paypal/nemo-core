@@ -1,0 +1,6 @@
+{
+	"colorCheckbox": {
+		"locator": "chk0_0",
+		"type": "id"
+	}
+}

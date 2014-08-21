@@ -1,0 +1,23 @@
+{
+	"plugins": {
+		"samplePlugin": {
+			"module": "./test/plugin/sample-plugin",
+			"priority": 99
+		},
+		"drivex": {
+			"module": "nemo-drivex",
+			"register": true
+		},
+		"autoRegPlugin": {
+			"module": "./test/plugin/autoreg-plugin",
+			"register": true
+		},
+		"locatex": {
+			"module": "nemo-locatex",
+			"register": true
+		},
+		"view": {
+			"module": "nemo-view"
+		}
+	}
+}
