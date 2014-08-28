@@ -36,26 +36,43 @@ In the directory where you've installed Nemo, create a file called "nemoExample.
 ```javascript
 var Nemo = require("../");
 
+/*
 process.env.nemoData = JSON.stringify({
 	targetBrowser: "firefox",
 	targetServer: "localhost",
-	serverProps:  {"port": 4444},
+	serverProps: {"port": 4444},
 	seleniumJar: "/usr/bin/selenium-server-standalone.jar",
 	targetBaseUrl: "https://www.paypal.com"
 });
+*/
 
-(new Nemo()).setup().then(function (nemo) {
+var config = {
+	nemoData: {
+		targetBrowser: "firefox",
+		targetServer: "localhost",
+		serverProps: {
+			"port": 4444
+		},
+		seleniumJar: "/usr/bin/selenium-server-standalone.jar",
+		targetBaseUrl: "https://www.paypal.com"
+	}
+};
+//THE ABOVE OR BELOW WILL WORK TO SET nemoData. IN A CONTEST, SETTING VIA Nemo() WILL WIN
+
+(new Nemo(config)).setup().then(function(nemo) {
 	nemo.driver.get(nemo.props.targetBaseUrl);
 	nemo.driver.sleep(5000).
-		then(function () {
-			console.info("Nemo was successful!!");
-			nemo.driver.quit();
-		});
+	then(function() {
+		console.info("Nemo was successful!!");
+		nemo.driver.quit();
+	});
 });
 ```
 
 You can see this file within the nemo examples directory:
 https://github.com/paypal/nemo/examples/setup.js
+
+Note you can set `nemoData` via an environment variable OR by passing it into the Nemo constructor.
 
 Now, assuming you've set up a driver which matches the above requirements, you can run the following, with the following result:
 
@@ -66,7 +83,7 @@ Nemo was successful!!
 
 ## Nemo Configuration
 
-Nemo will look for an environment variable named `nemoData`. `nemoData` should be in stringified JSON format. Depending on
+Nemo will look for a JSON object in the constructor config argument. As a fallback, it will look for an environment variable named `nemoData`. `nemoData` should be in stringified JSON format. Depending on
 the values therein, Nemo will start a variety of webdrivers and test on a variety of targets.
 
 In addition to the Nemo setup using the name/value pairs, the NVPs are also passed along to the nemo object returned after setup,
@@ -179,7 +196,7 @@ File issues for new plugin creation here: https://github.com/paypal/nemo-plugin-
 /**
  * Represents a Nemo instance
  * @constructor
- * @param {Object} config - Object which contains any plugin registration
+ * @param {Object} config - Object which contains any plugin registration and optionally the nemoData object
  *
  */
 ```
