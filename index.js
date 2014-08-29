@@ -132,7 +132,6 @@ Nemo.prototype = {
     }
 
     function viewsetup(config, _nemo, callback) {
-      console.log('viewsetup');
       var viewModule = _nemo.view;
       if (!config.view) {
         config.view = [];
