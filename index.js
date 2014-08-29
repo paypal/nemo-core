@@ -62,7 +62,7 @@ Nemo.prototype = {
     this.nemoData = (this.nemoData) ? this.nemoData : JSON.parse(process.env.nemoData);
     config = config || {};
     var me = this,
-      returnObj = {
+      nemo = {
         'props': this.nemoData,
         'view': {},
         'locator': {},
@@ -100,39 +100,38 @@ Nemo.prototype = {
       if (err) {
         d.reject(err);
       } else {
-        d.fulfill(returnObj);
+        d.fulfill(nemo);
       }
     });
     return d;
 
     //waterfall functions
     function datasetup(callback) {
-      callback(null, config, returnObj);
+      callback(null, config, nemo);
     }
-    function driversetup(config, result, callback) {
+    function driversetup(config, _nemo, callback) {
       //do driver/view/locator/vars setup
-      (new Setup()).doSetup(webdriver, result.props, function(err, result) {
+      (new Setup()).doSetup(webdriver, _nemo.props, function(err, _nemo) {
         if (err) {
           callback(err);
         } else {
           //set driver
-          returnObj.driver = result.driver;
-          returnObj.wd = webdriver;
-          callback(null, config, returnObj);
+          nemo.driver = _nemo.driver;
+          nemo.wd = webdriver;
+          callback(null, config, nemo);
         }
       });
     }
 
-    function locatorsetup(config, result, callback) {
+    function locatorsetup(config, _nemo, callback) {
       //setup locators
       config.locator.forEach(function(key) {
-        returnObj.locator[key] = require(returnObj.props.autoBaseDir + '/locator/' + key);
+        nemo.locator[key] = require(nemo.props.autoBaseDir + '/locator/' + key);
       });
-      callback(null, config, returnObj);
+      callback(null, config, nemo);
     }
 
-    function viewsetup(config, result, callback) {
-      var viewConfig = result;
+    function viewsetup(config, _nemo, callback) {
       var viewModule = null;
       //setup views
 
@@ -140,34 +139,34 @@ Nemo.prototype = {
       if (me.plugins.view) {
         viewModule = require(me.plugins.view.module);
         if (viewModule.addView) {
-          returnObj.view.addView = viewModule.addView;
+          nemo.view.addView = viewModule.addView;
         }
       }
       config.view.forEach(function(key) {
         if (me.plugins.view) {
           var viewName = (key.constructor === String) ? key : key.name;
           //dedupe step
-          if (returnObj.view[viewName]) {
+          if (nemo.view[viewName]) {
             return;
           }
           //reserved step
-          if (viewName === 'addView' && returnObj.view.addView && returnObj.view.addView.constructor === Function) {
+          if (viewName === 'addView' && nemo.view.addView && nemo.view.addView.constructor === Function) {
             throw new Error('nemo.view.addView is reserved. Please rename your view');
           }
           //process with the view interface
-          returnObj.view[viewName] = viewModule.addView(key, result);
+          nemo.view[viewName] = viewModule.addView(key, _nemo);
         } else {
           //old views
           //dedupe step
-          if (returnObj.view[key]) {
+          if (nemo.view[key]) {
             return;
           }
-          var viewMod = require(returnObj.props.autoBaseDir + '/view/' + key);
-          returnObj.view[key] = new viewMod(viewConfig);
+          var viewMod = require(nemo.props.autoBaseDir + '/view/' + key);
+          nemo.view[key] = new viewMod(_nemo);
         }
 
       });
-      callback(null, config, returnObj);
+      callback(null, config, nemo);
     }
   }
 };
