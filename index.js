@@ -77,7 +77,7 @@ Nemo.prototype = {
         pluginConfig,
         pluginModule;
 
-      if ((me.plugins[key].register || config[key]) && key !== 'view') {
+      if ((me.plugins[key].register || config[key]) || key === 'view') {
         //register this plugin
         pluginConfig = me.plugins[key];
         modulePath = pluginConfig.module;
