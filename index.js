@@ -132,7 +132,8 @@ Nemo.prototype = {
     }
 
     function viewsetup(config, _nemo, callback) {
-      var viewModule = null;
+      console.log('viewsetup');
+      var viewModule = _nemo.view;
       if (!config.view) {
         config.view = [];
       }
@@ -140,7 +141,7 @@ Nemo.prototype = {
 
       //add addView method if available
       if (me.plugins.view) {
-        viewModule = require(me.plugins.view.module);
+        
         if (viewModule.addView) {
           nemo.view.addView = viewModule.addView;
         }
@@ -157,7 +158,7 @@ Nemo.prototype = {
             throw new Error('nemo.view.addView is reserved. Please rename your view');
           }
           //process with the view interface
-          nemo.view[viewName] = viewModule.addView(key, _nemo);
+          nemo.view[viewName] = viewModule.addView(key);
         } else {
           //old views
           //dedupe step
