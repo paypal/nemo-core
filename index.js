@@ -90,7 +90,7 @@ Nemo.prototype = {
       }
     });
     me.waterFallArray = me.preDriverArray.concat([driversetup], me.postDriverArray);
-    if (config.view) {
+    if (config.view || (me.plugins && me.plugins.view)) {
       me.waterFallArray.push(viewsetup);
     }
     if (config.locator) {
@@ -133,6 +133,9 @@ Nemo.prototype = {
 
     function viewsetup(config, _nemo, callback) {
       var viewModule = null;
+      if (!config.view) {
+        config.view = [];
+      }
       //setup views
 
       //add addView method if available
