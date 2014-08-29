@@ -133,12 +133,35 @@ Nemo.prototype = {
 
     function viewsetup(config, result, callback) {
       var viewConfig = result;
+      var viewModule = null;
       //setup views
+
+      //add addView method if available
+      if (me.plugins.view) {
+        viewModule = require(me.plugins.view.module);
+        if (viewModule.addView) {
+          returnObj.view.addView = viewModule.addView;
+        }
+      }
       config.view.forEach(function(key) {
         if (me.plugins.view) {
+          var viewName = (key.constructor === String) ? key : key.name;
+          //dedupe step
+          if (returnObj.view[viewName]) {
+            return;
+          }
+          //reserved step
+          if (viewName === 'addView' && returnObj.view.addView && returnObj.view.addView.constructor === Function) {
+            throw new Error('nemo.view.addView is reserved. Please rename your view');
+          }
           //process with the view interface
-          returnObj.view[(key.constructor === String) ? key : key.name] = require(me.plugins.view.module).addView(key, result);
+          returnObj.view[viewName] = viewModule.addView(key, result);
         } else {
+          //old views
+          //dedupe step
+          if (returnObj.view[key]) {
+            return;
+          }
           var viewMod = require(returnObj.props.autoBaseDir + '/view/' + key);
           returnObj.view[key] = new viewMod(viewConfig);
         }
