@@ -6,7 +6,7 @@
     "test": "grunt"
   },
   "dependencies": {
-    "selenium-webdriver": "^2.39.0",
+    "selenium-webdriver": "~2.42.0",
     "xunit-file": "~0.0.4",
     "async": "0.1.x",
     "nconf": "~0.6.7",
