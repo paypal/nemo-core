@@ -77,7 +77,7 @@ Nemo.prototype = {
         pluginConfig,
         pluginModule;
 
-      if ((me.plugins[key].register || config[key]) && key !== 'view') {
+      if ((me.plugins[key].register || config[key]) || key === 'view') {
         //register this plugin
         pluginConfig = me.plugins[key];
         modulePath = pluginConfig.module;
@@ -132,32 +132,15 @@ Nemo.prototype = {
     }
 
     function viewsetup(config, _nemo, callback) {
-      var viewModule = null;
+      var viewModule = _nemo.view;
       if (!config.view) {
         config.view = [];
       }
       //setup views
-
-      //add addView method if available
-      if (me.plugins.view) {
-        viewModule = require(me.plugins.view.module);
-        if (viewModule.addView) {
-          nemo.view.addView = viewModule.addView;
-        }
-      }
       config.view.forEach(function(key) {
         if (me.plugins.view) {
-          var viewName = (key.constructor === String) ? key : key.name;
-          //dedupe step
-          if (nemo.view[viewName]) {
-            return;
-          }
-          //reserved step
-          if (viewName === 'addView' && nemo.view.addView && nemo.view.addView.constructor === Function) {
-            throw new Error('nemo.view.addView is reserved. Please rename your view');
-          }
           //process with the view interface
-          nemo.view[viewName] = viewModule.addView(key, _nemo);
+          viewModule.addView(key);
         } else {
           //old views
           //dedupe step
