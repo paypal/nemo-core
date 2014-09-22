@@ -1,6 +1,6 @@
 {
   "name": "nemo",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "Abstraction for automation test components",
   "scripts": {
     "test": "grunt"
@@ -36,8 +36,10 @@
     "node": ">= 0.8.0"
   },
   "author": "Matt Edelman <medelman@paypal.com>",
-  "licenses": [{
-    "type": "Apache 2.0",
-    "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
-  }]
+  "licenses": [
+    {
+      "type": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  ]
 }
