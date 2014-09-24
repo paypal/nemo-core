@@ -57,7 +57,7 @@ Setup.prototype = {
 
     function getCapabilities() {
       //exception handling
-      if (!nemoData.ignoreTargetBrowserCheck && !webdriver.Capabilities[tgtBrowser]) {
+      if (!nemoData.ignoreBrowserCapabilities && !webdriver.Capabilities[tgtBrowser]) {
         throw new TypeError('You have specified ' + tgtBrowser + ' which is an invalid browser option');
       }
       caps = new webdriver.Capabilities();
@@ -68,7 +68,7 @@ Setup.prototype = {
         });
       }
 
-      if (!nemoData.ignoreTargetBrowserCheck) {
+      if (!nemoData.ignoreBrowserCapabilities) {
         caps.merge(webdriver.Capabilities[tgtBrowser]());
       }
 
