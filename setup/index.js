@@ -56,8 +56,13 @@ Setup.prototype = {
     }
 
     function getCapabilities() {
+      var checkBrowserSupported = true;
+      if (customCaps && customCaps.browserName && customCaps.browserName === 'pm') {
+        checkBrowserSupported = false;
+      }
+
       //exception handling
-      if (!webdriver.Capabilities[tgtBrowser]) {
+      if (checkBrowserSupported && !webdriver.Capabilities[tgtBrowser]) {
         throw new TypeError('You have specified ' + tgtBrowser + ' which is an invalid browser option');
       }
       caps = new webdriver.Capabilities();
@@ -67,7 +72,11 @@ Setup.prototype = {
           caps.set(key, customCaps[key]);
         });
       }
-      caps.merge(webdriver.Capabilities[tgtBrowser]());
+
+      if (checkBrowserSupported) {
+        caps.merge(webdriver.Capabilities[tgtBrowser]());
+      }
+
       return caps;
     }
 
