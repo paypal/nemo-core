@@ -56,13 +56,8 @@ Setup.prototype = {
     }
 
     function getCapabilities() {
-      var checkBrowserSupported = true;
-      if (customCaps && customCaps.browserName && customCaps.browserName === 'pm') {
-        checkBrowserSupported = false;
-      }
-
       //exception handling
-      if (checkBrowserSupported && !webdriver.Capabilities[tgtBrowser]) {
+      if (!nemoData.ignoreTargetBrowserCheck && !webdriver.Capabilities[tgtBrowser]) {
         throw new TypeError('You have specified ' + tgtBrowser + ' which is an invalid browser option');
       }
       caps = new webdriver.Capabilities();
@@ -73,7 +68,7 @@ Setup.prototype = {
         });
       }
 
-      if (checkBrowserSupported) {
+      if (!nemoData.ignoreTargetBrowserCheck) {
         caps.merge(webdriver.Capabilities[tgtBrowser]());
       }
 
