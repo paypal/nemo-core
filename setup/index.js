@@ -62,14 +62,14 @@ Setup.prototype = {
       if (!webdriver.Capabilities[tgtBrowser]) {
         throw new TypeError('You have specified ' + tgtBrowser + ' which is an invalid browser option');
       }
-      caps = new webdriver.Capabilities();
+      caps = webdriver.Capabilities[tgtBrowser]();
 
       if (customCaps) {
         Object.keys(customCaps).forEach(function(key) {
           caps.set(key, customCaps[key]);
         });
       }
-      caps.merge(webdriver.Capabilities[tgtBrowser]());
+      
       return caps;
     }
 
