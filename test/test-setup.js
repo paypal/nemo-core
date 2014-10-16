@@ -106,9 +106,13 @@ describe("nemo setup", function() {
     });
     it("should use the view methods", function(done) {
       nemo.driver.get("https://edit.yahoo.com/registration");
-      nemo.view.myView.fnamePresent().
+      nemo.view.myView.fnameWait(3000).
       then(function(present) {
-        nemo.view.myView.fname().sendKeys("asdf");
+        if (present) {
+          nemo.view.myView.fname().sendKeys("asdf");
+        } else {
+          console.log('fname not present');
+        }
       }).
       then(function() {
         driver.sleep(4000);
