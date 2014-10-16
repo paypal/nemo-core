@@ -1,7 +1,8 @@
 {
 	"plugins": {
 		"samplePlugin": {
-			"module": "./test/plugin/sample-plugin"
+			"module": "./test/plugin/sample-plugin",
+			"priority": 99
 		},
 		"drivex": {
 			"module": "nemo-drivex",

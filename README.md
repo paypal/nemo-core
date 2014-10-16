@@ -24,7 +24,7 @@ For a holistic guide to using Nemo as an overall automation solution, [please st
 add the following to package.json devDependencies (assuming mocha is already integrated to your project):
 
 ```javascript
-"nemo": "^0.1.2",
+"nemo": "^0.2.1",
 ```
 
 Then `npm install`
@@ -36,26 +36,43 @@ In the directory where you've installed Nemo, create a file called "nemoExample.
 ```javascript
 var Nemo = require("../");
 
+/*
 process.env.nemoData = JSON.stringify({
 	targetBrowser: "firefox",
 	targetServer: "localhost",
-	serverProps:  {"port": 4444},
+	serverProps: {"port": 4444},
 	seleniumJar: "/usr/bin/selenium-server-standalone.jar",
 	targetBaseUrl: "https://www.paypal.com"
 });
+*/
 
-(new Nemo()).setup().then(function (nemo) {
+var config = {
+	nemoData: {
+		targetBrowser: "firefox",
+		targetServer: "localhost",
+		serverProps: {
+			"port": 4444
+		},
+		seleniumJar: "/usr/bin/selenium-server-standalone.jar",
+		targetBaseUrl: "https://www.paypal.com"
+	}
+};
+//THE ABOVE OR BELOW WILL WORK TO SET nemoData. IN A CONTEST, SETTING VIA Nemo() WILL WIN
+
+(new Nemo(config)).setup().then(function(nemo) {
 	nemo.driver.get(nemo.props.targetBaseUrl);
 	nemo.driver.sleep(5000).
-		then(function () {
-			console.info("Nemo was successful!!");
-			nemo.driver.quit();
-		});
+	then(function() {
+		console.info("Nemo was successful!!");
+		nemo.driver.quit();
+	});
 });
 ```
 
 You can see this file within the nemo examples directory:
 https://github.com/paypal/nemo/examples/setup.js
+
+Note you can set `nemoData` via an environment variable OR by passing it into the Nemo constructor.
 
 Now, assuming you've set up a driver which matches the above requirements, you can run the following, with the following result:
 
@@ -66,7 +83,7 @@ Nemo was successful!!
 
 ## Nemo Configuration
 
-Nemo will look for an environment variable named `nemoData`. `nemoData` should be in stringified JSON format. Depending on
+Nemo will look for a JSON object in the constructor config argument. As a fallback, it will look for an environment variable named `nemoData`. `nemoData` should be in stringified JSON format. Depending on
 the values therein, Nemo will start a variety of webdrivers and test on a variety of targets.
 
 In addition to the Nemo setup using the name/value pairs, the NVPs are also passed along to the nemo object returned after setup,
@@ -126,6 +143,51 @@ Some webdrivers (for instance ios-driver, or appium) would have additional capab
 	"tags": ['tag1','tag2'] //sauce labs tag names
 }
 ```
+
+## Plugins
+
+You can author or use plugins to enhance your test suite. Something important to know about plugins is how you register them. Provide JSON like this to the Nemo constructor:
+
+```javascript
+{
+	"plugins": {
+		"samplePlugin": {
+			"module": "./test/plugin/sample-plugin",
+			"priority": 99
+		},
+		"drivex": {
+			"module": "nemo-drivex",
+			"register": true
+		},
+		"autoRegPlugin": {
+			"module": "./test/plugin/autoreg-plugin",
+			"register": true
+		},
+		"locatex": {
+			"module": "nemo-locatex",
+			"register": true
+		},
+		"view": {
+			"module": "nemo-view"
+		}
+	}
+}
+```
+
+### priority
+
+A `priority` value of < 100 will register this plugin BEFORE the selenium driver object is created. This means that such a plugin can modify properties of the driver (such as `serverProps`). It also means that any other elements of the Nemo setup will NOT be available to that plugin. Leaving `priority` unset will register the plugin after the driver object is created.
+
+### register
+
+Setting `register: true` will cause this plugin to register whether or not you supply any accompanying configuration in the Nemo.setup config object.
+
+### More on plugins
+
+More on plugin authoring can be found here: https://github.com/paypal/nemo-docs/blob/master/plugins.md
+
+File issues for new plugin creation here: https://github.com/paypal/nemo-plugin-registry/issues
+
 ## API
 
 ### Nemo constructor
@@ -134,7 +196,7 @@ Some webdrivers (for instance ios-driver, or appium) would have additional capab
 /**
  * Represents a Nemo instance
  * @constructor
- * @param {Object} config - Object which contains any plugin registration
+ * @param {Object} config - Object which contains any plugin registration and optionally the nemoData object
  *
  */
 ```

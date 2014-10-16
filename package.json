@@ -1,12 +1,12 @@
 {
   "name": "nemo",
-  "version": "0.1.1",
+  "version": "0.2.5",
   "description": "Abstraction for automation test components",
   "scripts": {
     "test": "grunt"
   },
   "dependencies": {
-    "selenium-webdriver": "^2.39.0",
+    "selenium-webdriver": "~2.42.0",
     "xunit-file": "~0.0.4",
     "async": "0.1.x",
     "nconf": "~0.6.7",
@@ -22,7 +22,7 @@
     "grunt-loop-mocha": "^0.3.0",
     "grunt-contrib-jshint": "~0.7.1",
     "nemo-drivex": "^0.1.0",
-    "nemo-view": "^0.1.0",
+    "nemo-view": "^0.2.0",
     "nemo-locatex": "^0.1.0"
   },
   "repository": {
@@ -36,5 +36,10 @@
     "node": ">= 0.8.0"
   },
   "author": "Matt Edelman <medelman@paypal.com>",
-  "license": "http://www.apache.org/licenses/LICENSE-2.0"
+  "licenses": [
+    {
+      "type": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  ]
 }

@@ -16,20 +16,22 @@
 
 var async = require('async'),
   Setup = require('./setup'),
-  nemoData = {},
+  
   _ = require('lodash'),
   webdriver = require('selenium-webdriver');
 
 /**
  * Represents a Nemo instance
  * @constructor
- * @param {Object} config - Object which contains any plugin registration
+ * @param {Object} config - Object which contains any plugin registration and optionally nemoData
  *
  */
 
 function Nemo(config) {
-
-  //console.log('Nemo constructor config: ', config);
+  this.nemoData = (config && config.nemoData) ? config.nemoData : undefined,
+  this.waterFallArray = [],
+  this.preDriverArray = [],
+  this.postDriverArray = [],
   this.plugins = {};
   //config is for registering plugins
   if (config && config.plugins) {
@@ -57,90 +59,100 @@ Nemo.prototype = {
    *  }
    */
   setup: function(config) {
-    nemoData = JSON.parse(process.env.nemoData);
+    this.nemoData = (this.nemoData) ? this.nemoData : JSON.parse(process.env.nemoData);
     config = config || {};
-    var that = this,
-      returnObj = {
+    var me = this,
+      nemo = {
+        'props': this.nemoData,
         'view': {},
         'locator': {},
         'driver': {},
         'wd': {}
-      },
-      d = webdriver.promise.defer(),
-      waterFallArray = [driversetup];
+      };
+    var d = webdriver.promise.defer();
+    me.preDriverArray = [datasetup];
 
-    Object.keys(that.plugins).forEach(function(key) {
+    Object.keys(me.plugins).forEach(function(key) {
       var modulePath,
         pluginConfig,
         pluginModule;
 
-      if ((that.plugins[key].register || config[key]) && key !== 'view') {
+      if ((me.plugins[key].register || config[key]) || key === 'view') {
         //register this plugin
-        pluginConfig = that.plugins[key];
+        pluginConfig = me.plugins[key];
         modulePath = pluginConfig.module;
         pluginModule = require(modulePath);
-        waterFallArray.push(pluginModule.setup);
+        if (me.plugins[key].priority && me.plugins[key].priority < 100) {
+          me.preDriverArray.push(pluginModule.setup);
+        } else {
+          me.postDriverArray.push(pluginModule.setup); 
+        }
       }
     });
-    if (config.view) {
-      waterFallArray.push(viewsetup);
+    me.waterFallArray = me.preDriverArray.concat([driversetup], me.postDriverArray);
+    if (config.view || (me.plugins && me.plugins.view)) {
+      me.waterFallArray.push(viewsetup);
     }
     if (config.locator) {
-      waterFallArray.push(locatorsetup);
+      me.waterFallArray.push(locatorsetup);
     }
-    async.waterfall(waterFallArray, function(err, result) {
-      //console.log('waterfall result: ', result);
+    async.waterfall(me.waterFallArray, function(err, result) {
       if (err) {
         d.reject(err);
       } else {
-        d.fulfill(returnObj);
+        d.fulfill(nemo);
       }
     });
     return d;
 
     //waterfall functions
-
-    function driversetup(callback) {
-      var toCamelCase = function(match, group1) {
-        return group1.toUpperCase();
-      };
+    function datasetup(callback) {
+      callback(null, config, nemo);
+    }
+    function driversetup(config, _nemo, callback) {
       //do driver/view/locator/vars setup
-      (new Setup()).doSetup(webdriver, function(err, result) {
+      (new Setup()).doSetup(webdriver, _nemo.props, function(err, _nemo) {
         if (err) {
           callback(err);
         } else {
           //set driver
-          returnObj.driver = result.driver;
-          returnObj.wd = webdriver;
-          returnObj.props = nemoData;
-          callback(null, config, returnObj);
+          nemo.driver = _nemo.driver;
+          nemo.wd = webdriver;
+          callback(null, config, nemo);
         }
       });
     }
 
-    function locatorsetup(config, result, callback) {
+    function locatorsetup(config, _nemo, callback) {
       //setup locators
       config.locator.forEach(function(key) {
-        returnObj.locator[key] = require(returnObj.props.autoBaseDir + '/locator/' + key);
+        nemo.locator[key] = require(nemo.props.autoBaseDir + '/locator/' + key);
       });
-      callback(null, config, returnObj);
+      callback(null, config, nemo);
     }
 
-    function viewsetup(config, result, callback) {
-      var viewConfig = result;
+    function viewsetup(config, _nemo, callback) {
+      var viewModule = _nemo.view;
+      if (!config.view) {
+        config.view = [];
+      }
       //setup views
       config.view.forEach(function(key) {
-        //console.log('key is: ' + key)
-        if (that.plugins.view) {
+        if (me.plugins.view) {
           //process with the view interface
-          returnObj.view[(key.constructor === String) ? key : key.name] = require(that.plugins.view.module).addView(key, result);
+          viewModule.addView(key);
         } else {
-          var viewMod = require(returnObj.props.autoBaseDir + '/view/' + key);
-          returnObj.view[key] = new viewMod(viewConfig);
+          //old views
+          //dedupe step
+          if (nemo.view[key]) {
+            return;
+          }
+          var viewMod = require(nemo.props.autoBaseDir + '/view/' + key);
+          nemo.view[key] = new viewMod(_nemo);
         }
 
       });
-      callback(null, config, returnObj);
+      callback(null, config, nemo);
     }
   }
 };
