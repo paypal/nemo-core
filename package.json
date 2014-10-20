@@ -1,6 +1,6 @@
 {
   "name": "nemo",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "Abstraction for automation test components",
   "scripts": {
     "test": "grunt"
