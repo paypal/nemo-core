@@ -117,7 +117,6 @@ Nemo.prototype = {
         } else {
           //set driver
           nemo.driver = _nemo.driver;
-          nemo.wd = webdriver;
           callback(null, config, nemo);
         }
       });
