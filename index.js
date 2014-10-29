@@ -67,7 +67,7 @@ Nemo.prototype = {
         'view': {},
         'locator': {},
         'driver': {},
-        'wd': {}
+        'wd': webdriver
       };
     var d = webdriver.promise.defer();
     me.preDriverArray = [datasetup];
@@ -117,7 +117,6 @@ Nemo.prototype = {
         } else {
           //set driver
           nemo.driver = _nemo.driver;
-          nemo.wd = webdriver;
           callback(null, config, nemo);
         }
       });
