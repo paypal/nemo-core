@@ -1,7 +1,5 @@
 # Nemo [![Build Status](https://travis-ci.org/paypal/nemo.svg)](https://travis-ci.org/paypal/nemo)
 
-[![NPM](https://nodei.co/npm/nemo.png?downloads=true&stars=true)](https://nodei.co/npm/nemo/)
-
 Nemo provides a simple way to add selenium automation to your NodeJS web projects. Provides plugin architecture to
 incorporate custom features to your tests.
 
@@ -249,9 +247,12 @@ When you call 'setup' on a Nemo instance, what happens? The answer is important 
 8. Each waterFallArray method can add to the 'result' object, and must pass along the config and result object in the callback
 9. The final callback in async.waterfall fulfills the promise from step 7, passing along the final 'result' object
 
+
 ## Why Nemo?
 
 Because we NEed MOre automation testing!
+
+[![NPM](https://nodei.co/npm/nemo.png?downloads=true&stars=true)](https://nodei.co/npm/nemo/)
 
 
 
