@@ -1,6 +1,6 @@
-# Nemo
+# Nemo [![Build Status](https://travis-ci.org/paypal/nemo.svg)](https://travis-ci.org/paypal/nemo)
 
-[![Build Status](https://travis-ci.org/paypal/nemo.svg)](https://travis-ci.org/paypal/nemo)
+[![NPM](https://nodei.co/npm/nemo.png?downloads=true&stars=true)](https://nodei.co/npm/nemo/)
 
 Nemo provides a simple way to add selenium automation to your NodeJS web projects. Provides plugin architecture to
 incorporate custom features to your tests.
