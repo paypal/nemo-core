@@ -8,11 +8,11 @@ describe("nemo functionality", function () {
   var driver;
   var nemo;
   var config = require("./config/plugins");
-  var _nemo = new Nemo(config);
+  var _nemo = Nemo(config);
   before(function (done) {
     process.env.nemoData = JSON.stringify({
       "autoBaseDir": process.cwd() + "/test",
-      "targetBrowser": "fooeys",
+      "targetBrowser": "chrome",
       //"targetServer": "http://127.0.0.1:4444/wd/hub",
       "targetBaseUrl": "http://localhost:8000",
       //"seleniumJar": "/usr/bin/selenium-server-standalone.jar",

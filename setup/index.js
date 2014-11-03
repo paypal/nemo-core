@@ -25,76 +25,75 @@ var fs = require('fs'),
 
 error.log = console.error.bind(console);
 
-var Setup = function () {
+function Setup() {
   log('new Setup instance created');
-  //constructor
-};
-Setup.prototype = {
-  doSetup: function (_wd, nemoData, callback) {
-    log('entering doSetup');
-    if (nemoData === {} || nemoData.targetBrowser === undefined) {
-      callback(new Error('[Nemo::doSetup] The nemoData environment variable is missing or not fully defined!'));
-      return;
-    }
-    var caps,
-      tgtBrowser = nemoData.targetBrowser,
-      customCaps = nemoData.serverCaps,
-      serverUrl = nemoData.targetServer,
-      serverProps = nemoData.serverProps,
-      serverJar = nemoData.seleniumJar,
-      errorObject = null;
+  return {
+    doSetup: function doSetup(_wd, nemoData, callback) {
+      log('entering doSetup');
+      if (nemoData === {} || nemoData.targetBrowser === undefined) {
+        callback(new Error('[Nemo::doSetup] The nemoData environment variable is missing or not fully defined!'));
+        return;
+      }
+      var caps,
+        tgtBrowser = nemoData.targetBrowser,
+        customCaps = nemoData.serverCaps,
+        serverUrl = nemoData.targetServer,
+        serverProps = nemoData.serverProps,
+        serverJar = nemoData.seleniumJar,
+        errorObject = null;
 
-    function getServer() {
-      log('attempt getServer');
-      if (serverProps && (serverUrl.indexOf('127.0.0.1') !== -1 || serverUrl.indexOf('localhost') !== -1)) {
-        log('attempt server startup');
-        //chrome and phantomjs are supported natively. i.e. no webdriver required. chromedriver or phantomjs executables must be in PATH though
-        if (tgtBrowser !== 'chrome' && tgtBrowser !== 'phantomjs') {
-          //make sure there is a jar file
-          var jarExists = fs.existsSync(serverJar);
-          if (!jarExists) {
-            throw new Error('You must specify a valid SELENIUM_JAR value. The value must point to a driver executable in your file system.');
+      function getServer() {
+        log('attempt getServer');
+        if (serverProps && (serverUrl.indexOf('127.0.0.1') !== -1 || serverUrl.indexOf('localhost') !== -1)) {
+          log('attempt server startup');
+          //chrome and phantomjs are supported natively. i.e. no webdriver required. chromedriver or phantomjs executables must be in PATH though
+          if (tgtBrowser !== 'chrome' && tgtBrowser !== 'phantomjs') {
+            //make sure there is a jar file
+            var jarExists = fs.existsSync(serverJar);
+            if (!jarExists) {
+              throw new Error('You must specify a valid SELENIUM_JAR value. The value must point to a driver executable in your file system.');
+            }
+            var server = new SeleniumServer(serverJar, serverProps);
+            server.start();
+            serverUrl = server.address();
+          } else {
+            serverUrl = null;
           }
-          var server = new SeleniumServer(serverJar, serverProps);
-          server.start();
-          serverUrl = server.address();
-        } else {
-          serverUrl = null;
         }
-      }
-      return serverUrl;
-    }
-
-    function getCapabilities() {
-      //specified valid webdriver browser key?
-      if (!webdriver.Capabilities[tgtBrowser]) {
-        error('You have specified ' + tgtBrowser + ' which is an invalid webdriver.Capabilities browser option');
-
-      } else {
-        caps = webdriver.Capabilities[tgtBrowser]();
-      }
-      if (customCaps) {
-        Object.keys(customCaps).forEach(function (key) {
-          caps.set(key, customCaps[key]);
-        });
+        return serverUrl;
       }
 
-      return caps;
+      function getCapabilities() {
+        //specified valid webdriver browser key?
+        if (!webdriver.Capabilities[tgtBrowser]) {
+          error('You have specified ' + tgtBrowser + ' which is an invalid webdriver.Capabilities browser option');
+
+        } else {
+          caps = webdriver.Capabilities[tgtBrowser]();
+        }
+        if (customCaps) {
+          Object.keys(customCaps).forEach(function customCapsKeys(key) {
+            caps.set(key, customCaps[key]);
+          });
+        }
+
+        return caps;
+      }
+
+
+      try {
+
+        driver = new _wd.Builder().
+          usingServer(getServer()).
+          withCapabilities(getCapabilities()).build();
+      } catch (err) {
+        error('Encountered an error during driver setup: %', err);
+        errorObject = err;
+      }
+      callback(errorObject, {
+        'driver': driver
+      });
     }
-
-
-    try {
-
-      driver = new _wd.Builder().
-        usingServer(getServer()).
-        withCapabilities(getCapabilities()).build();
-    } catch (err) {
-      error('Encountered an error during driver setup: %', err);
-      errorObject = err;
-    }
-    callback(errorObject, {
-      'driver': driver
-    });
-  }
-};
+  };
+}
 module.exports = Setup;
