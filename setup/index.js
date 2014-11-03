@@ -1,29 +1,37 @@
 /*───────────────────────────────────────────────────────────────────────────*\
-│  Copyright (C) 2014 eBay Software Foundation                                │
-│                                                                             │
-│                                                                             │
-│   Licensed under the Apache License, Version 2.0 (the "License"); you may   │
-│   not use this file except in compliance with the License. You may obtain   │
-│   a copy of the License at http://www.apache.org/licenses/LICENSE-2.0       │
-│                                                                             │
-│   Unless required by applicable law or agreed to in writing, software       │
-│   distributed under the License is distributed on an "AS IS" BASIS,         │
-│   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  │
-│   See the License for the specific language governing permissions and       │
-│   limitations under the License.                                            │
-\*───────────────────────────────────────────────────────────────────────────*/
+ │  Copyright (C) 2014 eBay Software Foundation                                │
+ │                                                                             │
+ │                                                                             │
+ │   Licensed under the Apache License, Version 2.0 (the "License"); you may   │
+ │   not use this file except in compliance with the License. You may obtain   │
+ │   a copy of the License at http://www.apache.org/licenses/LICENSE-2.0       │
+ │                                                                             │
+ │   Unless required by applicable law or agreed to in writing, software       │
+ │   distributed under the License is distributed on an "AS IS" BASIS,         │
+ │   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  │
+ │   See the License for the specific language governing permissions and       │
+ │   limitations under the License.                                            │
+ \*───────────────────────────────────────────────────────────────────────────*/
 /* global require,module */
 'use strict';
 var fs = require('fs'),
   webdriver = require('selenium-webdriver'),
   SeleniumServer = require('selenium-webdriver/remote').SeleniumServer,
+  debug = require('debug'),
+  log = debug('nemo:log'),
+  error = debug('nemo:error'),
   nemoData = {},
   driver;
-var Setup = function() {
+
+error.log = console.error.bind(console);
+
+var Setup = function () {
+  log('new Setup instance created');
   //constructor
 };
 Setup.prototype = {
-  doSetup: function(_wd, nemoData, callback) {
+  doSetup: function (_wd, nemoData, callback) {
+    log('entering doSetup');
     if (nemoData === {} || nemoData.targetBrowser === undefined) {
       callback(new Error('[Nemo::doSetup] The nemoData environment variable is missing or not fully defined!'));
       return;
@@ -37,7 +45,9 @@ Setup.prototype = {
       errorObject = null;
 
     function getServer() {
+      log('attempt getServer');
       if (serverProps && (serverUrl.indexOf('127.0.0.1') !== -1 || serverUrl.indexOf('localhost') !== -1)) {
+        log('attempt server startup');
         //chrome and phantomjs are supported natively. i.e. no webdriver required. chromedriver or phantomjs executables must be in PATH though
         if (tgtBrowser !== 'chrome' && tgtBrowser !== 'phantomjs') {
           //make sure there is a jar file
@@ -56,27 +66,30 @@ Setup.prototype = {
     }
 
     function getCapabilities() {
-      //exception handling
+      //specified valid webdriver browser key?
       if (!webdriver.Capabilities[tgtBrowser]) {
-        throw new TypeError('You have specified ' + tgtBrowser + ' which is an invalid browser option');
-      }
-      caps = webdriver.Capabilities[tgtBrowser]();
+        error('You have specified ' + tgtBrowser + ' which is an invalid webdriver.Capabilities browser option');
 
+      } else {
+        caps = webdriver.Capabilities[tgtBrowser]();
+      }
       if (customCaps) {
-        Object.keys(customCaps).forEach(function(key) {
+        Object.keys(customCaps).forEach(function (key) {
           caps.set(key, customCaps[key]);
         });
       }
-      
+
       return caps;
     }
 
 
     try {
+
       driver = new _wd.Builder().
-      usingServer(getServer()).
-      withCapabilities(getCapabilities()).build();
+        usingServer(getServer()).
+        withCapabilities(getCapabilities()).build();
     } catch (err) {
+      error('Encountered an error during driver setup: %', err);
       errorObject = err;
     }
     callback(errorObject, {

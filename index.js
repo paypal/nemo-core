@@ -16,9 +16,13 @@
 
 var async = require('async'),
   Setup = require('./setup'),
-  
+  debug = require('debug'),
+  log = debug('nemo:log'),
+  error = debug('nemo:error'),
   _ = require('lodash'),
   webdriver = require('selenium-webdriver');
+
+error.log = console.error.bind(console);
 
 /**
  * Represents a Nemo instance
@@ -28,6 +32,7 @@ var async = require('async'),
  */
 
 function Nemo(config) {
+  log('new Nemo instance created', JSON.stringify(config));
   this.nemoData = (config && config.nemoData) ? config.nemoData : undefined,
   this.waterFallArray = [],
   this.preDriverArray = [],
