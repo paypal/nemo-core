@@ -8,19 +8,14 @@ describe("nemo functionality", function () {
   var driver;
   var nemo;
   var config = require("./config/plugins");
+  config.nemoData = {
+    "autoBaseDir": process.cwd() + "/test",
+    "targetBrowser": "chrome",
+    "targetBaseUrl": "http://localhost:8000",
+    "locale": "FR"
+  };
   var _nemo = Nemo(config);
-  before(function (done) {
-    process.env.nemoData = JSON.stringify({
-      "autoBaseDir": process.cwd() + "/test",
-      "targetBrowser": "chrome",
-      //"targetServer": "http://127.0.0.1:4444/wd/hub",
-      "targetBaseUrl": "http://localhost:8000",
-      //"seleniumJar": "/usr/bin/selenium-server-standalone.jar",
-      //"serverProps":  {"port": 4444},
-      "locale": "FR"
-    });
-    done();
-  });
+
   after(function (done) {
     driver.quit().then(function () {
       done();
@@ -32,7 +27,7 @@ describe("nemo functionality", function () {
   });
   it("should return back camelcase properties from titlecase ARGV options and also init any plugins", function (done) {
     //console.log(_nemo.setup);
-    var su = _nemo.setup({
+    _nemo.setup({
       "samplePlugin": {
         "sampleoptions": {
           "option1": "value1",
@@ -41,17 +36,11 @@ describe("nemo functionality", function () {
       },
       "locator": ["myView"],
       "view": ["myView", "myOtherView"]
-    });
-    //console.log(su)
-    su.then(function (result) {
-      console.log('fooooool');
+    }).then(function (result) {
       nemo = result;
       nemo.props.targetBrowser.should.equal("chrome");
-      //nemo.props.targetServer.should.equal("http://127.0.0.1:4444/wd/hub");
       nemo.props.targetBaseUrl.should.equal("http://localhost:8000");
-      //nemo.noValue.should.equal(true);
       nemo.samplePlugin.sampleoptions.option1.should.equal("value1");
-      //nemo.autoRegPlugin.should.exist();
       driver = nemo.driver;
       done();
     }, function (err) {

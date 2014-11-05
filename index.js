@@ -83,6 +83,7 @@ function Nemo(config) {
           pluginModule;
 
         if ((plugins[key].register || config[key]) || key === 'view') {
+          log('register plugin %s', key);
           //register this plugin
           pluginConfig = plugins[key];
           modulePath = pluginConfig.module;
