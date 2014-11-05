@@ -32,7 +32,7 @@ Setup.prototype = {
       tgtBrowser = nemoData.targetBrowser,
       customCaps = nemoData.serverCaps,
       serverUrl = nemoData.targetServer,
-      serverProps = nemoData.serverProps,
+      serverProps = nemoData.serverProps || {'port':4444},
       serverJar = nemoData.seleniumJar,
       errorObject = null;
 
