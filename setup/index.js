@@ -32,12 +32,15 @@ Setup.prototype = {
       tgtBrowser = nemoData.targetBrowser,
       customCaps = nemoData.serverCaps,
       serverUrl = nemoData.targetServer,
-      serverProps = nemoData.serverProps || {'port':4444},
+      serverProps = nemoData.serverProps,
       serverJar = nemoData.seleniumJar,
       errorObject = null;
 
     function getServer() {
-      if (serverProps && (serverUrl.indexOf('127.0.0.1') !== -1 || serverUrl.indexOf('localhost') !== -1)) {
+      if ((serverUrl.indexOf('127.0.0.1') !== -1 || serverUrl.indexOf('localhost') !== -1)) {
+          if(!serverProps|| (serverProps&&!serverProps.port)){
+              throw new Error('You must specify port for your local selenium server to run under serverProps like e.g. serverProps:{port:4444}')
+          }
         //chrome and phantomjs are supported natively. i.e. no webdriver required. chromedriver or phantomjs executables must be in PATH though
         if (tgtBrowser !== 'chrome' && tgtBrowser !== 'phantomjs') {
           //make sure there is a jar file
@@ -67,7 +70,7 @@ Setup.prototype = {
           caps.set(key, customCaps[key]);
         });
       }
-      
+
       return caps;
     }
 
