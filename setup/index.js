@@ -31,7 +31,7 @@ Setup.prototype = {
     var caps,
       tgtBrowser = nemoData.targetBrowser,
       customCaps = nemoData.serverCaps,
-      serverUrl = nemoData.targetServer,
+      serverUrl = nemoData.targetServer || 'localhost',
       serverProps = nemoData.serverProps,
       serverJar = nemoData.seleniumJar,
       errorObject = null;
