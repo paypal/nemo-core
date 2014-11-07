@@ -37,7 +37,7 @@ Setup.prototype = {
       errorObject = null;
 
     function getServer() {
-      if ((serverUrl.indexOf('127.0.0.1') !== -1 || serverUrl.indexOf('localhost') !== -1)) {
+      if (serverUrl.indexOf('127.0.0.1') !== -1 || serverUrl.indexOf('localhost') !== -1) {
           if(!serverProps|| (serverProps&&!serverProps.port)){
               throw new Error('You must specify port for your local selenium server to run under serverProps like e.g. serverProps:{port:4444}')
           }
