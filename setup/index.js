@@ -36,6 +36,7 @@ Setup.prototype = {
       serverJar = nemoData.seleniumJar,
       errorObject = null;
 
+      /*jshint maxcomplexity:7 */
     function getServer() {
       if (serverUrl.indexOf('127.0.0.1') !== -1 || serverUrl.indexOf('localhost') !== -1) {
         if(!serverProps|| (serverProps&&!serverProps.port)){
@@ -70,7 +71,6 @@ Setup.prototype = {
           caps.set(key, customCaps[key]);
         });
       }
-
       return caps;
     }
 
