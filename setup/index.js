@@ -39,7 +39,7 @@ function Setup() {
         localServer = nemoData.localServer || false,
         customCaps = nemoData.serverCaps,
         serverUrl = nemoData.targetServer,
-        serverProps = nemoData.serverProps,
+        serverProps = nemoData.serverProps || {},
         serverJar = nemoData.seleniumJar,
         errorObject = null;
 
@@ -52,6 +52,9 @@ function Setup() {
             var jarExists = fs.existsSync(serverJar);
             if (!jarExists) {
               error('You must specify a valid SELENIUM_JAR value. The value must point to a driver executable in your file system.');
+            }
+            if (!!serverProps.port === false) {
+              serverProps.port = 4444;
             }
             var server = new SeleniumServer(serverJar, serverProps);
             server.start();
