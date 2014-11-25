@@ -10,7 +10,7 @@ describe("nemo functionality", function () {
   var config = require("./config/plugins");
   config.nemoData = {
     "autoBaseDir": process.cwd() + "/test",
-    "targetBrowser": "chrome",
+    "targetBrowser": "phantomjs",
     "targetBaseUrl": "http://localhost:8000",
     "locale": "FR"
   };
@@ -38,7 +38,7 @@ describe("nemo functionality", function () {
       "view": ["myView", "myOtherView"]
     }).then(function (result) {
       nemo = result;
-      nemo.props.targetBrowser.should.equal("chrome");
+      nemo.props.targetBrowser.should.equal("phantomjs");
       nemo.props.targetBaseUrl.should.equal("http://localhost:8000");
       nemo.samplePlugin.sampleoptions.option1.should.equal("value1");
       driver = nemo.driver;
