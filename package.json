@@ -15,15 +15,16 @@
   "main": "index.js",
   "devDependencies": {
     "async": "~0.2.8",
-    "mocha": "~1.10.0",
     "chai": "~1.6.0",
+    "debug": "^2.1.0",
     "grunt": "~0.4.1",
-    "grunt-simple-mocha": "~0.4.0",
-    "grunt-loop-mocha": "^0.3.0",
     "grunt-contrib-jshint": "~0.7.1",
+    "grunt-loop-mocha": "^0.3.0",
+    "grunt-simple-mocha": "~0.4.0",
+    "mocha": "~1.10.0",
     "nemo-drivex": "^0.1.0",
-    "nemo-view": "^0.2.0",
-    "nemo-locatex": "^0.1.0"
+    "nemo-locatex": "^0.1.0",
+    "nemo-view": "^0.2.0"
   },
   "repository": {
     "type": "git",
