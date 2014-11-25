@@ -36,6 +36,7 @@ function Setup() {
       }
       var caps,
         tgtBrowser = nemoData.targetBrowser,
+        localServer = nemoData.localServer || false,
         customCaps = nemoData.serverCaps,
         serverUrl = nemoData.targetServer,
         serverProps = nemoData.serverProps,
@@ -44,14 +45,13 @@ function Setup() {
 
       function getServer() {
         log('attempt getServer');
-        if (serverProps && (serverUrl.indexOf('127.0.0.1') !== -1 || serverUrl.indexOf('localhost') !== -1)) {
-          log('attempt server startup');
-          //chrome and phantomjs are supported natively. i.e. no webdriver required. chromedriver or phantomjs executables must be in PATH though
+        //are we running the tests on the local machine?
+        if (!!localServer) {
           if (tgtBrowser !== 'chrome' && tgtBrowser !== 'phantomjs') {
             //make sure there is a jar file
             var jarExists = fs.existsSync(serverJar);
             if (!jarExists) {
-              throw new Error('You must specify a valid SELENIUM_JAR value. The value must point to a driver executable in your file system.');
+              error('You must specify a valid SELENIUM_JAR value. The value must point to a driver executable in your file system.');
             }
             var server = new SeleniumServer(serverJar, serverProps);
             server.start();
@@ -60,6 +60,22 @@ function Setup() {
             serverUrl = null;
           }
         }
+//        if (serverProps && (serverUrl.indexOf('127.0.0.1') !== -1 || serverUrl.indexOf('localhost') !== -1)) {
+//          log('attempt server startup');
+//          //chrome and phantomjs are supported natively. i.e. no webdriver required. chromedriver or phantomjs executables must be in PATH though
+//          if (tgtBrowser !== 'chrome' && tgtBrowser !== 'phantomjs') {
+//            //make sure there is a jar file
+//            var jarExists = fs.existsSync(serverJar);
+//            if (!jarExists) {
+//              throw new Error('You must specify a valid SELENIUM_JAR value. The value must point to a driver executable in your file system.');
+//            }
+//            var server = new SeleniumServer(serverJar, serverProps);
+//            server.start();
+//            serverUrl = server.address();
+//          } else {
+//            serverUrl = null;
+//          }
+//        }
         return serverUrl;
       }
 
