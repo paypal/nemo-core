@@ -99,9 +99,9 @@ which need to require modules from your test suite.
 
 Browser you wish to automate. Make sure that your chosen webdriver has this browser option available
 
-### localServer (optional)
+### localServer (optional, defaults to false)
 
-Set to true if you want Nemo to attempt to start a standalone binary on your system (like selenium-standalone-server) or use a local browser/driver like Chrome/chromedriver or PhantomJS.
+Set localServer to true if you want Nemo to attempt to start a standalone binary on your system (like selenium-standalone-server) or use a local browser/driver like Chrome/chromedriver or PhantomJS.
 
 
 ### targetServer (optional)
