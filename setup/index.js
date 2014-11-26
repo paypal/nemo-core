@@ -46,39 +46,25 @@ function Setup() {
       function getServer() {
         log('attempt getServer');
         //are we running the tests on the local machine?
-        if (!!localServer) {
+        if (localServer === true) {
           if (tgtBrowser !== 'chrome' && tgtBrowser !== 'phantomjs') {
             //make sure there is a jar file
             var jarExists = fs.existsSync(serverJar);
             if (!jarExists) {
               error('You must specify a valid SELENIUM_JAR value. The value must point to a driver executable in your file system.');
             }
-            if (serverProps.port === undefined) {
-              serverProps.port = 4444;
+            else {
+              if (serverProps.port === undefined) {
+                serverProps.port = 4444;
+              }
+              var server = new SeleniumServer(serverJar, serverProps);
+              server.start();
+              serverUrl = server.address();
             }
-            var server = new SeleniumServer(serverJar, serverProps);
-            server.start();
-            serverUrl = server.address();
           } else {
             serverUrl = null;
           }
         }
-//        if (serverProps && (serverUrl.indexOf('127.0.0.1') !== -1 || serverUrl.indexOf('localhost') !== -1)) {
-//          log('attempt server startup');
-//          //chrome and phantomjs are supported natively. i.e. no webdriver required. chromedriver or phantomjs executables must be in PATH though
-//          if (tgtBrowser !== 'chrome' && tgtBrowser !== 'phantomjs') {
-//            //make sure there is a jar file
-//            var jarExists = fs.existsSync(serverJar);
-//            if (!jarExists) {
-//              throw new Error('You must specify a valid SELENIUM_JAR value. The value must point to a driver executable in your file system.');
-//            }
-//            var server = new SeleniumServer(serverJar, serverProps);
-//            server.start();
-//            serverUrl = server.address();
-//          } else {
-//            serverUrl = null;
-//          }
-//        }
         return serverUrl;
       }
 
