@@ -22,7 +22,7 @@ For a holistic guide to using Nemo as an overall automation solution, [please st
 add the following to package.json devDependencies (assuming mocha is already integrated to your project):
 
 ```javascript
-"nemo": "^0.2.1",
+"nemo": "^0.3.0.alpha",
 ```
 
 Then `npm install`
@@ -38,7 +38,7 @@ var Nemo = require("../");
 process.env.nemoData = JSON.stringify({
 	targetBrowser: "firefox",
 	targetServer: "localhost",
-	serverProps: {"port": 4444},
+	localServer: true,
 	seleniumJar: "/usr/bin/selenium-server-standalone.jar",
 	targetBaseUrl: "https://www.paypal.com"
 });
@@ -48,9 +48,7 @@ var config = {
 	nemoData: {
 		targetBrowser: "firefox",
 		targetServer: "localhost",
-		serverProps: {
-			"port": 4444
-		},
+		localServer: true,
 		seleniumJar: "/usr/bin/selenium-server-standalone.jar",
 		targetBaseUrl: "https://www.paypal.com"
 	}
