@@ -187,6 +187,22 @@ More on plugin authoring can be found here: https://github.com/paypal/nemo-docs/
 
 File issues for new plugin creation here: https://github.com/paypal/nemo-plugin-registry/issues
 
+## Logging and debugging
+
+Nemo uses the [debug](https://github.com/visionmedia/debug.git) module for console logging and error output. There are two classes of logging, `nemo:log` and `nemo:error`
+
+If you want to see both classes of output, simply use the appropriate value of the DEBUG environment variable when you run nemo:
+
+```bash
+$ DEBUG=nemo:* <nemo command>
+```
+
+To see just one:
+
+```bash
+$ DEBUG=nemo:error <nemo command>
+```
+
 ## API
 
 ### Nemo constructor
