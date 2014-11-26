@@ -53,7 +53,7 @@ function Setup() {
             if (!jarExists) {
               error('You must specify a valid SELENIUM_JAR value. The value must point to a driver executable in your file system.');
             }
-            if (!!serverProps.port === false) {
+            if (serverProps.port === undefined) {
               serverProps.port = 4444;
             }
             var server = new SeleniumServer(serverJar, serverProps);
