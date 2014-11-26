@@ -31,7 +31,7 @@ function Setup() {
     doSetup: function doSetup(_wd, nemoData, callback) {
       log('entering doSetup');
       if (nemoData === {} || nemoData.targetBrowser === undefined) {
-        callback(new Error('[Nemo::doSetup] The nemoData environment variable is missing or not fully defined!'));
+        callback(new Error('[Nemo::doSetup] The nemoData environment variable is missing or not fully defined! Please read about nemoData configuration here: https://github.com/paypal/nemo/blob/master/README.md#nemo-configuration'));
         return;
       }
       var caps,
