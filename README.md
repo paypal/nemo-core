@@ -22,7 +22,7 @@ For a holistic guide to using Nemo as an overall automation solution, [please st
 add the following to package.json devDependencies (assuming mocha is already integrated to your project):
 
 ```javascript
-"nemo": "^0.2.1",
+"nemo": "^0.3.0.alpha",
 ```
 
 Then `npm install`
@@ -38,7 +38,7 @@ var Nemo = require("../");
 process.env.nemoData = JSON.stringify({
 	targetBrowser: "firefox",
 	targetServer: "localhost",
-	serverProps: {"port": 4444},
+	localServer: true,
 	seleniumJar: "/usr/bin/selenium-server-standalone.jar",
 	targetBaseUrl: "https://www.paypal.com"
 });
@@ -48,9 +48,7 @@ var config = {
 	nemoData: {
 		targetBrowser: "firefox",
 		targetServer: "localhost",
-		serverProps: {
-			"port": 4444
-		},
+		localServer: true,
 		seleniumJar: "/usr/bin/selenium-server-standalone.jar",
 		targetBaseUrl: "https://www.paypal.com"
 	}
@@ -101,17 +99,20 @@ which need to require modules from your test suite.
 
 Browser you wish to automate. Make sure that your chosen webdriver has this browser option available
 
-### targetServer (optional/conditional)
+### localServer (optional, defaults to false)
 
-Webdriver server you wish to use. Set as simply "localhost" if you are using a selenium-standalone driver on your local machine.
-Leave unset if you are using chrome or phantomjs on your local machine
+Set localServer to true if you want Nemo to attempt to start a standalone binary on your system (like selenium-standalone-server) or use a local browser/driver like Chrome/chromedriver or PhantomJS.
+
+
+### targetServer (optional)
+
+Webdriver server URL you wish to use.
 
 If you are using sauce labs, make sure `targetServer` is set to correct url like `"http://yourkey:yoursecret@ondemand.saucelabs.com:80/wd/hub"`
 
 ### serverProps (optional/conditional)
 
-Additional server properties required of the 'targetServer'. If you are using a selenium-standalone driver on your local machine,
-you have to minimally specify the port number. Leave unset if you aren't specifying a targetServer.
+Additional server properties required of the 'targetServer'
 
 You can also set args and jvmArgs to the selenium jar process as follows:
 
@@ -185,6 +186,22 @@ Setting `register: true` will cause this plugin to register whether or not you s
 More on plugin authoring can be found here: https://github.com/paypal/nemo-docs/blob/master/plugins.md
 
 File issues for new plugin creation here: https://github.com/paypal/nemo-plugin-registry/issues
+
+## Logging and debugging
+
+Nemo uses the [debug](https://github.com/visionmedia/debug.git) module for console logging and error output. There are two classes of logging, `nemo:log` and `nemo:error`
+
+If you want to see both classes of output, simply use the appropriate value of the DEBUG environment variable when you run nemo:
+
+```bash
+$ DEBUG=nemo:* <nemo command>
+```
+
+To see just one:
+
+```bash
+$ DEBUG=nemo:error <nemo command>
+```
 
 ## API
 

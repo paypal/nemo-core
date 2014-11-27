@@ -4,7 +4,7 @@
 var should = require('chai').should(),
   Nemo = require('../index');
 
-describe("nemo functionality", function () {
+describe("nemo @travis@ suite", function () {
   var driver;
   var nemo;
   var config = require("./config/plugins");
@@ -25,7 +25,7 @@ describe("nemo functionality", function () {
     _nemo.should.not.equal(undefined);
     done();
   });
-  it("should return back camelcase properties from titlecase ARGV options and also init any plugins", function (done) {
+  it("should return back nemoData properties and init any plugins", function (done) {
     //console.log(_nemo.setup);
     _nemo.setup({
       "samplePlugin": {
@@ -47,7 +47,7 @@ describe("nemo functionality", function () {
       done(err);
     });
   });
-  it("should navigate to the TARGET_BASE_URL set via command line", function (done) {
+  it("should navigate to the targetBaseUrl set via nemoData", function (done) {
     driver.get(nemo.props.targetBaseUrl).
       then(function () {
         done();
