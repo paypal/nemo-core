@@ -17,6 +17,7 @@
 var fs = require('fs'),
   webdriver = require('selenium-webdriver'),
   SeleniumServer = require('selenium-webdriver/remote').SeleniumServer,
+  proxy = require('selenium-webdriver/proxy'),
   debug = require('debug'),
   log = debug('nemo:log'),
   error = debug('nemo:error'),
@@ -41,6 +42,7 @@ function Setup() {
         serverUrl = nemoData.targetServer,
         serverProps = nemoData.serverProps || {},
         serverJar = nemoData.seleniumJar,
+        proxyDetails = nemoData.proxyDetails,
         errorObject = null;
 
       function getServer() {
@@ -86,12 +88,29 @@ function Setup() {
         return caps;
       }
 
+      function getProxy() {
+
+        switch (proxyDetails.method) {
+          case 'manual':
+            return proxy.manual(proxyDetails.args[0]);
+          case 'pac':
+            return proxy.pac(proxyDetails.args[0]);
+          case 'system':
+            return proxy.system();
+        }
+
+      }
 
       try {
-
-        driver = new _wd.Builder().
-          usingServer(getServer()).
-          withCapabilities(getCapabilities()).build();
+        if(proxyDetails){
+          driver = new _wd.Builder().
+              usingServer(getServer()).
+              withCapabilities(getCapabilities()).setProxy(getProxy()).build();
+        }else{
+          driver = new _wd.Builder().
+            usingServer(getServer()).
+            withCapabilities(getCapabilities()).build();
+        }
       } catch (err) {
         error('Encountered an error during driver setup: %', err);
         errorObject = err;
