@@ -88,30 +88,29 @@ function Setup() {
         return caps;
       }
 
-        function getProxy() {
+      function getProxy() {
 
-            switch (proxyDetails.proxyType) {
-                case 'manual':
-                    return proxy.manual(proxyDetails.option);
-                case 'pac':
-                    return proxy.pac(proxyDetails.url);
-                case 'system':
-                    return proxy.system();
-            }
-
+        switch (proxyDetails.method) {
+          case 'manual':
+            return proxy.manual(proxyDetails.args[0]);
+          case 'pac':
+            return proxy.pac(proxyDetails.args[0]);
+          case 'system':
+            return proxy.system();
         }
 
-        try {
+      }
 
-            if(proxyDetails){
-                driver = new _wd.Builder().
-                    usingServer(getServer()).
-                    withCapabilities(getCapabilities()).setProxy(getProxy()).build();
-            }else{
-                driver = new _wd.Builder().
-                    usingServer(getServer()).
-                    withCapabilities(getCapabilities()).build();
-            }
+      try {
+        if(proxyDetails){
+          driver = new _wd.Builder().
+              usingServer(getServer()).
+              withCapabilities(getCapabilities()).setProxy(getProxy()).build();
+        }else{
+          driver = new _wd.Builder().
+            usingServer(getServer()).
+            withCapabilities(getCapabilities()).build();
+        }
       } catch (err) {
         error('Encountered an error during driver setup: %', err);
         errorObject = err;
