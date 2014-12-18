@@ -81,7 +81,7 @@ function Setup() {
             caps.set(key, customCaps[key]);
           });
         }
-        //log('caps', caps);
+        log('Capabilities', caps);
         return caps;
       }
 
