@@ -30,12 +30,12 @@ function Setup() {
   return {
     doSetup: function doSetup(_wd, nemoData, callback) {
       log('entering doSetup');
-      if (nemoData === {} || nemoData.targetBrowser === undefined) {
-        callback(new Error('[Nemo::doSetup] The nemoData environment variable is missing or not fully defined! Please read about nemoData configuration here: https://github.com/paypal/nemo/blob/master/README.md#nemo-configuration'));
+      if (nemoData === {}) {
+        callback(new Error('[Nemo::doSetup] The nemoData environment variable is missing or not fully defined!'));
         return;
       }
       var caps,
-        tgtBrowser = nemoData.targetBrowser,
+        tgtBrowser = nemoData.targetBrowser || '',
         localServer = nemoData.localServer || false,
         customCaps = nemoData.serverCaps,
         serverUrl = nemoData.targetServer,
@@ -46,22 +46,19 @@ function Setup() {
       function getServer() {
         log('attempt getServer');
         //are we running the tests on the local machine?
-        if (localServer === true) {
-          log('test locally');
+        if (!!localServer) {
           if (tgtBrowser !== 'chrome' && tgtBrowser !== 'phantomjs') {
             //make sure there is a jar file
             var jarExists = fs.existsSync(serverJar);
             if (!jarExists) {
               error('You must specify a valid SELENIUM_JAR value. The value must point to a driver executable in your file system.');
             }
-            else {
-              if (serverProps.port === undefined) {
-                serverProps.port = 4444;
-              }
-              var server = new SeleniumServer(serverJar, serverProps);
-              server.start();
-              serverUrl = server.address();
+            if (serverProps.port === undefined) {
+              serverProps.port = 4444;
             }
+            var server = new SeleniumServer(serverJar, serverProps);
+            server.start();
+            serverUrl = server.address();
           } else {
             serverUrl = null;
           }
@@ -72,7 +69,8 @@ function Setup() {
       function getCapabilities() {
         //specified valid webdriver browser key?
         if (!webdriver.Capabilities[tgtBrowser]) {
-          error('You have specified ' + tgtBrowser + ' which is an invalid webdriver.Capabilities browser option');
+          log('You have specified targetBrowser: ' + tgtBrowser + ' which is not a built-in webdriver.Capabilities browser option');
+          caps = new webdriver.Capabilities();
 
         } else {
           caps = webdriver.Capabilities[tgtBrowser]();
@@ -82,7 +80,7 @@ function Setup() {
             caps.set(key, customCaps[key]);
           });
         }
-
+        //log('caps', caps);
         return caps;
       }
 
