@@ -46,7 +46,8 @@ function Setup() {
       function getServer() {
         log('attempt getServer');
         //are we running the tests on the local machine?
-        if (!!localServer) {
+        if (localServer === true) {
+          log('test locally');
           if (tgtBrowser !== 'chrome' && tgtBrowser !== 'phantomjs') {
             //make sure there is a jar file
             var jarExists = fs.existsSync(serverJar);
