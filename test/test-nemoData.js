@@ -9,7 +9,7 @@ describe("@nemoData@ suite", function () {
   describe("@environmentVariable@", function () {
     before(function (done) {
       process.env.nemoData = JSON.stringify({
-        targetBrowser: "safari",
+        targetBrowser: "firefox",
         localServer: true,
         seleniumJar: "/usr/local/bin/selenium-server-standalone.jar",
         targetBaseUrl: "https://www.paypal.com",
@@ -44,7 +44,7 @@ describe("@nemoData@ suite", function () {
       });
     });
     var nemoData = {
-      targetBrowser: "safari",
+      targetBrowser: "firefox",
       localServer: true,
       seleniumJar: "/usr/local/bin/selenium-server-standalone.jar",
       targetBaseUrl: "https://www.paypal.com",
