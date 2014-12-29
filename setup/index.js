@@ -64,6 +64,10 @@ function Setup() {
       }
 
       function getCapabilities() {
+        if (nemoData.useCustomBrowser) {
+          // for custom browser, first set default selenium caps for firefox, then overwrite with custom caps
+          tgtBrowser = 'firefox';
+        }
         //specified valid webdriver browser key?
         if (!webdriver.Capabilities[tgtBrowser]) {
           error('You have specified ' + tgtBrowser + ' which is an invalid webdriver.Capabilities browser option');
