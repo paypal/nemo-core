@@ -66,7 +66,7 @@ var config = {
 ```
 
 You can see this file within the nemo examples directory:
-https://github.com/paypal/nemo/examples/setup.js
+[https://github.com/paypal/nemo/examples/setup.js](/examples/setup.js)
 
 Note you can set `nemoData` via an environment variable OR by passing it into the Nemo constructor.
 
