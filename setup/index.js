@@ -30,28 +30,32 @@ function Setup() {
   return {
     doSetup: function doSetup(_wd, nemoData, callback) {
       log('entering doSetup');
-      if (nemoData === {} || nemoData.targetBrowser === undefined) {
-        callback(new Error('[Nemo::doSetup] The nemoData environment variable is missing or not fully defined! Please read about nemoData configuration here: https://github.com/paypal/nemo/blob/master/README.md#nemo-configuration'));
+      if (nemoData === {}) {
+        callback(new Error('[Nemo::doSetup] The nemoData environment variable is missing or not fully defined!'));
         return;
       }
       var caps,
-        tgtBrowser = nemoData.targetBrowser,
+        tgtBrowser = nemoData.targetBrowser || '',
+        localServer = nemoData.localServer || false,
         customCaps = nemoData.serverCaps,
         serverUrl = nemoData.targetServer,
-        serverProps = nemoData.serverProps,
+        serverProps = nemoData.serverProps || {},
         serverJar = nemoData.seleniumJar,
         errorObject = null;
 
       function getServer() {
         log('attempt getServer');
-        if (serverProps && (serverUrl.indexOf('127.0.0.1') !== -1 || serverUrl.indexOf('localhost') !== -1)) {
-          log('attempt server startup');
-          //chrome and phantomjs are supported natively. i.e. no webdriver required. chromedriver or phantomjs executables must be in PATH though
+        //are we running the tests on the local machine?
+        if (localServer === true) {
+          log('test locally');
           if (tgtBrowser !== 'chrome' && tgtBrowser !== 'phantomjs') {
             //make sure there is a jar file
             var jarExists = fs.existsSync(serverJar);
             if (!jarExists) {
-              throw new Error('You must specify a valid SELENIUM_JAR value. The value must point to a driver executable in your file system.');
+              error('You must specify a valid SELENIUM_JAR value. The value must point to a driver executable in your file system.');
+            }
+            if (serverProps.port === undefined) {
+              serverProps.port = 4444;
             }
             var server = new SeleniumServer(serverJar, serverProps);
             server.start();
@@ -66,7 +70,8 @@ function Setup() {
       function getCapabilities() {
         //specified valid webdriver browser key?
         if (!webdriver.Capabilities[tgtBrowser]) {
-          error('You have specified ' + tgtBrowser + ' which is an invalid webdriver.Capabilities browser option');
+          log('You have specified targetBrowser: ' + tgtBrowser + ' which is not a built-in webdriver.Capabilities browser option');
+          caps = new webdriver.Capabilities();
 
         } else {
           caps = webdriver.Capabilities[tgtBrowser]();
@@ -76,7 +81,7 @@ function Setup() {
             caps.set(key, customCaps[key]);
           });
         }
-
+        log('Capabilities', caps);
         return caps;
       }
 
