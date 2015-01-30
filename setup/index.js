@@ -84,7 +84,12 @@ function Setup() {
 
       function getProxy(){
         if (proxyDetails) {
-          return proxy[proxyDetails.method].apply(proxy, proxyDetails.args);
+          if (proxyDetails.method && proxy[proxyDetails.method]){
+            return proxy[proxyDetails.method].apply(proxy, proxyDetails.args);  
+          }else{
+            throw new Error('nemo: proxy configuration is incomplete or does not match the selenium-webdriver/proxy API');
+          }
+          
         } else {
           return proxy.direct();
         }
