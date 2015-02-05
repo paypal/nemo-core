@@ -14,9 +14,7 @@ var config = {
 	nemoData: {
 		targetBrowser: "firefox",
 		targetServer: "localhost",
-		serverProps: {
-			"port": 4444
-		},
+		localServer: true,
 		seleniumJar: "/usr/bin/selenium-server-standalone.jar",
 		targetBaseUrl: "https://www.paypal.com"
 	}
