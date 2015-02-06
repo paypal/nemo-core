@@ -17,6 +17,7 @@
 var fs = require('fs'),
   webdriver = require('selenium-webdriver'),
   SeleniumServer = require('selenium-webdriver/remote').SeleniumServer,
+  proxy = require('selenium-webdriver/proxy'),
   debug = require('debug'),
   log = debug('nemo:log'),
   error = debug('nemo:error'),
@@ -41,6 +42,7 @@ function Setup() {
         serverUrl = nemoData.targetServer,
         serverProps = nemoData.serverProps || {},
         serverJar = nemoData.seleniumJar,
+        proxyDetails = nemoData.proxyDetails,
         errorObject = null;
 
       function getServer() {
@@ -85,12 +87,24 @@ function Setup() {
         return caps;
       }
 
+      function getProxy(){
+        if (proxyDetails) {
+          if (proxyDetails.method && proxy[proxyDetails.method]){
+            return proxy[proxyDetails.method].apply(proxy, proxyDetails.args);  
+          }else{
+            throw new Error('nemo: proxy configuration is incomplete or does not match the selenium-webdriver/proxy API');
+          }
+          
+        } else {
+          return proxy.direct();
+        }
+      }
 
       try {
 
         driver = new _wd.Builder().
           usingServer(getServer()).
-          withCapabilities(getCapabilities()).build();
+          withCapabilities(getCapabilities()).setProxy(getProxy()).build();
       } catch (err) {
         error('Encountered an error during driver setup: %', err);
         errorObject = err;
