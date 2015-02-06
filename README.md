@@ -141,6 +141,16 @@ Some webdrivers (for instance ios-driver, or appium) would have additional capab
 	"tags": ['tag1','tag2'] //sauce labs tag names
 }
 ```
+### proxyDetails (optional)
+If you want to run test by setting proxy in the browser, you can use 'proxyDetails' configuration. Following options are available: direct, manual, pac and system.
+Defalt is 'direct'. For more information refer : https://selenium.googlecode.com/git/docs/api/javascript/module_selenium-webdriver_proxy.html
+
+```javascript
+"proxyDetails" : {
+    method: "manual",
+    args: [{"http": "localhost:9001","ftp":"localhost:9001","https":"localhost:9001"}]
+}
+```
 
 ## Plugins
 
