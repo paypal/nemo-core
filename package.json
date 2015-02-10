@@ -6,6 +6,7 @@
     "test": "grunt"
   },
   "dependencies": {
+    "debug": "^2.1.0",
     "selenium-webdriver": "~2.42.0",
     "xunit-file": "~0.0.4",
     "async": "0.1.x",
@@ -16,7 +17,6 @@
   "devDependencies": {
     "async": "~0.2.8",
     "chai": "~1.6.0",
-    "debug": "^2.1.0",
     "grunt": "~0.4.1",
     "grunt-contrib-jshint": "~0.7.1",
     "grunt-loop-mocha": "^0.3.0",
