@@ -21,11 +21,11 @@ var config = {
 };
 //THE ABOVE OR BELOW WILL WORK TO SET nemoData. IN A CONTEST, SETTING VIA Nemo() WILL WIN
 
-(new Nemo(config)).setup().then(function(nemo) {
-	nemo.driver.get(nemo.props.targetBaseUrl);
-	nemo.driver.sleep(5000).
-	then(function() {
-		console.info("Nemo was successful!!");
-		nemo.driver.quit();
-	});
+var nemo = Nemo(config, function() {
+  nemo.driver.get(nemo.props.targetBaseUrl);
+  nemo.driver.sleep(5000).
+    then(function() {
+      console.info("Nemo was successful!!");
+      nemo.driver.quit();
+    });
 });
