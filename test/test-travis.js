@@ -2,7 +2,8 @@
 "use strict";
 
 var should = require('chai').should(),
-  Nemo = require('../index');
+  Nemo = require('../index'),
+  util = require('./util');
 
 describe("nemo @travis@ suite", function () {
   var driver;
@@ -16,17 +17,7 @@ describe("nemo @travis@ suite", function () {
   };
   var _nemo = Nemo(config);
 
-  after(function (done) {
-    driver.quit().then(function () {
-      done();
-    });
-  });
-  it("should create a new instance", function (done) {
-    _nemo.should.not.equal(undefined);
-    done();
-  });
-  it("should return back nemoData properties and init any plugins", function (done) {
-    //console.log(_nemo.setup);
+  before(function (done) {
     _nemo.setup({
       "samplePlugin": {
         "sampleoptions": {
@@ -38,14 +29,26 @@ describe("nemo @travis@ suite", function () {
       "view": ["myView", "myOtherView"]
     }).then(function (result) {
       nemo = result;
+      driver = nemo.driver;
+      done();
+    });
+  })
+  after(function (done) {
+    driver.quit().then(function () {
+      done();
+    });
+  });
+  it("should create a new instance", function (done) {
+    _nemo.should.not.equal(undefined);
+    done();
+  });
+  it("should return back nemoData properties and init any plugins", function (done) {
+
       nemo.props.targetBrowser.should.equal("phantomjs");
       nemo.props.targetBaseUrl.should.equal("http://localhost:8000");
       nemo.samplePlugin.sampleoptions.option1.should.equal("value1");
-      driver = nemo.driver;
       done();
-    }, function (err) {
-      done(err);
-    });
+
   });
   it("should navigate to the targetBaseUrl set via nemoData", function (done) {
     driver.get(nemo.props.targetBaseUrl).
@@ -76,21 +79,21 @@ describe("nemo @travis@ suite", function () {
       }
     });
     it("should get the FR locator when locale is FR", function (done) {
-      if (nemo.props.locale === "FR" && nemo.locatex("myView.cityOption").locator === "select[name='ddlTown'] option[value='Burkino Faso']") {
+      if (nemo.props.locale === "FR" && nemo.locatex("myView","cityOption").locator === "select[name='ddlTown'] option[value='Burkino Faso']") {
         done();
       } else {
         done(new Error("didn't get an FR flavored locator"));
       }
     });
     it("should get the default locator when locale is FR and no FR locator", function (done) {
-      if (nemo.props.locale === "FR" && nemo.locatex("myView.noFRyesDefault").locator === "defaultId") {
+      if (nemo.props.locale === "FR" && nemo.locatex("myView","noFRyesDefault").locator === "defaultId") {
         done();
       } else {
         done(new Error("didn't get an default flavored locator"));
       }
     });
     it("should get the single locator when no locale-specific or default locator", function (done) {
-      if (nemo.props.locale === "FR" && nemo.locatex("myView.noFRnoDefault").locator === "onlyId") {
+      if (nemo.props.locale === "FR" && nemo.locatex("myView","noFRnoDefault").locator === "onlyId") {
         done();
       } else {
         done(new Error("didn't get a non-flavored locator"));
@@ -106,22 +109,15 @@ describe("nemo @travis@ suite", function () {
       }
     });
     it("should use the view methods", function (done) {
-      //nemo.driver.get("https://edit.yahoo.com/registration");
-      nemo.driver.get("http://localhost:8000");
-      nemo.view.myView.fnameWait(3000).
-        then(function (present) {
-          if (present) {
-            nemo.view.myView.fname().sendKeys("asdf");
-          } else {
-            console.log('fname not present');
-          }
-        }).
-        then(function () {
-          driver.sleep(4000);
-        }).
-        then(function () {
+      nemo.driver.get("http://warm-river-3624.herokuapp.com");
+      util.waitForJSReady(nemo);
+      nemo.view.myView.fooTextWait(3000).sendKeys("asdf");
+      nemo.view.myView.fooButton().click();
+      nemo.view.myView.out().getText().
+        then(function (text) {
+          text.should.equal('asdf');
           done();
-        });
+        }, util.doneError(done));
     });
 
   });
