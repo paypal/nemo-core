@@ -17,7 +17,7 @@ module.exports = function (grunt) {
 			},
 
 			all: {
-				src: ['test/*.js']
+				src: ['test/test-constructor.js']
 			}
 		},
 		jshint: {
