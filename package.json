@@ -1,6 +1,6 @@
 {
   "name": "nemo",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "description": "Abstraction for automation test components",
   "scripts": {
     "test": "grunt --grep @travis@"
@@ -37,13 +37,16 @@
     "node": ">= 0.8.0"
   },
   "author": "Matt Edelman <medelman@paypal.com>",
-  "contributors": [{
-    "name": "Matt Edelman",
-    "email": "medelman@paypal.com"
-  }, {
-    "name": "Nilesh Kulkarni",
-    "email": "nikulkarni@paypal.com"
-  }],
+  "contributors": [
+    {
+      "name": "Matt Edelman",
+      "email": "medelman@paypal.com"
+    },
+    {
+      "name": "Nilesh Kulkarni",
+      "email": "nikulkarni@paypal.com"
+    }
+  ],
   "licenses": [
     {
       "type": "Apache 2.0",
