@@ -22,7 +22,7 @@ For a holistic guide to using Nemo as an overall automation solution, [please st
 add the following to package.json devDependencies (assuming mocha is already integrated to your project):
 
 ```javascript
-"nemo": "^0.3.1",
+"nemo": "^0.4.0",
 ```
 
 Then `npm install`
