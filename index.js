@@ -20,6 +20,8 @@ var async = require('async'),
   log = debug('nemo:log'),
   error = debug('nemo:error'),
   _ = require('lodash'),
+  path = require('path'),
+  confit = require('confit'),
   webdriver = require('selenium-webdriver');
 
 error.log = console.error.bind(console);
@@ -30,6 +32,38 @@ error.log = console.error.bind(console);
  * @param {Object} config - Object which contains any plugin registration and optionally nemoData
  *
  */
+
+function Nemo(config, cb) {
+  if (arguments.length === 1) {
+    cb = arguments[0];
+  }
+  log('new Nemo instance created', JSON.stringify(config));
+
+  var nemo = {
+    'data': {},
+    'view': {},
+    'locator': {},
+    'driver': {},
+    'wd': webdriver
+  };
+  var basedir = path.join(process.env.nemoBaseDir, 'config');
+  console.log('basedir', basedir);
+  confit(basedir).create(function (err, config) {
+    config.get; // Function
+    config.set; // Function
+    config.use; // Function
+
+    //console.log(config.get('plugins')); // 'development'
+    stuffs.setup(config).then(function(_nemo) {
+      _.merge(nemo, _nemo);
+      cb();
+    });
+  });
+
+  return nemo;
+
+
+}
 var stuffs = {
   /**
    *
@@ -55,14 +89,15 @@ var stuffs = {
       postDriverArray = [],
       plugins = {};
     //config is for registering plugins
-    if (config && config.plugins) {
-      plugins = config.plugins;
+    if (config && config.get('plugins')) {
+      plugins = config.get('plugins');
     }
-    var nemoData = config.nemoData;//(nemoData) ? nemoData : JSON.parse(process.env.nemoData);
+    var driver = config.get('driver');
+    console.log('driver', driver);
     config = config || {};
     var me = this,
       nemo = {
-        'props': nemoData,
+        'data': config.get('data'),
         'view': {},
         'locator': {},
         'driver': null,
@@ -112,7 +147,7 @@ var stuffs = {
 
     function driversetup(config, _nemo, callback) {
       //do driver/view/locator/vars setup
-      (Setup()).doSetup(webdriver, _nemo.props, function setupCallback(err, _nemo) {
+      (Setup()).doSetup(webdriver, driver, function setupCallback(err, _nemo) {
         if (err) {
           callback(err);
         } else {
@@ -156,24 +191,4 @@ var stuffs = {
     }
   }
 };
-function Nemo(config, cb) {
-  log('new Nemo instance created', JSON.stringify(config));
-
-  var nemo = {
-    'props': {},
-    'view': {},
-    'locator': {},
-    'driver': {},
-    'wd': webdriver
-  };
-
-  stuffs.setup(config).then(function(_nemo) {
-    _.merge(nemo, _nemo);
-    cb();
-  });
-  return nemo;
-
-
-}
-
 module.exports = Nemo;

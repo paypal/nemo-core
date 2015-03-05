@@ -1,6 +1,6 @@
 {
   "name": "nemo",
-  "version": "0.3.2",
+  "version": "1.0.0-alpha.1",
   "description": "Abstraction for automation test components",
   "scripts": {
     "test": "grunt --grep @travis@"
@@ -11,6 +11,7 @@
     "debug": "^2.1.0",
     "lodash": "^2.4.0",
     "nconf": "~0.6.7",
+    "path": "^0.11.14",
     "selenium-webdriver": "~2.44.0",
     "xunit-file": "~0.0.4"
   },
@@ -22,9 +23,7 @@
     "grunt-loop-mocha": "^0.3.0",
     "grunt-simple-mocha": "~0.4.0",
     "mocha": "~1.10.0",
-    "nemo-drivex": "^0.4.0",
-    "nemo-locatex": "^0.4.0",
-    "nemo-view": "^0.4.0"
+    "nemo-view": "1.0.0-alpha.1"
   },
   "repository": {
     "type": "git",

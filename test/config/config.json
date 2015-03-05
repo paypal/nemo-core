@@ -1,0 +1,26 @@
+{
+  "plugins": {
+    "samplePlugin": {
+      "module": "./test/plugin/sample-plugin",
+      "priority": 99
+    },
+    "autoRegPlugin": {
+      "module": "./test/plugin/autoreg-plugin",
+      "register": true
+    },
+    "view": {
+      "module": "nemo-view",
+      "arguments": [{"strategy": "what???"}]
+    }
+  },
+  "driver": {
+    "browser": "firefox",
+    "local": true,
+    "jar": "/usr/local/bin/selenium-server-standalone.jar"
+  },
+  "data": {
+    "targetBaseUrl": "https://www.paypal.com",
+    "passThroughFromJson": true,
+    "baseDirectory": "env:nemoBaseDirectory"
+  }
+}

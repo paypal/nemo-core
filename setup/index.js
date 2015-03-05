@@ -29,20 +29,20 @@ error.log = console.error.bind(console);
 function Setup() {
   log('new Setup instance created');
   return {
-    doSetup: function doSetup(_wd, nemoData, callback) {
+    doSetup: function doSetup(_wd, driverProps, callback) {
       log('entering doSetup');
       if (nemoData === {}) {
         callback(new Error('[Nemo::doSetup] The nemoData environment variable is missing or not fully defined!'));
         return;
       }
       var caps,
-        tgtBrowser = nemoData.targetBrowser || '',
-        localServer = nemoData.localServer || false,
-        customCaps = nemoData.serverCaps,
-        serverUrl = nemoData.targetServer,
-        serverProps = nemoData.serverProps || {},
-        serverJar = nemoData.seleniumJar,
-        proxyDetails = nemoData.proxyDetails,
+        tgtBrowser = driverProps.browser || '',
+        localServer = driverProps.local || false,
+        customCaps = driverProps.serverCaps,
+        serverUrl = driverProps.server,
+        serverProps = driverProps.serverProps || {},
+        serverJar = driverProps.jar,
+        proxyDetails = driverProps.proxyDetails,
         errorObject = null;
 
       function getServer() {

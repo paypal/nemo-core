@@ -2,23 +2,22 @@
 "use strict";
 
 var assert = require('assert'),
+  path = require('path'),
   Nemo = require('../index');
 
 describe("@nemoConstructor@ suite", function () {
   var nemo;
+  before(function(done) {
+    process.env.nemoBaseDir = path.join(process.cwd(), 'test');
+    done();
+  });
   describe("@simple@", function () {
 
-    var nemoData = {
-      targetBrowser: "chrome",
-      localServer: true,
-      seleniumJar: "/usr/local/bin/selenium-server-standalone.jar",
-      targetBaseUrl: "https://www.paypal.com",
-      passThroughFromJson: true
-    };
     it("should launch nemo", function (done) {
-      nemo = Nemo({'nemoData': nemoData}, function () {
+      nemo = Nemo(function () {
         assert(nemo.driver);
-        assert(nemo.props.passThroughFromJson);
+        assert(nemo.data.passThroughFromJson);
+        assert(nemo.data.baseDirectory);
         nemo.driver.quit();
         done();
       });
@@ -26,15 +25,8 @@ describe("@nemoConstructor@ suite", function () {
   });
   describe("@launchBrowser@", function () {
 
-    var nemoData = {
-      targetBrowser: "chrome",
-      localServer: true,
-      seleniumJar: "/usr/local/bin/selenium-server-standalone.jar",
-      targetBaseUrl: "https://www.paypal.com",
-      passThroughFromJson: true
-    };
     before(function (done) {
-      nemo = Nemo({'nemoData': nemoData}, done);
+      nemo = Nemo(done);
     });
     it('should launch a URL', function (done) {
       nemo.driver.get('http://www.google.com');

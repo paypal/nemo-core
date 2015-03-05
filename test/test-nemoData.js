@@ -52,7 +52,7 @@ describe("@nemoData@ suite", function () {
     };
     var nemo;
     it("should launch a local server and have the passThroughFromEnv variable", function (done) {
-      (new Nemo({nemoData: nemoData})).setup({}).then(function (_nemo) {
+      (new Nemo({nemoData: nemoData})).setup({'view': ['credit', 'bank']}).then(function (_nemo) {
         nemo = _nemo;
         nemo.driver.get(nemo.props.targetBaseUrl).then(function () {
           if (nemo.props.passThroughFromJson === true && nemo.props.passThroughFromEnv === undefined) {
