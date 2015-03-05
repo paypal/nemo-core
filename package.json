@@ -23,7 +23,7 @@
     "grunt-loop-mocha": "^0.3.0",
     "grunt-simple-mocha": "~0.4.0",
     "mocha": "~1.10.0",
-    "nemo-view": "1.0.0-alpha.1"
+    "nemo-view": "git://github.com/grawk/nemo-view.git#1.0-develop"
   },
   "repository": {
     "type": "git",
