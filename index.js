@@ -54,6 +54,10 @@ var stuffs = {
       preDriverArray = [],
       postDriverArray = [],
       plugins = {};
+    //config is for registering plugins
+    if (config && config.plugins) {
+      plugins = config.plugins;
+    }
     var nemoData = config.nemoData;//(nemoData) ? nemoData : JSON.parse(process.env.nemoData);
     config = config || {};
     var me = this,
@@ -162,10 +166,7 @@ function Nemo(config, cb) {
     'driver': {},
     'wd': webdriver
   };
-  //config is for registering plugins
-  if (config && config.plugins) {
-    plugins = config.plugins;
-  }
+
   stuffs.setup(config).then(function(_nemo) {
     _.merge(nemo, _nemo);
     cb();
