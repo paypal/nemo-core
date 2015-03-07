@@ -93,8 +93,9 @@ var stuffs = {
       plugins = config.get('plugins');
     }
     var driver = config.get('driver');
-    console.log('driver', driver);
+    console.log('plugins', plugins);
     config = config || {};
+    console.log('config.data', config.get('data:baseDirectory'));
     var me = this,
       nemo = {
         'data': config.get('data'),
@@ -109,28 +110,38 @@ var stuffs = {
     Object.keys(plugins).forEach(function pluginsKeys(key) {
       var modulePath,
         pluginConfig,
+        pluginArgs,
         pluginModule;
 
-      if ((plugins[key].register || config[key]) || key === 'view') {
-        log('register plugin %s', key);
-        //register this plugin
-        pluginConfig = plugins[key];
-        modulePath = pluginConfig.module;
-        pluginModule = require(modulePath);
-        if (plugins[key].priority && plugins[key].priority < 100) {
-          preDriverArray.push(pluginModule.setup);
-        } else {
-          postDriverArray.push(pluginModule.setup);
-        }
+      //if ((plugins[key].register || config[key]) || key === 'view') {
+      log('register plugin %s', key);
+      //register this plugin
+      pluginConfig = plugins[key];
+      pluginArgs = plugins[key].arguments;
+      modulePath = pluginConfig.module;
+      //console.log('pluginArgs', pluginArgs);
+
+      pluginModule = require(modulePath);
+
+      if (plugins[key].priority && plugins[key].priority < 100) {
+        preDriverArray.push(function(nemo, callback) {
+          pluginArgs.push(nemo);
+          pluginArgs.push(callback);
+          //console.log('pluginArgs', pluginArgs);
+          pluginModule.setup.apply(pluginArgs);
+        });
+      } else {
+        postDriverArray.push(function(nemo, callback) {
+          pluginArgs.push(nemo);
+          pluginArgs.push(callback);
+          //console.log('pluginArgs', pluginArgs);
+          pluginModule.setup.apply(this, pluginArgs);
+        });
       }
+      //}
     });
     waterFallArray = preDriverArray.concat([driversetup], postDriverArray);
-    if (config.view || (plugins && plugins.view)) {
-      waterFallArray.push(viewsetup);
-    }
-    if (config.locator) {
-      waterFallArray.push(locatorsetup);
-    }
+
     async.waterfall(waterFallArray, function waterfall(err, result) {
       if (err) {
         d.reject(err);
@@ -142,53 +153,22 @@ var stuffs = {
 
     //waterfall functions
     function datasetup(callback) {
-      callback(null, config, nemo);
+      callback(null, nemo);
     }
 
-    function driversetup(config, _nemo, callback) {
+    function driversetup(_nemo, callback) {
       //do driver/view/locator/vars setup
-      (Setup()).doSetup(webdriver, driver, function setupCallback(err, _nemo) {
+      (Setup()).doSetup(webdriver, driver, function setupCallback(err, __nemo) {
         if (err) {
           callback(err);
         } else {
           //set driver
-          nemo.driver = _nemo.driver;
-          callback(null, config, nemo);
+          _nemo.driver = __nemo.driver;
+          callback(null, _nemo);
         }
       });
     }
 
-    function locatorsetup(config, _nemo, callback) {
-      //setup locators
-      config.locator.forEach(function (key) {
-        nemo.locator[key] = require(nemo.props.autoBaseDir + '/locator/' + key);
-      });
-      callback(null, config, nemo);
-    }
-
-    function viewsetup(config, _nemo, callback) {
-      var viewModule = _nemo.view;
-      if (!config.view) {
-        config.view = [];
-      }
-      //setup views
-      config.view.forEach(function viewKeys(key) {
-        if (plugins.view) {
-          //process with the view interface
-          viewModule.addView(key);
-        } else {
-          //old views
-          //dedupe step
-          if (nemo.view[key]) {
-            return;
-          }
-          var viewMod = require(nemo.props.autoBaseDir + '/view/' + key);
-          nemo.view[key] = new viewMod(_nemo);
-        }
-
-      });
-      callback(null, config, nemo);
-    }
   }
 };
 module.exports = Nemo;
