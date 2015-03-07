@@ -22,6 +22,7 @@ var async = require('async'),
   _ = require('lodash'),
   path = require('path'),
   confit = require('confit'),
+  handlers = require('shortstop-handlers'),
   webdriver = require('selenium-webdriver');
 
 error.log = console.error.bind(console);
@@ -47,14 +48,21 @@ function Nemo(config, cb) {
     'wd': webdriver
   };
   var basedir = path.join(process.env.nemoBaseDir, 'config');
-  console.log('basedir', basedir);
-  confit(basedir).create(function (err, config) {
+
+  var options = {
+    basedir: basedir,
+    protocols: {
+      file: handlers.file(basedir, options),
+      envo: handlers.env(options)
+    }
+  };
+  confit(options).create(function (err, config) {
     config.get; // Function
     config.set; // Function
     config.use; // Function
 
     //console.log(config.get('plugins')); // 'development'
-    stuffs.setup(config).then(function(_nemo) {
+    stuffs.setup(config).then(function (_nemo) {
       _.merge(nemo, _nemo);
       cb();
     });
@@ -117,21 +125,21 @@ var stuffs = {
       log('register plugin %s', key);
       //register this plugin
       pluginConfig = plugins[key];
-      pluginArgs = plugins[key].arguments;
+      pluginArgs = plugins[key].arguments || [];
       modulePath = pluginConfig.module;
       //console.log('pluginArgs', pluginArgs);
 
       pluginModule = require(modulePath);
 
       if (plugins[key].priority && plugins[key].priority < 100) {
-        preDriverArray.push(function(nemo, callback) {
+        preDriverArray.push(function (nemo, callback) {
           pluginArgs.push(nemo);
           pluginArgs.push(callback);
           //console.log('pluginArgs', pluginArgs);
-          pluginModule.setup.apply(pluginArgs);
+          pluginModule.setup.apply(this, pluginArgs);
         });
       } else {
-        postDriverArray.push(function(nemo, callback) {
+        postDriverArray.push(function (nemo, callback) {
           pluginArgs.push(nemo);
           pluginArgs.push(callback);
           //console.log('pluginArgs', pluginArgs);

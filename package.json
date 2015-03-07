@@ -13,6 +13,7 @@
     "nconf": "~0.6.7",
     "path": "^0.11.14",
     "selenium-webdriver": "~2.44.0",
+    "shortstop-handlers": "^1.0.0",
     "xunit-file": "~0.0.4"
   },
   "main": "index.js",

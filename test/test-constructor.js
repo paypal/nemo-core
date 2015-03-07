@@ -17,7 +17,7 @@ describe("@nemoConstructor@ suite", function () {
       nemo = Nemo(function () {
         assert(nemo.driver);
         assert(nemo.data.passThroughFromJson);
-        assert(nemo.data.baseDirectory);
+        assert.equal(nemo.data.baseDirectory, path.join(process.cwd(), 'test'));
         nemo.driver.quit();
         done();
       });

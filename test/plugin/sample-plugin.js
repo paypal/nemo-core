@@ -1,9 +1,9 @@
 var async = require("async");
 module.exports = {
-	"setup": function(config, result, callback) {
+	"setup": function(nemo, callback) {
 		//console.log(result.driver);
-		var returnObj = result;
-		returnObj.samplePlugin = config.samplePlugin;
+		//var returnObj = result;
+		nemo.samplePlugin = {};
 		returnObj.samplePlugin.isDriverSetup = (returnObj.driver.get !== undefined);
 		returnObj.props.fromSamplePlugin = true;
 		//array for waterfall methods

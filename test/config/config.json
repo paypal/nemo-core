@@ -1,16 +1,9 @@
 {
   "plugins": {
-    "samplePlugin": {
-      "module": "./test/plugin/sample-plugin",
-      "priority": 99
-    },
+
     "autoRegPlugin": {
       "module": "./test/plugin/autoreg-plugin",
       "register": true
-    },
-    "view": {
-      "module": "nemo-view",
-      "arguments": [{"strategy": "what???"}]
     }
   },
   "driver": {
@@ -21,6 +14,6 @@
   "data": {
     "targetBaseUrl": "https://www.paypal.com",
     "passThroughFromJson": true,
-    "baseDirectory": "env:nemoBaseDirectory"
+    "baseDirectory": "envo:nemoBaseDir"
   }
 }
