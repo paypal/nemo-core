@@ -61,7 +61,6 @@ function Nemo(config, cb) {
     config.set; // Function
     config.use; // Function
 
-    //console.log(config.get('plugins')); // 'development'
     stuffs.setup(config).then(function (_nemo) {
       _.merge(nemo, _nemo);
       cb();
@@ -101,9 +100,7 @@ var stuffs = {
       plugins = config.get('plugins');
     }
     var driver = config.get('driver');
-    console.log('plugins', plugins);
     config = config || {};
-    console.log('config.data', config.get('data:baseDirectory'));
     var me = this,
       nemo = {
         'data': config.get('data'),
@@ -127,7 +124,6 @@ var stuffs = {
       pluginConfig = plugins[key];
       pluginArgs = plugins[key].arguments || [];
       modulePath = pluginConfig.module;
-      //console.log('pluginArgs', pluginArgs);
 
       pluginModule = require(modulePath);
 
@@ -135,14 +131,12 @@ var stuffs = {
         preDriverArray.push(function (nemo, callback) {
           pluginArgs.push(nemo);
           pluginArgs.push(callback);
-          //console.log('pluginArgs', pluginArgs);
           pluginModule.setup.apply(this, pluginArgs);
         });
       } else {
         postDriverArray.push(function (nemo, callback) {
           pluginArgs.push(nemo);
           pluginArgs.push(callback);
-          //console.log('pluginArgs', pluginArgs);
           pluginModule.setup.apply(this, pluginArgs);
         });
       }
