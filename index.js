@@ -53,7 +53,7 @@ function Nemo(config, cb) {
     basedir: basedir,
     protocols: {
       file: handlers.file(basedir, options),
-      envo: handlers.env(options)
+      env: handlers.env(options)
     }
   };
   confit(options).create(function (err, config) {
