@@ -7,7 +7,7 @@
   },
   "dependencies": {
     "async": "~0.2.8",
-    "confit": "^1.0.0",
+    "confit": "^2.0.0",
     "debug": "^2.1.0",
     "lodash": "^2.4.0",
     "nconf": "~0.6.7",

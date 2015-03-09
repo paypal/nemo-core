@@ -34,33 +34,32 @@ error.log = console.error.bind(console);
  *
  */
 
-function Nemo(config, cb) {
+function Nemo(_config, cb) {
   if (arguments.length === 1) {
     cb = arguments[0];
   }
-  log('new Nemo instance created', JSON.stringify(config));
+  log('new Nemo instance created');
 
   var nemo = {
     'data': {},
     'view': {},
     'locator': {},
     'driver': {},
-    'wd': webdriver
+    'wd': webdriver,
+    '_config': null
   };
-  var basedir = path.join(process.env.nemoBaseDir, 'config');
+  var basedir = process.env.nemoBaseDir;
+  var configdir = path.join(basedir, 'config');
 
   var options = {
-    basedir: basedir,
+    basedir: configdir,
     protocols: {
-      file: handlers.file(basedir, options),
-      env: handlers.env(options)
+      path: handlers.path(basedir, {}),
+      env: handlers.env({})
     }
   };
   confit(options).create(function (err, config) {
-    config.get; // Function
-    config.set; // Function
-    config.use; // Function
-
+    nemo._config = config;
     stuffs.setup(config).then(function (_nemo) {
       _.merge(nemo, _nemo);
       cb();
@@ -117,28 +116,24 @@ var stuffs = {
         pluginConfig,
         pluginArgs,
         pluginModule;
-
+      function pluginReg(nemo, callback) {
+        pluginArgs.push(nemo);
+        pluginArgs.push(callback);
+        pluginModule.setup.apply(this, pluginArgs);
+      }
       //if ((plugins[key].register || config[key]) || key === 'view') {
       log('register plugin %s', key);
       //register this plugin
       pluginConfig = plugins[key];
       pluginArgs = plugins[key].arguments || [];
       modulePath = pluginConfig.module;
-
+      log('modulePath %s', modulePath);
       pluginModule = require(modulePath);
-
+      console.log('plugin')
       if (plugins[key].priority && plugins[key].priority < 100) {
-        preDriverArray.push(function (nemo, callback) {
-          pluginArgs.push(nemo);
-          pluginArgs.push(callback);
-          pluginModule.setup.apply(this, pluginArgs);
-        });
+        preDriverArray.push(pluginReg);
       } else {
-        postDriverArray.push(function (nemo, callback) {
-          pluginArgs.push(nemo);
-          pluginArgs.push(callback);
-          pluginModule.setup.apply(this, pluginArgs);
-        });
+        postDriverArray.push(pluginReg);
       }
       //}
     });

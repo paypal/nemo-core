@@ -1,10 +1,10 @@
 var async = require("async");
 module.exports = {
 	"setup": function(nemo, callback) {
-		//console.log(config);
+		console.log('foooooey');
 		nemo.autoRegPlugin = {};
 		nemo.autoRegPlugin.isDriverSetup = (nemo.driver.get !== undefined);
-
+    callback(null, nemo);
 		//array for waterfall methods
 		var sampleCalls = [
 			function(cbk) {
@@ -16,16 +16,16 @@ module.exports = {
 			}
 		];
 
-		sampleCalls.push(function(res, cbk) {
-			cbk(null, {
-				"result": "good"
-			});
-		});
-
-
-		async.waterfall(sampleCalls, function(err, result) {
-			callback(err, nemo);
-		});
+		//sampleCalls.push(function(res, cbk) {
+		//	cbk(null, {
+		//		"result": "good"
+		//	});
+		//});
+    //
+    //
+		//async.waterfall(sampleCalls, function(err, result) {
+		//	callback(err, nemo);
+		//});
 
 	}
 };

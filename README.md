@@ -176,20 +176,9 @@ You can author or use plugins to enhance your test suite. Something important to
 {
 	"plugins": {
 		"samplePlugin": {
-			"module": "./test/plugin/sample-plugin",
+			"module": "path:plugin/sample-plugin",
+			"arguments: [...]
 			"priority": 99
-		},
-		"drivex": {
-			"module": "nemo-drivex",
-			"register": true
-		},
-		"autoRegPlugin": {
-			"module": "./test/plugin/autoreg-plugin",
-			"register": true
-		},
-		"locatex": {
-			"module": "nemo-locatex",
-			"register": true
 		},
 		"view": {
 			"module": "nemo-view"
@@ -198,91 +187,36 @@ You can author or use plugins to enhance your test suite. Something important to
 }
 ```
 
+#### plugin interface
+
+Your plugin should export a setup function with the following interface:
+
+```javascript
+module.exports.setup = function myPlugin([arg1, arg2, ..., ]nemo, callback) {
+  ...
+  //add your plugin to the nemo namespace
+  nemo.myPlugin = myPluginFactory([arg1, arg2, ...]);
+
+  //continue
+  callback(null, nemo);
+};
+```
+
+When nemo initializes your plugin, it will call the setup method with any arguments supplied in the config plus the nemo object,
+plus the callback function to continue plugin initialization.
+
+#### module
+
+Module must resolve to a require'able module, either via name (in the case it is in your dependency tree) or via path to the file or directory.
+As a convenience, you may use the "path" shortstop handler, which will prepend any value with the `process.env.nemoBaseDir` value.
+
+#### arguments
+
+
 #### priority
 
 A `priority` value of < 100 will register this plugin BEFORE the selenium driver object is created. This means that such a plugin can modify properties of the driver (such as `serverProps`). It also means that any other elements of the Nemo setup will NOT be available to that plugin. Leaving `priority` unset will register the plugin after the driver object is created.
 
-#### register
-
-Setting `register: true` will cause this plugin to register whether or not you supply any accompanying configuration in the Nemo.setup config object.
-
-#### More on plugins
-
-More on plugin authoring can be found here: https://github.com/paypal/nemo-docs/blob/master/plugins.md
-
-File issues for new plugin creation here: https://github.com/paypal/nemo-plugin-registry/issues
-
-### setup
-
-The setup portion of the configuration is something expected to change from suite file to suite file. While you may have the same plugin used
-for each suite, each suite may need to configure the plugin differently. Let's say you have a plugin, `nemo-create-account`, which creates user
- accounts for your test suites. Each suite may require a different type or set of user(s) to be created, so you can define a different configuration within
- `nemoData.setup` for each suite.
-
-A good convention to follow is that, if you have a given plugin namespace (see `plugins.view` above), its suite-level configuration
-should be passed in `setup.view`
-
-So in our example, let's say the plugin configuration for `nemo-create-account` looks like this:
-
-```json
-"plugins": {
-    "account": {
-        "module": "nemo-create-account"
-    }
-}
-```
-
-The `setup` portion of the configuration should look like this:
-
-```json
-"setup": {
-    "account": [{/** account 1 properties **/}, {/** account 2 properties **/}, {/** account 3 properties **/}]
-}
-```
-
-And for different suite files, you may need different accounts, so putting it all together, the overall `config` for `createAccount.js`,
-`personalAccount.js`, and `professionalAccount.js` may look like this:
-
-```json
-"nemoData": {/** driver setup **/},
-"plugins": {
-    "account": {
-        "module": "nemo-create-account"
-    }
-},
-"setup": {
-    /** no "account" section because we are creating one **/
-}
-```
-
-```json
-"nemoData": {/** driver setup **/},
-"plugins": {
-    "account": {
-        "module": "nemo-create-account"
-    }
-},
-"setup": {
-    "account": [{/** personal account 1 properties **/}, {/** personal account 2 properties **/}]
-}
-```
-
-```json
-"nemoData": {/** driver setup **/},
-"plugins": {
-    "account": {
-        "module": "nemo-create-account"
-    }
-},
-"setup": {
-    "account": [{/** professional account 1 properties **/}, {/** professional account 2 properties **/}, {/** professional account 3 properties **/}]
-}
-```
-
-
-## Built in views and locators
-
-By default, `nemo` has a built in view feature which looks for a `nemoData.setup.view` array to determine what views your suite is going to use.
 
 
 

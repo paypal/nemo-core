@@ -2,8 +2,7 @@
   "plugins": {
 
     "autoRegPlugin": {
-      "module": "./test/plugin/autoreg-plugin",
-      "register": true
+      "module": "path:plugin/autoreg-plugin"
     }
   },
   "driver": {
@@ -14,6 +13,6 @@
   "data": {
     "targetBaseUrl": "https://www.paypal.com",
     "passThroughFromJson": true,
-    "baseDirectory": "env:nemoBaseDir"
+    "baseDirectory": "path:."
   }
 }
