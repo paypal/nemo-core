@@ -37,6 +37,7 @@ error.log = console.error.bind(console);
 function Nemo(_config, cb) {
   if (arguments.length === 1) {
     cb = arguments[0];
+    _config = {};
   }
   log('new Nemo instance created');
 
@@ -48,7 +49,7 @@ function Nemo(_config, cb) {
     'wd': webdriver,
     '_config': null
   };
-  var basedir = process.env.nemoBaseDir;
+  var basedir = process.env.nemoBaseDir || process.cwd();
   var configdir = path.join(basedir, 'config');
 
   var options = {
@@ -58,8 +59,9 @@ function Nemo(_config, cb) {
       env: handlers.env({})
     }
   };
-  confit(options).create(function (err, config) {
-    nemo._config = config;
+
+  log('confit options', options);
+  confit(options).addDefault(_config).create(function (err, config) {
     stuffs.setup(config).then(function (_nemo) {
       _.merge(nemo, _nemo);
       cb();
