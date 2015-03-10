@@ -68,7 +68,7 @@ Nemo was successful!!
 {
   "driver": { /** properties used by Nemo to setup the driver instance **/ },
   "plugins": { /** plugins to initialize **/},
-  "data": { /** setup properties specific to certain plugins **/ }
+  "data": { /** arbitrary data to pass through to nemo instance **/ }
 }
 ```
 
@@ -136,7 +136,7 @@ Default is 'direct'. For more information refer : https://selenium.googlecode.co
 }
 ```
 
-### Plugins
+### plugins
 
 Plugins are registered with JSON like the following (will vary based on your plugins)
 
@@ -158,7 +158,8 @@ Plugins are registered with JSON like the following (will vary based on your plu
 #### module
 
 Module must resolve to a require'able module, either via name (in the case it is in your dependency tree) or via path to the file or directory.
-As a convenience, you may use the "path" shortstop handler, which will prepend any value with the `process.env.nemoBaseDir` value.
+As a convenience, you may use the "path" shortstop handler, which will prepend any value with the `process.env.nemoBaseDir` value, or the
+`process.cwd()` valuer if the environment variable is not set.
 
 #### arguments
 
@@ -166,6 +167,55 @@ As a convenience, you may use the "path" shortstop handler, which will prepend a
 #### priority
 
 A `priority` value of < 100 will register this plugin BEFORE the selenium driver object is created. This means that such a plugin can modify properties of the driver (such as `serverProps`). It also means that any other elements of the Nemo setup will NOT be available to that plugin. Leaving `priority` unset will register the plugin after the driver object is created.
+
+## External configuration
+
+While you can fully configure nemo via the `config` argument in the constructor, you will get better flexibility by using the confit enabled configuration
+ability.
+
+In order to do this, you must:
+* set the `process.env.nemoBaseDir` environment variable to the base directory of your UI tests: e.g. `.../myApp/tests`
+* have a config directory under that: e.g. `.../myApp/tests/config`
+* have a config.json file in that directory, following the format of the Nemo constructor config (doc'd above)
+* have any `NODE_ENV` specific overrides in a config file named as the `NODE_ENV` (development, staging)
+  * please see the confit README for full documentation on confit override behavior based on `NODE_ENV`
+
+### Available shortstop handlers
+
+Shortstop handlers are data processors that key off of directives in the JSON data. Ones that are enabled in nemo are:
+
+#### path
+
+use path to prepend the `nemoBaseDir` (or `process.cwd()`) to a value. E.g. if `nemoBaseDir` is `.../myApp/tests` then
+a config value of `'path:plugin/myPlugin'` will resolve to `.../myApp/tests/plugin/myPlugin`
+
+#### env
+
+use env to reference environment variables. E.g. a config value of `'env:PATH'` will resolve to `/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:...`
+
+#### config
+
+Use config to reference data in other parts of the JSON configuration. E.g. in the following config.json:
+
+```javascript
+{
+  'driver': {
+    ...
+  },
+  'plugins': {
+    'myPlugin': {
+      'module': 'nemo-some-plugin',
+      'arguments': ['config:data.someProp']
+    }
+  },
+  'data': {
+    'someProp': 'someVal'
+  }
+}
+```
+
+The value of `plugins.myPlugin.arguments[0]` will be `someVal`
+
 
 ## Plugins
 
