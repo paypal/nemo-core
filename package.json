@@ -1,6 +1,6 @@
 {
   "name": "nemo",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "description": "Abstraction for automation test components",
   "scripts": {
     "test": "grunt --grep @travis@"
@@ -22,9 +22,9 @@
     "grunt-loop-mocha": "^0.3.0",
     "grunt-simple-mocha": "~0.4.0",
     "mocha": "~1.10.0",
-    "nemo-drivex": "^0.1.0",
-    "nemo-locatex": "^0.1.0",
-    "nemo-view": "^0.2.0"
+    "nemo-drivex": "^0.4.0",
+    "nemo-locatex": "^0.4.0",
+    "nemo-view": "^0.4.0"
   },
   "repository": {
     "type": "git",
@@ -37,6 +37,16 @@
     "node": ">= 0.8.0"
   },
   "author": "Matt Edelman <medelman@paypal.com>",
+  "contributors": [
+    {
+      "name": "Matt Edelman",
+      "email": "medelman@paypal.com"
+    },
+    {
+      "name": "Nilesh Kulkarni",
+      "email": "nikulkarni@paypal.com"
+    }
+  ],
   "licenses": [
     {
       "type": "Apache 2.0",
