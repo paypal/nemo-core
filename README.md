@@ -61,6 +61,33 @@ Now, assuming you've set up a driver which matches the above requirements, you c
 $ node examples/setup.js
 Nemo was successful!!
 ```
+## Nemo Constructor
+
+The interface into Nemo is simple. The constructor is:
+`var nemo = Nemo([config, ]callback);`
+
+You can provide configuration (defined below) into the constructor, or via the confit based configuration feature. The constructor will immediately
+return an empty object. After the internal setup routine, the object will be resoled as the `nemo` namespace. Use the callback to be notified
+of full `nemo` resolution.
+
+A typical pattern would be to use `mocha` as a test runner, resolve `nemo` in the context of the mocha `before` function, and use
+the mocha `done` function as the callback:
+
+```javascript
+var nemo;
+describe('my nemo suite', function() {
+  before(function(done) {
+    nemo = Nemo(config, done);
+  });
+  it('will launch browsers!', function(done) {
+    nemo.driver.get('https://www.paypal.com');
+    nemo.driver.quit().then(function() {
+       done();
+    });
+  });
+});
+
+```
 
 ## Nemo Configuration
 
