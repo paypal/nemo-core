@@ -188,12 +188,36 @@ Module must resolve to a require'able module, either via name (in the case it is
 As a convenience, you may use the "path" shortstop handler, which will prepend any value with the `process.env.nemoBaseDir` value, or the
 `process.cwd()` valuer if the environment variable is not set.
 
-#### arguments
+#### arguments (optional, depending on plugin)
 
+Array, to which the `nemo` namespace and a callback function will be `Array.push`'d, and then applied (using `Function.apply`) to the plugin's setup function.
 
 #### priority
 
 A `priority` value of < 100 will register this plugin BEFORE the selenium driver object is created. This means that such a plugin can modify properties of the driver (such as `serverProps`). It also means that any other elements of the Nemo setup will NOT be available to that plugin. Leaving `priority` unset will register the plugin after the driver object is created.
+
+## Nemo namespace
+
+The resolved `nemo` namespace has the following properties
+
+### driver
+
+The live `selenium-webdriver` API. See WebDriver API Doc: http://selenium.googlecode.com/git/docs/api/javascript/class_webdriver_WebDriver.html
+
+### wd
+
+This is a reference to the `selenium-webdriver` module: http://selenium.googlecode.com/git/docs/api/javascript/module_selenium-webdriver.html
+
+### data
+
+Pass through of any data included in the `data` property of the configuration
+
+### _config
+
+
+
+### plugin namespace(s)
+
 
 ## External configuration
 

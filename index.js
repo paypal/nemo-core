@@ -84,8 +84,6 @@ function Nemo(_config, cb) {
    *   }
  * @returns webdriver.promise - successful fulfillment will return an {Object} as below:
  *  {
-   *    'view': {}                           //view instances if specified in config
-   *    ,'locator': {}                       //locator instances if specified in config
    *    ,'driver': {}                        //driver instance. ALWAYS
    *    ,'wd': {}                            //static reference to selenium-webdriver. ALWAYS
    *    ,'data': {}                            //passed through JSON from 'data' section of configuration
