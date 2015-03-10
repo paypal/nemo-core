@@ -1,30 +1,17 @@
 var Nemo = require("../");
-
-/*
-process.env.nemoData = JSON.stringify({
-	targetBrowser: "firefox",
-	targetServer: "localhost",
-	serverProps: {"port": 4444},
-	seleniumJar: "/usr/bin/selenium-server-standalone.jar",
-	targetBaseUrl: "https://www.paypal.com"
-});
-*/
-
-var config = {
-	nemoData: {
-		targetBrowser: "firefox",
-		targetServer: "localhost",
-		localServer: true,
-		seleniumJar: "/usr/bin/selenium-server-standalone.jar",
-		targetBaseUrl: "https://www.paypal.com"
-	}
-};
-//THE ABOVE OR BELOW WILL WORK TO SET nemoData. IN A CONTEST, SETTING VIA Nemo() WILL WIN
-
-var nemo = Nemo(config, function() {
-  nemo.driver.get(nemo.props.targetBaseUrl);
+var nemo = Nemo({
+  "driver": {
+    "browser": "firefox",
+    "local": true,
+    "jar": "/usr/local/bin/selenium-server-standalone.jar"
+  },
+  'data': {
+    'baseUrl': 'https://www.paypal.com'
+  }
+}, function () {
+  nemo.driver.get(nemo.data.baseUrl);
   nemo.driver.sleep(5000).
-    then(function() {
+    then(function () {
       console.info("Nemo was successful!!");
       nemo.driver.quit();
     });

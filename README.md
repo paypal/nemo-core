@@ -1,9 +1,9 @@
 # Nemo [![Build Status](https://travis-ci.org/paypal/nemo.svg)](https://travis-ci.org/paypal/nemo)
 
-Nemo provides a simple way to add selenium automation to your NodeJS web projects. Provides plugin architecture to
-incorporate custom features to your tests.
+Nemo provides a simple way to add selenium automation to your NodeJS web projects. With a powerful configuration ability provided by [krakenjs/confit](https://github.com/krakenjs/confit), and plugin
+architecture, Nemo is flexible enough to handle any browser/device automation need.
 
-Nemo works best with a test runner and task runner. But in this README we will only cover setup and architecture of Nemo
+Nemo is built to easily plug into any task runner and test runner. But in this README we will only cover setup and architecture of Nemo
 as a standalone entity.
 
 For a holistic guide to using Nemo as an overall automation solution, [please start here](https://github.com/paypal/nemo-docs)
@@ -22,7 +22,7 @@ For a holistic guide to using Nemo as an overall automation solution, [please st
 add the following to package.json devDependencies (assuming mocha is already integrated to your project):
 
 ```javascript
-"nemo": "^0.3.1",
+"nemo": "^1.0.0",
 ```
 
 Then `npm install`
@@ -32,43 +32,28 @@ Then `npm install`
 In the directory where you've installed Nemo, create a file called "nemoExample.js" with the following content:
 
 ```javascript
-var Nemo = require("../");
-
-/*
-process.env.nemoData = JSON.stringify({
-	targetBrowser: "firefox",
-	targetServer: "localhost",
-	localServer: true,
-	seleniumJar: "/usr/bin/selenium-server-standalone.jar",
-	targetBaseUrl: "https://www.paypal.com"
-});
-*/
-
-var config = {
-	nemoData: {
-		targetBrowser: "firefox",
-		targetServer: "localhost",
-		localServer: true,
-		seleniumJar: "/usr/bin/selenium-server-standalone.jar",
-		targetBaseUrl: "https://www.paypal.com"
-	}
-};
-//THE ABOVE OR BELOW WILL WORK TO SET nemoData. IN A CONTEST, SETTING VIA Nemo() WILL WIN
-
-var nemo = Nemo(config, function() {
-	nemo.driver.get(nemo.props.targetBaseUrl);
-	nemo.driver.sleep(5000).
-	then(function() {
-		console.info("Nemo was successful!!");
-		nemo.driver.quit();
-	});
+var Nemo = require('nemo');
+var nemo = Nemo({
+  'driver': {
+    'browser': 'firefox',
+    'local': true,
+    'jar': '/usr/local/bin/selenium-server-standalone.jar'
+  },
+  'data': {
+    'baseUrl': 'https://www.paypal.com'
+  }
+}, function () {
+  nemo.driver.get(nemo.data.baseUrl);
+  nemo.driver.sleep(5000).
+    then(function () {
+      console.info('Nemo was successful!!');
+      nemo.driver.quit();
+    });
 });
 ```
 
 You can see this file within the nemo examples directory:
 [https://github.com/paypal/nemo/examples/setup.js](/examples/setup.js)
-
-Note you can set `nemoData` via an environment variable OR by passing it into the Nemo constructor.
 
 Now, assuming you've set up a driver which matches the above requirements, you can run the following, with the following result:
 
@@ -79,51 +64,34 @@ Nemo was successful!!
 
 ## Nemo Configuration
 
-Then full config object passed to the Nemo constructor `var nemo = Nemo(config, cb);` has these basic components:
-
-```json
+```javascript
 {
-  "nemoData": { /** properties used by Nemo to setup the driver instance **/ },
+  "driver": { /** properties used by Nemo to setup the driver instance **/ },
   "plugins": { /** plugins to initialize **/},
-  "setup": { /** setup properties specific to certain plugins **/ }
+  "data": { /** setup properties specific to certain plugins **/ }
 }
 ```
 
 This configuration object is optional, as long as you've got `nemoData` set as an environment variable (see below).
 
-### nemoData
-To have basic environment information, set the `nemoData` JSON either as an environment variable, or within the JSON config to the `Nemo` constructor.
+### driver
 
-Nemo will look for a `nemoData` property in the config argument. As a fallback, it will look for an environment variable named `nemoData`.
-`nemoData` should be in stringified JSON format. Depending on the values therein, Nemo will start a variety of webdrivers and test
-on a variety of targets.
+Here are the `driver` properties recognized by Nemo:
 
-The full `nemoData` object will be attached to the `nemo` object as `nemo.props`. This means you can pass any information you want, besides the
-properties necessary to configure the nemo driver.
-
-_Note the use of the arbitrary "targetBaseUrl" and how it is accessed later on in the script as `nemo.props.targetBaseUrl` in many examples.
-
-Here are the `nemoData` properties recognized by Nemo:
-
-#### autoBaseDir
-
-Used as a root location for finding 'locator' files in your test suite. Also can be required by other plugins
-which need to require modules from your test suite.
-
-#### targetBrowser
+#### browser
 
 Browser you wish to automate. Make sure that your chosen webdriver has this browser option available
 
-#### localServer (optional, defaults to false)
+#### local (optional, defaults to false)
 
-Set localServer to true if you want Nemo to attempt to start a standalone binary on your system (like selenium-standalone-server) or use a local browser/driver like Chrome/chromedriver or PhantomJS.
+Set local to true if you want Nemo to attempt to start a standalone binary on your system (like selenium-standalone-server) or use a local browser/driver like Chrome/chromedriver or PhantomJS.
 
 
-#### targetServer (optional)
+#### server (optional)
 
 Webdriver server URL you wish to use.
 
-If you are using sauce labs, make sure `targetServer` is set to correct url like `"http://yourkey:yoursecret@ondemand.saucelabs.com:80/wd/hub"`
+If you are using sauce labs, make sure `server` is set to correct url like `"http://yourkey:yoursecret@ondemand.saucelabs.com:80/wd/hub"`
 
 #### serverProps (optional/conditional)
 
@@ -139,9 +107,9 @@ You can also set args and jvmArgs to the selenium jar process as follows:
 }
 ```
 
-#### seleniumJar (optional/conditional)
+#### jar (optional/conditional)
 
-Path to your selenium-standalone server Jar file. Leave unset if you aren't using a local selenium-standalone Jar.
+Path to your webdriver server Jar file. Leave unset if you aren't using a local selenium-standalone Jar (or similar).
 
 #### serverCaps (optional)
 
@@ -170,7 +138,7 @@ Default is 'direct'. For more information refer : https://selenium.googlecode.co
 
 ### Plugins
 
-You can author or use plugins to enhance your test suite. Something important to know about plugins is how you register them. Provide JSON like this to the Nemo constructor:
+Plugins are registered with JSON like the following (will vary based on your plugins)
 
 ```javascript
 {
@@ -187,24 +155,6 @@ You can author or use plugins to enhance your test suite. Something important to
 }
 ```
 
-#### plugin interface
-
-Your plugin should export a setup function with the following interface:
-
-```javascript
-module.exports.setup = function myPlugin([arg1, arg2, ..., ]nemo, callback) {
-  ...
-  //add your plugin to the nemo namespace
-  nemo.myPlugin = myPluginFactory([arg1, arg2, ...]);
-
-  //continue
-  callback(null, nemo);
-};
-```
-
-When nemo initializes your plugin, it will call the setup method with any arguments supplied in the config plus the nemo object,
-plus the callback function to continue plugin initialization.
-
 #### module
 
 Module must resolve to a require'able module, either via name (in the case it is in your dependency tree) or via path to the file or directory.
@@ -216,6 +166,61 @@ As a convenience, you may use the "path" shortstop handler, which will prepend a
 #### priority
 
 A `priority` value of < 100 will register this plugin BEFORE the selenium driver object is created. This means that such a plugin can modify properties of the driver (such as `serverProps`). It also means that any other elements of the Nemo setup will NOT be available to that plugin. Leaving `priority` unset will register the plugin after the driver object is created.
+
+## Plugins
+
+Authoring a plugin, or using an existing plugin, is a great way to increase the power and usefulness of your Nemo installation. A plugin should add
+its API to the `nemo` object it receives and passes on in its constructor (see "plugin interface" below)
+
+### plugin interface
+
+A plugin should export a setup function with the following interface:
+
+```javascript
+module.exports.setup = function myPlugin([arg1, arg2, ..., ]nemo, callback) {
+  ...
+  //add your plugin to the nemo namespace
+  nemo.myPlugin = myPluginFactory([arg1, arg2, ...]); //adds myMethod1, myMethod2
+
+  //continue
+  callback(null, nemo);
+};
+```
+
+When nemo initializes your plugin, it will call the setup method with any arguments supplied in the config plus the nemo object,
+plus the callback function to continue plugin initialization.
+
+Then in your module where you use Nemo, you will be able to access the plugin functionality:
+
+```javascript
+var Nemo = require('nemo');
+var nemo = Nemo({
+  'driver': {
+    'browser': 'firefox',
+    'local': true,
+    'jar': '/usr/local/bin/selenium-server-standalone.jar'
+  },
+  'data': {
+    'baseUrl': 'https://www.paypal.com'
+  },
+  'plugins': {
+    'myPlugin': {
+      'module': 'path:plugin/my-plugin',
+      'arguments': [...]
+      'priority': 99
+    },
+  }
+}, function () {
+  nemo.driver.get(nemo.data.baseUrl);
+  nemo.myPlugin.myMethod1();
+  nemo.myPlugin.myMethod2();
+  nemo.driver.sleep(5000).
+    then(function () {
+      console.info('Nemo was successful!!');
+      nemo.driver.quit();
+    });
+});
+```
 
 
 
