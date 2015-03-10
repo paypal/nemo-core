@@ -214,10 +214,12 @@ Pass through of any data included in the `data` property of the configuration
 
 ### _config
 
-
+This is the confit configuration object. Documented here: https://github.com/krakenjs/confit#config-api
 
 ### plugin namespace(s)
 
+Plugins are responsible for registering their own namespace under nemo. The convention is that the plugin should register the same namespace
+as is specified in the plugin configuration. E.g.
 
 ## External configuration
 
