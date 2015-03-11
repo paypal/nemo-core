@@ -7,7 +7,7 @@
   },
   "dependencies": {
     "async": "~0.2.8",
-    "confit": "^2.0.0",
+    "confit": "git://github.com/grawk/confit.git#babel-exact-version",
     "debug": "^2.1.0",
     "lodash": "^2.4.0",
     "nconf": "~0.6.7",

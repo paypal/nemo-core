@@ -1,8 +1,17 @@
 {
   "plugins": {
-
-    "autoRegPlugin": {
-      "module": "path:plugin/autoreg-plugin"
+    "sample": {
+      "module": "path:plugin/sample"
+    },
+    "preDriver": {
+      "module": "path:plugin/sample",
+      "priority": 99,
+      "arguments": ["preDriver"]
+    },
+    "postDriver": {
+      "module": "path:plugin/sample",
+      "priority": 101,
+      "arguments": ["postDriver"]
     }
   },
   "driver": {
