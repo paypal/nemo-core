@@ -7,7 +7,7 @@
   },
   "dependencies": {
     "async": "~0.2.8",
-    "confit": "git://github.com/grawk/confit.git#babel-exact-version",
+    "confit": "^2.0.0",
     "debug": "^2.1.0",
     "lodash": "^2.4.0",
     "nconf": "~0.6.7",
@@ -21,10 +21,8 @@
     "chai": "~1.6.0",
     "grunt": "~0.4.1",
     "grunt-contrib-jshint": "~0.7.1",
-    "grunt-loop-mocha": "^0.3.0",
     "grunt-simple-mocha": "~0.4.0",
-    "mocha": "~1.10.0",
-    "nemo-view": "git://github.com/grawk/nemo-view.git#1.0-develop"
+    "mocha": "^2.0.0"
   },
   "repository": {
     "type": "git",

@@ -1,0 +1,7 @@
+{
+  "driver": {
+    "browser": "chrome",
+    "local": true,
+    "jar": "/usr/local/bin/selenium-server-standalone.jar"
+  }
+}

@@ -15,12 +15,12 @@
     }
   },
   "driver": {
-    "browser": "firefox",
+    "browser": "phantomjs",
     "local": true,
     "jar": "/usr/local/bin/selenium-server-standalone.jar"
   },
   "data": {
-    "targetBaseUrl": "https://www.paypal.com",
+    "baseUrl": "https://www.google.com",
     "passThroughFromJson": true,
     "baseDirectory": "path:."
   }

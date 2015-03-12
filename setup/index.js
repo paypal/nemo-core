@@ -21,7 +21,6 @@ var fs = require('fs'),
   debug = require('debug'),
   log = debug('nemo:log'),
   error = debug('nemo:error'),
-  nemoData = {},
   driver;
 
 error.log = console.error.bind(console);
@@ -31,10 +30,7 @@ function Setup() {
   return {
     doSetup: function doSetup(_wd, driverProps, callback) {
       log('entering doSetup');
-      if (nemoData === {}) {
-        callback(new Error('[Nemo::doSetup] The nemoData environment variable is missing or not fully defined!'));
-        return;
-      }
+
       var caps,
         tgtBrowser = driverProps.browser || '',
         localServer = driverProps.local || false,
@@ -89,6 +85,7 @@ function Setup() {
 
       function getProxy(){
         if (proxyDetails) {
+          log('proxyDetails', proxyDetails);
           if (proxyDetails.method && proxy[proxyDetails.method]){
             return proxy[proxyDetails.method].apply(proxy, proxyDetails.args);
           }else{

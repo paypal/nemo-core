@@ -34,10 +34,33 @@ error.log = console.error.bind(console);
  *
  */
 
-function Nemo(_config, cb) {
-  if (arguments.length === 1) {
+function Nemo(_basedir, _configOverride, _cb) {
+  var basedir, configOverride, cb;
+  //settle arguments
+  if (arguments.length === 0) {
+    error('Nemo constructor needs at least a callback');
+    var noCallbackError = new Error('Nemo constructor needs at least a callback');
+    noCallbackError.name = 'nemoNoCallbackError';
+    throw noCallbackError;
+    return;
+  }
+  else if (arguments.length === 1) {
+    log('constructor: callback only');
     cb = arguments[0];
-    _config = {};
+    configOverride = {};
+    basedir = process.env.nemoBaseDir || undefined;
+  }
+  else if (arguments.length === 2) {
+    cb = arguments[1];
+    if (typeof arguments[0] === 'string') {
+      log('constructor: basedir + callback');
+      basedir = _basedir;
+      configOverride = {};
+    } else {
+      log('constructor: configOverride + callback');
+      configOverride = arguments[0];
+      basedir = process.env.nemoBaseDir || undefined;
+    }
   }
   log('new Nemo instance created');
 
@@ -49,19 +72,53 @@ function Nemo(_config, cb) {
     'wd': webdriver,
     '_config': null
   };
-  var basedir = process.env.nemoBaseDir || process.cwd();
-  var configdir = path.join(basedir, 'config');
 
-  var options = {
-    basedir: configdir,
+
+  var confitOptions = {
     protocols: {
       path: handlers.path(basedir, {}),
       env: handlers.env({})
     }
   };
 
-  log('confit options', options);
-  confit(options).addOverride(_config).create(function (err, config) {
+  if (basedir) {
+    confitOptions.basedir = path.join(basedir, 'config');
+  }
+  log('confit options', confitOptions);
+
+  //hack because confit doesn't JSON.parse environment variables before merging
+  //can remove if this PR is accepted:
+  var envdata = {};
+  var envdriver = {};
+  var envplugins = {};
+  try {
+    envdata = {'data': JSON.parse(process.env.data)};
+    delete process.env.data;
+  } catch (err) {
+    //noop
+  }
+  try {
+    envdriver = {'driver': JSON.parse(process.env.driver)};
+    delete process.env.driver;
+  } catch (err) {
+    //noop
+  }
+  try {
+    envplugins = {'plugins': JSON.parse(process.env.plugins)};
+    delete process.env.plugins;
+  } catch (err) {
+    //noop
+  }
+  //}
+  _.merge(configOverride, envdata, envdriver, envplugins);
+
+  confit(confitOptions).addOverride(configOverride).create(function (err, config) {
+    //check for vital information
+    if (config.get('driver') === undefined) {
+      error('essential driver properties not found in configuration');
+      cb(new Error('[nemo] essential driver properties not found in configuration'));
+      return;
+    }
     setup(config).then(function (_nemo) {
       _.merge(nemo, _nemo);
       cb();
@@ -99,7 +156,7 @@ function setup(config) {
   if (config && config.get('plugins')) {
     plugins = config.get('plugins');
   }
-  var driver = config.get('driver');
+  var driverConfig = config.get('driver');
   config = config || {};
   var me = this,
     nemo = {
@@ -132,7 +189,6 @@ function setup(config) {
     modulePath = pluginConfig.module;
     log('modulePath %s', modulePath);
     pluginModule = require(modulePath);
-    console.log('plugin')
     if (plugins[key].priority && plugins[key].priority < 100) {
       preDriverArray.push(pluginReg);
     } else {
@@ -158,7 +214,7 @@ function setup(config) {
 
   function driversetup(_nemo, callback) {
     //do driver/view/locator/vars setup
-    (Setup()).doSetup(webdriver, driver, function setupCallback(err, __nemo) {
+    (Setup()).doSetup(webdriver, driverConfig, function setupCallback(err, __nemo) {
       if (err) {
         callback(err);
       } else {
