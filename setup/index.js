@@ -20,8 +20,7 @@ var fs = require('fs'),
   proxy = require('selenium-webdriver/proxy'),
   debug = require('debug'),
   log = debug('nemo:log'),
-  error = debug('nemo:error'),
-  driver;
+  error = debug('nemo:error');
 
 error.log = console.error.bind(console);
 
@@ -32,6 +31,7 @@ function Setup() {
       log('entering doSetup');
 
       var caps,
+        driver,
         tgtBrowser = driverProps.browser || '',
         localServer = driverProps.local || false,
         customCaps = driverProps.serverCaps,
@@ -105,10 +105,13 @@ function Setup() {
       } catch (err) {
         error('Encountered an error during driver setup: %', err);
         errorObject = err;
+        callback(errorObject);
+        return;
       }
-      callback(errorObject, {
-        'driver': driver
+      driver.sleep(1).then(function() {
+        callback(errorObject, driver);
       });
+
     }
   };
 }

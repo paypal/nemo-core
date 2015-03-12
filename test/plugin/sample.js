@@ -8,7 +8,7 @@ module.exports = {
       whoami = 'sample';
     }
 		nemo[whoami] = {};
-		nemo[whoami].isDriverSetup = (!!nemo.driver);
+		nemo[whoami].isDriverSetup = (!!nemo.driver.get);
     callback(null, nemo);
 
 	}

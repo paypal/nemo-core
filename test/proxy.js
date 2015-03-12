@@ -6,17 +6,9 @@ var path = require('path');
 
 describe("@proxy@ ", function () {
 
-  var nemo;
-  before(function (done) {
-    process.env.nemoBaseDir = path.join(process.cwd(), 'test');
-    done();
-  });
-  after(function (done) {
-    nemo.driver.quit();
-    done()
-  });
   it("should load problem loading page error", function (done) {
-    nemo = Nemo({
+    process.env.nemoBaseDir = path.join(process.cwd(), 'test');
+    var nemo = Nemo({
       "driver": {
         "local": false,
         "browser": "phantomjs",

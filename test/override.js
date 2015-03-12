@@ -8,26 +8,18 @@ var assert = require('assert'),
 
 
 describe('@override@', function () {
-  before(function (done) {
-    process.env.nemoBaseDir = path.join(process.cwd(), 'test');
-    done();
-  });
-  describe("when @envVarData@ is set", function () {
-    before(function (done) {
+
+    it("from env over config.json data", function (done) {
+      process.env.nemoBaseDir = path.join(process.cwd(), 'test');
       process.env.data = JSON.stringify({
         baseUrl: 'http://www.ebay.com'
       });
-      done();
-    });
-    it("should override config.json data", function (done) {
-      console.log(process.env.nemoBaseDir);
       nemo = Nemo(function () {
         assert.equal(nemo.data.baseUrl, 'http://www.ebay.com');
         nemo.driver.quit();
         done();
       });
     });
-  });
 
 });
 

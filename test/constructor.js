@@ -34,7 +34,6 @@ describe('@constructor@', function () {
       }
     }, function () {
       assert(nemo.driver);
-      assert.equal(nemo.data.baseUrl, undefined);
       nemo.driver.get('http://www.google.com');
       nemo.driver.quit().then(function () {
         done();

@@ -64,14 +64,7 @@ function Nemo(_basedir, _configOverride, _cb) {
   }
   log('new Nemo instance created');
 
-  var nemo = {
-    'data': {},
-    'view': {},
-    'locator': {},
-    'driver': {},
-    'wd': webdriver,
-    '_config': null
-  };
+  var nemo = {};
 
 
   var confitOptions = {
@@ -161,10 +154,9 @@ function setup(config) {
   var me = this,
     nemo = {
       'data': config.get('data'),
-      'view': {},
-      'locator': {},
-      'driver': null,
-      'wd': webdriver
+      'driver': {},
+      'wd': webdriver,
+      '_config': null
     };
   var d = webdriver.promise.defer();
   preDriverArray = [datasetup];
@@ -175,8 +167,8 @@ function setup(config) {
       pluginArgs,
       pluginModule;
 
-    function pluginReg(nemo, callback) {
-      pluginArgs.push(nemo);
+    function pluginReg(_nemo, callback) {
+      pluginArgs.push(_nemo);
       pluginArgs.push(callback);
       pluginModule.setup.apply(this, pluginArgs);
     }
@@ -214,12 +206,12 @@ function setup(config) {
 
   function driversetup(_nemo, callback) {
     //do driver/view/locator/vars setup
-    (Setup()).doSetup(webdriver, driverConfig, function setupCallback(err, __nemo) {
+    (Setup()).doSetup(webdriver, driverConfig, function setupCallback(err, _driver) {
       if (err) {
         callback(err);
       } else {
         //set driver
-        _nemo.driver = __nemo.driver;
+        _nemo.driver = _driver;
         callback(null, _nemo);
       }
     });
