@@ -27,7 +27,7 @@ error.log = console.error.bind(console);
 function Setup() {
   log('new Setup instance created');
   return {
-    doSetup: function doSetup(_wd, driverProps, callback) {
+    doSetup: function doSetup(driverProps, callback) {
       log('entering doSetup');
 
       var caps,
@@ -99,7 +99,7 @@ function Setup() {
 
       try {
 
-        driver = new _wd.Builder().
+        driver = new webdriver.Builder().
           usingServer(getServer()).
           withCapabilities(getCapabilities()).setProxy(getProxy()).build();
       } catch (err) {
