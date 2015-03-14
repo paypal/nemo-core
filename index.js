@@ -99,7 +99,11 @@ function Nemo(_basedir, _configOverride, _cb) {
       cb(new Error('[nemo] essential driver properties not found in configuration'));
       return;
     }
-    setup(config).then(function (_nemo) {
+    setup(config, function (err, _nemo) {
+      if (err !== null) {
+        cb(err);
+        return;
+      }
       _.merge(nemo, _nemo);
       cb();
     });
@@ -111,7 +115,7 @@ function Nemo(_basedir, _configOverride, _cb) {
 }
 
 
-var setup = function setup(config) {
+var setup = function setup(config, cb) {
   var waterFallArray = [],
     preDriverArray = [],
     postDriverArray = [],
@@ -123,7 +127,6 @@ var setup = function setup(config) {
     'wd': webdriver,
     '_config': null
   };
-  var d = webdriver.promise.defer();
   //config is for registering plugins
   if (config && config.get('plugins')) {
     plugins = config.get('plugins');
@@ -154,12 +157,11 @@ var setup = function setup(config) {
 
   async.waterfall(waterFallArray, function waterfall(err, result) {
     if (err) {
-      d.reject(err);
+      cb(err);
     } else {
-      d.fulfill(nemo);
+      cb(null, nemo);
     }
   });
-  return d;
 
 };
 
@@ -169,11 +171,12 @@ var driversetup = function (driverConfig) {
     (Setup()).doSetup(driverConfig, function setupCallback(err, _driver) {
       if (err) {
         callback(err);
-      } else {
-        //set driver
-        _nemo.driver = _driver;
-        callback(null, _nemo);
+        return;
       }
+      //set driver
+      _nemo.driver = _driver;
+      callback(null, _nemo);
+
     });
   }
 };
@@ -199,7 +202,8 @@ var envToJSON = function (prop) {
   if (originalValue === undefined) {
     return {
       'json': {},
-      'reset': function () {}
+      'reset': function () {
+      }
     }
   }
   try {

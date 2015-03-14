@@ -83,12 +83,12 @@ function Setup() {
         return caps;
       }
 
-      function getProxy(){
+      function getProxy() {
         if (proxyDetails) {
           log('proxyDetails', proxyDetails);
-          if (proxyDetails.method && proxy[proxyDetails.method]){
+          if (proxyDetails.method && proxy[proxyDetails.method]) {
             return proxy[proxyDetails.method].apply(proxy, proxyDetails.args);
-          }else{
+          } else {
             throw new Error('nemo: proxy configuration is incomplete or does not match the selenium-webdriver/proxy API');
           }
 
@@ -108,9 +108,7 @@ function Setup() {
         callback(errorObject);
         return;
       }
-      driver.sleep(1).then(function() {
-        callback(errorObject, driver);
-      });
+      callback(errorObject, driver);
 
     }
   };
