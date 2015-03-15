@@ -7,6 +7,9 @@ module.exports = {
       nemo = whoami;
       whoami = 'sample';
     }
+    if (whoami === 'crap plugin') {
+      throw new Error('Sorry I wrote a crap plugin');
+    }
 		nemo[whoami] = {};
 		nemo[whoami].isDriverSetup = (!!nemo.driver.get);
     callback(null, nemo);

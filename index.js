@@ -73,6 +73,11 @@ function Nemo(_basedir, _configOverride, _cb) {
       basedir = process.env.nemoBaseDir || undefined;
     }
   }
+  else if (arguments.length === 3) {
+    basedir = _basedir;
+    configOverride = _configOverride;
+    cb = _cb;
+  }
 
   confitOptions = {
     protocols: {
@@ -96,7 +101,9 @@ function Nemo(_basedir, _configOverride, _cb) {
     //check for vital information
     if (config.get('driver') === undefined) {
       error('essential driver properties not found in configuration');
-      cb(new Error('[nemo] essential driver properties not found in configuration'));
+      var badDriverProps = new Error('Nemo essential driver properties not found in configuration');
+      badDriverProps.name = 'nemoBadDriverProps';
+      cb(badDriverProps);
       return;
     }
     setup(config, function (err, _nemo) {
@@ -199,7 +206,15 @@ var pluginReg = function (pluginArgs, pluginModule) {
 
     pluginArgs.push(_nemo);
     pluginArgs.push(callback);
-    pluginModule.setup.apply(this, pluginArgs);
+    try {
+      pluginModule.setup.apply(this, pluginArgs);
+    } catch (err) {
+      //dang, someone wrote a crap plugin
+      error(err);
+      var pluginSetupError = new Error('Nemo plugin threw error during setup');
+      pluginSetupError.name = 'nemoPluginSetupError';
+      callback(pluginSetupError);
+    }
   }
 };
 

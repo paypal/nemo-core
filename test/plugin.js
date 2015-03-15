@@ -22,24 +22,44 @@ describe('@plugin@', function () {
   it('should handle @nonexistPlugin@', function (done) {
     delete process.env.nemoBaseDir;
 
-    nemo = Nemo({
+    nemo = Nemo(path.join(process.cwd(), 'test'), {
       "driver": {
         "browser": "phantomjs"
       },
       'plugins': {
         'noexist': {
-          'module': 'path:plugin/sample'
+          'module': 'path:plugin/sampe'
         }
       }
     }, function (err) {
-      if (err.name === 'nemoNoPluginModuleError') {
+      if (err && err.name && err.name === 'nemoNoPluginModuleError') {
         done();
         return;
       }
-      done();
+      done(new Error('didnt get the correct exception'));
     });
   });
+  it('should handle @failedPluginRegistration@', function (done) {
+    delete process.env.nemoBaseDir;
 
+    nemo = Nemo(path.join(process.cwd(), 'test'), {
+      "driver": {
+        "browser": "phantomjs"
+      },
+      'plugins': {
+        'crappy': {
+          'module': 'path:plugin/sample',
+          'arguments': ['crap plugin']
+        }
+      }
+    }, function (err) {
+      if (err && err.name && err.name === 'nemoPluginSetupError') {
+        done();
+        return;
+      }
+      done(new Error('didnt get the correct exception'));
+    });
+  });
 });
 
 
