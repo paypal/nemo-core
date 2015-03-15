@@ -139,14 +139,21 @@ var setup = function setup(config, cb) {
       pluginArgs,
       pluginModule;
 
-
     log('register plugin %s', key);
     //register this plugin
     pluginConfig = plugins[key];
     pluginArgs = plugins[key].arguments || [];
     modulePath = pluginConfig.module;
     log('modulePath %s', modulePath);
-    pluginModule = require(modulePath);
+    try {
+      pluginModule = require(modulePath);
+    } catch(err) {
+      error(err);
+      var noPluginModuleError = new Error('Nemo plugin has invalide module');
+      noPluginModuleError.name = 'nemoNoPluginModuleError';
+      cb(noPluginModuleError);
+      return;
+    }
     if (plugins[key].priority && plugins[key].priority < 100) {
       preDriverArray.push(pluginReg(pluginArgs, pluginModule));
     } else {

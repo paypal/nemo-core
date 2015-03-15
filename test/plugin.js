@@ -19,6 +19,26 @@ describe('@plugin@', function () {
       done();
     });
   });
+  it('should handle @nonexistPlugin@', function (done) {
+    delete process.env.nemoBaseDir;
+
+    nemo = Nemo({
+      "driver": {
+        "browser": "phantomjs"
+      },
+      'plugins': {
+        'noexist': {
+          'module': 'path:plugin/sample'
+        }
+      }
+    }, function (err) {
+      if (err.name === 'nemoNoPluginModuleError') {
+        done();
+        return;
+      }
+      done();
+    });
+  });
 
 });
 
