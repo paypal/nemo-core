@@ -21,7 +21,6 @@ describe('@plugin@', function () {
   });
   it('should handle @nonexistPlugin@', function (done) {
     delete process.env.nemoBaseDir;
-
     nemo = Nemo(path.join(process.cwd(), 'test'), {
       "driver": {
         "browser": "phantomjs"

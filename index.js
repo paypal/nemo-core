@@ -126,7 +126,8 @@ var setup = function setup(config, cb) {
   var waterFallArray = [],
     preDriverArray = [],
     postDriverArray = [],
-    plugins = {};
+    plugins = {},
+    pluginError = false;
   var driverConfig = config.get('driver');
   var nemo = {
     'data': config.get('data'),
@@ -159,6 +160,7 @@ var setup = function setup(config, cb) {
       var noPluginModuleError = new Error('Nemo plugin has invalide module');
       noPluginModuleError.name = 'nemoNoPluginModuleError';
       cb(noPluginModuleError);
+      pluginError = true;
       return;
     }
     if (plugins[key].priority && plugins[key].priority < 100) {
@@ -167,6 +169,9 @@ var setup = function setup(config, cb) {
       postDriverArray.push(pluginReg(pluginArgs, pluginModule));
     }
   });
+  if (pluginError) {
+    return;
+  }
   waterFallArray = preDriverArray.concat([driversetup(driverConfig)], postDriverArray);
 
   async.waterfall(waterFallArray, function waterfall(err, result) {
