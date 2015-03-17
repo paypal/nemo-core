@@ -285,8 +285,13 @@ module.exports.setup = function myPlugin([arg1, arg2, ..., ]nemo, callback) {
   //add your plugin to the nemo namespace
   nemo.myPlugin = myPluginFactory([arg1, arg2, ...]); //adds myMethod1, myMethod2
 
+  //error in your plugin setup
+  if (err) {
+    callback(err);
+    return;
+  }
   //continue
-  callback(null, nemo);
+  callback(null);
 };
 ```
 

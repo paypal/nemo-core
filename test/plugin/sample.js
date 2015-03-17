@@ -12,7 +12,7 @@ module.exports = {
     }
 		nemo[whoami] = {};
 		nemo[whoami].isDriverSetup = (!!nemo.driver.get);
-    callback(null, nemo);
+    callback(null);
 
 	}
 };
