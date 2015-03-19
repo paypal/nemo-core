@@ -105,7 +105,7 @@ This configuration object is optional, as long as you've got `nemoData` set as a
 
 Here are the `driver` properties recognized by Nemo:
 
-#### browser
+#### browser (optional)
 
 Browser you wish to automate. Make sure that your chosen webdriver has this browser option available
 
@@ -163,6 +163,15 @@ Default is 'direct'. For more information refer : https://selenium.googlecode.co
 }
 ```
 
+#### builders (optional)
+
+This is a JSON interface to any of the Builder methods which take simple arguments and return the builder. See the Builder class here: http://selenium.googlecode.com/git/docs/api/javascript/module_selenium-webdriver_class_Builder.html
+
+Useful such functions are:
+* forBrowser (can take the place of "browser", "local" and "jar" properties above)
+* withCapabilities (can take the place of "serverCaps" above)
+
+There may be some overlap between these functions and
 ### plugins
 
 Plugins are registered with JSON like the following (will vary based on your plugins)

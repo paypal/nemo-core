@@ -52,7 +52,6 @@ describe('@constructor@', function () {
     nemo = Nemo(function () {
       assert(nemo.driver);
       assert(nemo.data.passThroughFromJson);
-      assert.equal(nemo.data.baseDirectory, path.join(process.cwd(), 'test'));
       nemo.driver.get(nemo.data.baseUrl);
       nemo.driver.quit().then(function () {
         done();
@@ -66,7 +65,6 @@ describe('@constructor@', function () {
     nemo = Nemo(nemoBaseDir, function () {
       assert(nemo.driver);
       assert(nemo.data.passThroughFromJson);
-      assert.equal(nemo.data.baseDirectory, path.join(process.cwd(), 'test'));
       nemo.driver.get(nemo.data.baseUrl);
       nemo.driver.quit().then(function () {
         done();
@@ -82,7 +80,6 @@ describe('@constructor@', function () {
     }, function () {
       assert(nemo.driver);
       assert(nemo.data.passThroughFromJson);
-      assert.equal(nemo.data.baseDirectory, path.join(process.cwd(), 'test'));
       assert(nemo.data.argPassthrough);
       nemo.driver.get(nemo.data.baseUrl);
       nemo.driver.quit().then(function () {

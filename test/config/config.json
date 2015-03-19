@@ -15,13 +15,12 @@
     }
   },
   "driver": {
-    "browser": "phantomjs",
-    "local": true,
-    "jar": "/usr/local/bin/selenium-server-standalone.jar"
+    "builders": {
+      "forBrowser": ["firefox"]
+    }
   },
   "data": {
     "baseUrl": "https://www.google.com",
-    "passThroughFromJson": true,
-    "baseDirectory": "path:."
+    "passThroughFromJson": true
   }
 }
