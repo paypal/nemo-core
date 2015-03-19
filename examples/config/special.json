@@ -1,0 +1,8 @@
+{
+  "driver": {
+    "browser": "chrome"
+  },
+  "data": {
+    "baseUrl": "https://www.paypal.com"
+  }
+}

@@ -27,12 +27,16 @@ add the following to package.json devDependencies (assuming mocha is already int
 
 Then `npm install`
 
-### Running Nemo
+### Nemo and Confit in 90 seconds
 
-If you install this repo you'll get the following in `examples/setup.js`
+Nemo uses confit - a powerful, expressive and intuitive configuration system - to elegantly expose the Nemo and selenium-webdriver APIs.
+
+#### Direct configuration
+
+If you install this repo you'll get the following in `examples/setup.js`. Note the `Nemo()` constructor is directly accepting the needed configuration,
+along with a callback function.
 
 ```javascript
-var Nemo = require("nemo");
 var nemo = Nemo({
   "driver": {
     "browser": "firefox"
@@ -40,23 +44,95 @@ var nemo = Nemo({
   'data': {
     'baseUrl': 'https://www.paypal.com'
   }
-}, function () {
+}, function (err) {
+  //always check for errors!
+  if (!!err) {
+    console.log('Error during Nemo setup', err);
+  }
   nemo.driver.get(nemo.data.baseUrl);
-  nemo.driver.sleep(5000).
-    then(function () {
-      console.info("Nemo was successful!!");
-      nemo.driver.quit();
+  nemo.driver.getCapabilities().
+    then(function (caps) {
+      console.info("Nemo successfully launched", caps.caps_.browserName);
     });
+  nemo.driver.quit();
 });
 ```
 
 
-Now, assuming you've set up a driver which matches the above requirements, you can run the following, with the following result:
+Run it:
 
 ```bash
 $ node examples/setup.js
-Nemo was successful!!
+Nemo successfully launched firefox
 ```
+
+#### Using config files
+
+Look at `examples/setupWithConfigFiles.js`
+
+```javascript
+var nemo = Nemo(__dirname, function (err) {
+  //always check for errors!
+  if (!!err) {
+    console.log('Error during Nemo setup', err);
+  }
+
+  nemo.driver.get(nemo.data.baseUrl);
+  nemo.driver.getCapabilities().
+    then(function (caps) {
+      console.info("Nemo successfully launched", caps.caps_.browserName);
+    });
+  nemo.driver.quit();
+});
+```
+
+Look at `examples/config/config.json`
+
+```javascript
+{
+  "driver": {
+    "browser": "config:BROWSER"
+  },
+  "data": {
+    "baseUrl": "https://www.paypal.com"
+  },
+  "BROWSER": "firefox"
+}
+```
+
+That is almost the same config as the first example. But notice `"config:BROWSER"`. Yes, confit will resolve that to the config property `"BROWSER"`.
+
+Run this and it will open the Firefox browser:
+
+```bash
+$ node examples/setup.js
+Nemo successfully launched firefox
+```
+
+Now run this command:
+```bash
+$ node examples/setupWithConfigDir.js --BROWSER=chrome
+Nemo successfully launched chrome
+```
+
+Here, confit resolves the `--BROWSER=chrome` command line argument and overrides the `BROWSER` value from config.json
+
+Now this command:
+```bash
+$ BROWSER=chrome node examples/setupWithConfigDir.js
+Nemo successfully launched chrome
+```
+
+Here, confit resolves the `BROWSER` environment variable and overrides `BROWSER` from config.json
+
+What if we set both?
+
+```bash
+$ BROWSER=chrome node examples/setupWithConfigDir.js BROWSER=phantomjs
+Nemo successfully launched chrome
+```
+
+You can see that the environment variable value wins.
 ## Nemo Constructor
 
 The interface into Nemo is simple. The constructor is:
