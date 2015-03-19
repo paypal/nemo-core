@@ -114,6 +114,7 @@ Nemo successfully launched firefox
 ```
 
 Now run this command:
+
 ```bash
 $ node examples/setupWithConfigDir.js --BROWSER=chrome
 Nemo successfully launched chrome
@@ -122,6 +123,7 @@ Nemo successfully launched chrome
 Here, confit resolves the `--BROWSER=chrome` command line argument and overrides the `BROWSER` value from config.json
 
 Now this command:
+
 ```bash
 $ BROWSER=chrome node examples/setupWithConfigDir.js
 Nemo successfully launched chrome
@@ -139,8 +141,11 @@ Nemo successfully launched chrome
 You can see that the environment variable wins.
 
 Now try this command:
+
+```
 $ NODE_ENV=special node examples/setupWithConfigDir.js
 Nemo successfully launched phantomjs
+```
 
 Note that confit uses the value of NODE_ENV to look for an override config file. In this case `config/special.json`:
 
