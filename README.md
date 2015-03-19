@@ -350,6 +350,10 @@ Array, to which the `nemo` namespace and a callback function will be `Array.push
 
 A `priority` value of < 100 will register this plugin BEFORE the selenium driver object is created. This means that such a plugin can modify properties of the driver (such as `serverProps`). It also means that any other elements of the Nemo setup will NOT be available to that plugin. Leaving `priority` unset will register the plugin after the driver object is created.
 
+### data
+
+Data will be arbitrary stuff that you might like to use in your tests. In a lot of the examples we set `data.baseUrl` but again, that's arbitrary and not required. You could
+pass and use `data.cupcakes` if you want. Cupcakes are awesome.
 
 ## Shortstop handlers
 
