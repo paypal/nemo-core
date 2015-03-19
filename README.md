@@ -336,19 +336,15 @@ Plugins are registered with JSON like the following (will vary based on your plu
 }
 ```
 
-#### module
+Plugin.pluginName parameters:
 
-Module must resolve to a require'able module, either via name (in the case it is in your dependency tree) or via path to the file or directory.
-As a convenience, you may use the "path" shortstop handler, which will prepend any value with the `process.env.nemoBaseDir` value, or the
-`process.cwd()` valuer if the environment variable is not set.
+* **module {String}** - Module must resolve to a require'able module, either via name (in the case it is in your dependency tree) or via path to the file or directory.
 
-#### arguments (optional, depending on plugin)
+* **arguments {Array}** (optional, depending on plugin) - Your plugin will be called via its setup method with these arguments: `[configArg1, configArg2, ..., ]nemo, callback`.
+Please note that the braces there indicate "optional". The arguments will be applied via `Function.apply`
 
-Array, to which the `nemo` namespace and a callback function will be `Array.push`'d, and then applied (using `Function.apply`) to the plugin's setup function.
-
-#### priority
-
-A `priority` value of < 100 will register this plugin BEFORE the selenium driver object is created. This means that such a plugin can modify properties of the driver (such as `serverProps`). It also means that any other elements of the Nemo setup will NOT be available to that plugin. Leaving `priority` unset will register the plugin after the driver object is created.
+* **priority {Number}** (optional, depending on plugin) - A `priority` value of < 100 will register this plugin BEFORE the selenium driver object is created.
+This means that such a plugin can modify `config` properties prior to driver setup. Leaving `priority` unset will register the plugin after the driver object is created.
 
 ### data
 
