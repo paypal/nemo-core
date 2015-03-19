@@ -29,15 +29,13 @@ Then `npm install`
 
 ### Running Nemo
 
-In the directory where you've installed Nemo, create a file called "nemoExample.js" with the following content:
+If you install this repo you'll get the following in `examples/setup.js`
 
 ```javascript
-var Nemo = require('nemo');
+var Nemo = require("nemo");
 var nemo = Nemo({
-  'driver': {
-    'browser': 'firefox',
-    'local': true,
-    'jar': '/usr/local/bin/selenium-server-standalone.jar'
+  "driver": {
+    "browser": "firefox"
   },
   'data': {
     'baseUrl': 'https://www.paypal.com'
@@ -46,14 +44,12 @@ var nemo = Nemo({
   nemo.driver.get(nemo.data.baseUrl);
   nemo.driver.sleep(5000).
     then(function () {
-      console.info('Nemo was successful!!');
+      console.info("Nemo was successful!!");
       nemo.driver.quit();
     });
 });
 ```
 
-You can see this file within the nemo examples directory:
-[https://github.com/paypal/nemo/examples/setup.js](/examples/setup.js)
 
 Now, assuming you've set up a driver which matches the above requirements, you can run the following, with the following result:
 

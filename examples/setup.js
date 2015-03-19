@@ -1,9 +1,7 @@
 var Nemo = require("../");
 var nemo = Nemo({
   "driver": {
-    "browser": "firefox",
-    "local": true,
-    "jar": "/usr/local/bin/selenium-server-standalone.jar"
+    "browser": "firefox"
   },
   'data': {
     'baseUrl': 'https://www.paypal.com'
