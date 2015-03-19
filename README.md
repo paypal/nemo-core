@@ -136,10 +136,12 @@ $ BROWSER=chrome node examples/setupWithConfigDir.js BROWSER=phantomjs
 Nemo successfully launched chrome
 ```
 
+You can see that the environment variable wins.
+
 Now try this command:
 $ NODE_ENV=special node examples/setupWithConfigDir.js
 Nemo successfully launched phantomjs
-```
+
 Note that confit uses the value of NODE_ENV to look for an override config file. In this case `config/special.json`:
 
 ```javascript
