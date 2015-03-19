@@ -236,7 +236,23 @@ module.exports = {
 };
 ```
 
-So, this is a simple plugin, to illustrate how you can create a plugin, and the sorts of things you might want to do with a plugin.
+Running this example:
+
+```bash
+$ node examples/setupWithPlugin.js
+Nemo successfully launched firefox
+cookies [ { name: 'foo',
+   value: 'bar',
+   path: '',
+   domain: 'www.paypal.com',
+   secure: false,
+   expiry: null } ]
+=======================
+cookies []
+$
+```
+
+This illustrates how you can create a plugin, and the sorts of things you might want to do with a plugin.
 
 ## Nemo Constructor
 
