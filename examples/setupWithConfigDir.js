@@ -1,5 +1,7 @@
 var Nemo = require("../");
 
+//passing __dirname as the first argument tells confit to
+//look in __dirname + '/config' for config files
 var nemo = Nemo(__dirname, function (err) {
   //always check for errors!
   if (!!err) {

@@ -71,6 +71,8 @@ Nemo successfully launched firefox
 Look at `examples/setupWithConfigFiles.js`
 
 ```javascript
+//passing __dirname as the first argument tells confit to
+//look in __dirname + '/config' for config files
 var nemo = Nemo(__dirname, function (err) {
   //always check for errors!
   if (!!err) {
@@ -85,6 +87,8 @@ var nemo = Nemo(__dirname, function (err) {
   nemo.driver.quit();
 });
 ```
+
+Note the comment above that passing a filesystem path as the first argument to `Nemo()` will tell confit to look in that directory + `/config` for config files.
 
 Look at `examples/config/config.json`
 
@@ -132,7 +136,25 @@ $ BROWSER=chrome node examples/setupWithConfigDir.js BROWSER=phantomjs
 Nemo successfully launched chrome
 ```
 
-You can see that the environment variable value wins.
+Now try this command:
+$ NODE_ENV=special node examples/setupWithConfigDir.js
+Nemo successfully launched phantomjs
+```
+Note that confit uses the value of NODE_ENV to look for an override config file. In this case `config/special.json`:
+
+```javascript
+{
+  "driver": {
+    "browser": "phantomjs"
+  },
+  "data": {
+    "baseUrl": "https://www.paypal.com"
+  }
+}
+```
+
+Hopefully this was an instructive dive into the possibilities of Nemo + confit. There is more to learn but hopefully this is enough to whet your appetite for now!
+
 ## Nemo Constructor
 
 The interface into Nemo is simple. The constructor is:

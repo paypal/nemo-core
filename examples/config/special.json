@@ -1,6 +1,6 @@
 {
   "driver": {
-    "browser": "chrome"
+    "browser": "phantomjs"
   },
   "data": {
     "baseUrl": "https://www.paypal.com"
