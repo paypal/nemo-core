@@ -334,32 +334,20 @@ This is the confit configuration object. Documented here: https://github.com/kra
 Plugins are responsible for registering their own namespace under nemo. The convention is that the plugin should register the same namespace
 as is specified in the plugin configuration. E.g.
 
-## External configuration
-
-While you can fully configure nemo via the `config` argument in the constructor, you will get better flexibility by using the confit enabled configuration
-ability.
-
-In order to do this, you must:
-* set the `process.env.nemoBaseDir` environment variable to the base directory of your UI tests: e.g. `.../myApp/tests`
-* have a config directory under that: e.g. `.../myApp/tests/config`
-* have a config.json file in that directory, following the format of the Nemo constructor config (doc'd above)
-* have any `NODE_ENV` specific overrides in a config file named as the `NODE_ENV` (development, staging)
-  * please see the confit README for full documentation on confit override behavior based on `NODE_ENV`
-
-### Available shortstop handlers
+## Shortstop handlers
 
 Shortstop handlers are data processors that key off of directives in the JSON data. Ones that are enabled in nemo are:
 
-#### path
+### path
 
 use path to prepend the `nemoBaseDir` (or `process.cwd()`) to a value. E.g. if `nemoBaseDir` is `.../myApp/tests` then
 a config value of `'path:plugin/myPlugin'` will resolve to `.../myApp/tests/plugin/myPlugin`
 
-#### env
+### env
 
 use env to reference environment variables. E.g. a config value of `'env:PATH'` will resolve to `/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:...`
 
-#### config
+### config
 
 Use config to reference data in other parts of the JSON configuration. E.g. in the following config.json:
 
