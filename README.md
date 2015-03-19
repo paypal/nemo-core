@@ -160,7 +160,10 @@ Hopefully this was an instructive dive into the possibilities of Nemo + confit. 
 ## Nemo Constructor
 
 The interface into Nemo is simple. The constructor is:
-`var nemo = Nemo([config, ]callback);`
+`var nemo = Nemo([[nemoBaseDir, ]config, ]callback);`
+
+Note that `nemoBaseDir` can also be set as an environment variable, and can be optional in the constructor. `config` is likewise optional if you have provided
+a `nemoBaseDir` value in the env or constructor.
 
 You can provide configuration (defined below) into the constructor, or via the confit based configuration feature. The constructor will immediately
 return an empty object. After the internal setup routine, the object will be resoled as the `nemo` namespace. Use the callback to be notified
