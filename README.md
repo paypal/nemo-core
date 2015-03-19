@@ -163,6 +163,81 @@ Note that confit uses the value of NODE_ENV to look for an override config file.
 
 Hopefully this was an instructive dive into the possibilities of Nemo + confit. There is more to learn but hopefully this is enough to whet your appetite for now!
 
+## Nemo and Plugins in 60 Seconds
+
+Look at the `example/setupWithPlugin.js` file:
+
+```javascript
+var nemo = Nemo(basedir, function (err) {
+  //always check for errors!
+  if (!!err) {
+    console.log('Error during Nemo setup', err);
+  }
+  nemo.driver.getCapabilities().
+    then(function (caps) {
+      console.info("Nemo successfully launched", caps.caps_.browserName);
+    });
+  nemo.driver.get(nemo.data.baseUrl);
+  nemo.cookie.deleteAll();
+  nemo.cookie.set('foo', 'bar');
+  nemo.cookie.getAll().then(function (cookies) {
+    console.log('cookies', cookies);
+    console.log('=======================');
+  });
+  nemo.cookie.deleteAll();
+  nemo.cookie.getAll().then(function (cookies) {
+    console.log('cookies', cookies);
+  });
+  nemo.driver.quit();
+});
+```
+
+Notice the `nemo.cookie` namespace. This is actually a plugin, and if you look at the config for this setup:
+```javascript
+{
+  "driver": {
+    "browser": "firefox"
+  },
+  "data": {
+    "baseUrl": "https://www.paypal.com"
+  },
+  "plugins": {
+    "cookie": {
+      "module": "path:./nemo-cookie"
+    }
+  }
+}
+```
+You'll see the `plugins.cookie` section, which is loading `examples/plugin/nemo-cookie.js` as a plugin:
+```javascript
+'use strict';
+
+module.exports = {
+  "setup": function (nemo, callback) {
+    nemo.cookie = {};
+    nemo.cookie.delete = function (name) {
+      return nemo.driver.manage().deleteCookie(name);
+    };
+    nemo.cookie.deleteAll = function () {
+      return nemo.driver.manage().deleteAllCookies();
+    };
+    nemo.cookie.set = function (name, value, path, domain, isSecure, expiry) {
+      return nemo.driver.manage().addCookie(name, value, path, domain, isSecure, expiry)
+    };
+    nemo.cookie.get = function (name) {
+      return nemo.driver.manage().getCookie(name);
+    };
+    nemo.cookie.getAll = function () {
+      return nemo.driver.manage().getCookies();
+    };
+    callback(null);
+
+  }
+};
+```
+
+So, this is a simple plugin, to illustrate how you can create a plugin, and the sorts of things you might want to do with a plugin.
+
 ## Nemo Constructor
 
 `var nemo = Nemo([[nemoBaseDir, ]config, ]callback);`

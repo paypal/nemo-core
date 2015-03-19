@@ -1,6 +1,6 @@
 {
   "driver": {
-    "browser": "config:BROWSER"
+    "browser": "firefox"
   },
   "data": {
     "baseUrl": "https://www.paypal.com"
@@ -9,6 +9,5 @@
     "cookie": {
       "module": "path:./nemo-cookie"
     }
-  },
-  "BROWSER": "firefox"
+  }
 }
