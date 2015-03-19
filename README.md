@@ -178,15 +178,15 @@ debugging information. So make sure to check for an error.
 
 `@returns nemo {Object}` - The nemo object has the following properties:
 
-*driver* The live `selenium-webdriver` API. See WebDriver API Doc: http://selenium.googlecode.com/git/docs/api/javascript/class_webdriver_WebDriver.html
+* **driver** The live `selenium-webdriver` API. See WebDriver API Doc: http://selenium.googlecode.com/git/docs/api/javascript/class_webdriver_WebDriver.html
 
-*wd* This is a reference to the `selenium-webdriver` module: http://selenium.googlecode.com/git/docs/api/javascript/module_selenium-webdriver.html
+* **wd** This is a reference to the `selenium-webdriver` module: http://selenium.googlecode.com/git/docs/api/javascript/module_selenium-webdriver.html
 
-*data* Pass through of any data included in the `data` property of the configuration
+* **data** Pass through of any data included in the `data` property of the configuration
 
-*_config* This is the confit configuration object. Documented here: https://github.com/krakenjs/confit#config-api
+* **_config** This is the confit configuration object. Documented here: https://github.com/krakenjs/confit#config-api
 
-*plugin namespace(s)* Plugins are responsible for registering their own namespace under nemo. The convention is that the plugin should register the same namespace
+* **plugin namespace(s)** Plugins are responsible for registering their own namespace under nemo. The convention is that the plugin should register the same namespace
 as is specified in the plugin configuration. E.g. the `nemo-view` module registers itself as `nemo.view` and is configured like this:
 
 ```javascript
