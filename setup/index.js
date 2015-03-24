@@ -32,12 +32,13 @@ function Setup() {
 
       var caps,
         driver,
-        tgtBrowser = driverProps.browser || '',
+        tgtBrowser = driverProps.browser,
         localServer = driverProps.local || false,
         customCaps = driverProps.serverCaps,
         serverUrl = driverProps.server,
         serverProps = driverProps.serverProps || {},
         serverJar = driverProps.jar,
+        builders = driverProps.builders,
         proxyDetails = driverProps.proxyDetails,
         errorObject = null;
 
@@ -99,9 +100,23 @@ function Setup() {
 
       try {
 
-        driver = new webdriver.Builder().
-          usingServer(getServer()).
-          withCapabilities(getCapabilities()).setProxy(getProxy()).build();
+        var builder = new webdriver.Builder();
+        if (builders !== undefined) {
+          Object.keys(builders).forEach(function (bldr) {
+            builder = builder[bldr].apply(builder, builders[bldr]);
+          });
+        }
+        if (serverUrl !== undefined) {
+          builder = builder.usingServer(getServer());
+        }
+        if (tgtBrowser !== undefined) {
+          builder = builder.withCapabilities(getCapabilities());
+        }
+        if (proxyDetails !== undefined) {
+          builder = builder.setProxy(getProxy());
+        }
+        log('builder FINAL', builder);
+        driver = builder.build();
       } catch (err) {
         error('Encountered an error during driver setup: %', err);
         errorObject = err;

@@ -1,0 +1,8 @@
+{
+  "driver": {
+    "browser": "phantomjs"
+  },
+  "data": {
+    "baseUrl": "https://www.paypal.com"
+  }
+}

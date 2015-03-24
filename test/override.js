@@ -9,7 +9,7 @@ var assert = require('assert'),
 
 describe('@override@', function () {
 
-  it("from env over config.json data", function (done) {
+  it("@fromEnv@ over config.json data", function (done) {
     process.env.nemoBaseDir = path.join(process.cwd(), 'test');
     process.env.data = JSON.stringify({
       baseUrl: 'http://www.ebay.com'
@@ -20,7 +20,7 @@ describe('@override@', function () {
       done();
     });
   });
-  it("from arg over config.json data", function (done) {
+  it("@fromArg@ over config.json data", function (done) {
     process.env.nemoBaseDir = path.join(process.cwd(), 'test');
 
     nemo = Nemo({

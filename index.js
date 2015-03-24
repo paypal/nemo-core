@@ -126,7 +126,8 @@ var setup = function setup(config, cb) {
   var waterFallArray = [],
     preDriverArray = [],
     postDriverArray = [],
-    plugins = {};
+    plugins = {},
+    pluginError = false;
   var driverConfig = config.get('driver');
   var nemo = {
     'data': config.get('data'),
@@ -138,7 +139,6 @@ var setup = function setup(config, cb) {
   if (config && config.get('plugins')) {
     plugins = config.get('plugins');
   }
-  preDriverArray = [datasetup(nemo)];
 
   Object.keys(plugins).forEach(function pluginsKeys(key) {
     var modulePath,
@@ -159,15 +159,19 @@ var setup = function setup(config, cb) {
       var noPluginModuleError = new Error('Nemo plugin has invalide module');
       noPluginModuleError.name = 'nemoNoPluginModuleError';
       cb(noPluginModuleError);
+      pluginError = true;
       return;
     }
     if (plugins[key].priority && plugins[key].priority < 100) {
-      preDriverArray.push(pluginReg(pluginArgs, pluginModule));
+      preDriverArray.push(pluginReg(nemo, pluginArgs, pluginModule));
     } else {
-      postDriverArray.push(pluginReg(pluginArgs, pluginModule));
+      postDriverArray.push(pluginReg(nemo, pluginArgs, pluginModule));
     }
   });
-  waterFallArray = preDriverArray.concat([driversetup(driverConfig)], postDriverArray);
+  if (pluginError) {
+    return;
+  }
+  waterFallArray = preDriverArray.concat([driversetup(nemo, driverConfig)], postDriverArray);
 
   async.waterfall(waterFallArray, function waterfall(err, result) {
     if (err) {
@@ -179,8 +183,8 @@ var setup = function setup(config, cb) {
 
 };
 
-var driversetup = function (driverConfig) {
-  return function driversetup(_nemo, callback) {
+var driversetup = function (_nemo, driverConfig) {
+  return function driversetup(callback) {
     //do driver/view/locator/vars setup
     (Setup()).doSetup(driverConfig, function setupCallback(err, _driver) {
       if (err) {
@@ -189,20 +193,15 @@ var driversetup = function (driverConfig) {
       }
       //set driver
       _nemo.driver = _driver;
-      callback(null, _nemo);
+      callback(null);
 
     });
   }
 };
 
-var datasetup = function (nemo) {
-  return function datasetup(callback) {
-    callback(null, nemo);
-  }
-};
 
-var pluginReg = function (pluginArgs, pluginModule) {
-  return function pluginReg(_nemo, callback) {
+var pluginReg = function (_nemo, pluginArgs, pluginModule) {
+  return function pluginReg(callback) {
 
     pluginArgs.push(_nemo);
     pluginArgs.push(callback);

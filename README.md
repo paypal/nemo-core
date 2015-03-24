@@ -6,8 +6,6 @@ architecture, Nemo is flexible enough to handle any browser/device automation ne
 Nemo is built to easily plug into any task runner and test runner. But in this README we will only cover setup and architecture of Nemo
 as a standalone entity.
 
-For a holistic guide to using Nemo as an overall automation solution, [please start here](https://github.com/paypal/nemo-docs)
-
 
 ## Getting started
 
@@ -15,60 +13,298 @@ For a holistic guide to using Nemo as an overall automation solution, [please st
 
 #### Webdriver
 
-[Please see here for more information about setting up a webdriver](https://github.com/paypal/nemo-docs/blob/master/driver-setup.md). Your choice of webdriver will influence some of your settings below.
+[Please see here for more information about setting up a webdriver](https://github.com/paypal/nemo-docs/blob/master/driver-setup.md).
+As long as you have the appropriate browser or browser driver (selenium-standalone, chromedriver) on your PATH, the rest of this should work
+fine.
+
 
 #### package.json changes
 
 add the following to package.json devDependencies (assuming mocha is already integrated to your project):
 
 ```javascript
-"nemo": "^1.0.0",
+"nemo": "git://github.com/paypal/nemo#1.0-develop",
 ```
 
 Then `npm install`
 
-### Running Nemo
+### Nemo and Confit in 90 seconds
 
-In the directory where you've installed Nemo, create a file called "nemoExample.js" with the following content:
+Nemo uses confit - a powerful, expressive and intuitive configuration system - to elegantly expose the Nemo and selenium-webdriver APIs.
+
+#### Direct configuration
+
+If you install this repo you'll get the following in `examples/setup.js`. Note the `Nemo()` constructor is directly accepting the needed configuration,
+along with a callback function.
 
 ```javascript
-var Nemo = require('nemo');
 var nemo = Nemo({
-  'driver': {
-    'browser': 'firefox',
-    'local': true,
-    'jar': '/usr/local/bin/selenium-server-standalone.jar'
+  "driver": {
+    "browser": "firefox"
   },
   'data': {
     'baseUrl': 'https://www.paypal.com'
   }
-}, function () {
+}, function (err) {
+  //always check for errors!
+  if (!!err) {
+    console.log('Error during Nemo setup', err);
+  }
   nemo.driver.get(nemo.data.baseUrl);
-  nemo.driver.sleep(5000).
-    then(function () {
-      console.info('Nemo was successful!!');
-      nemo.driver.quit();
+  nemo.driver.getCapabilities().
+    then(function (caps) {
+      console.info("Nemo successfully launched", caps.caps_.browserName);
     });
+  nemo.driver.quit();
 });
 ```
 
-You can see this file within the nemo examples directory:
-[https://github.com/paypal/nemo/examples/setup.js](/examples/setup.js)
 
-Now, assuming you've set up a driver which matches the above requirements, you can run the following, with the following result:
+Run it:
 
 ```bash
 $ node examples/setup.js
-Nemo was successful!!
+Nemo successfully launched firefox
 ```
+
+#### Using config files
+
+Look at `examples/setupWithConfigFiles.js`
+
+```javascript
+//passing __dirname as the first argument tells confit to
+//look in __dirname + '/config' for config files
+var nemo = Nemo(__dirname, function (err) {
+  //always check for errors!
+  if (!!err) {
+    console.log('Error during Nemo setup', err);
+  }
+
+  nemo.driver.get(nemo.data.baseUrl);
+  nemo.driver.getCapabilities().
+    then(function (caps) {
+      console.info("Nemo successfully launched", caps.caps_.browserName);
+    });
+  nemo.driver.quit();
+});
+```
+
+Note the comment above that passing a filesystem path as the first argument to `Nemo()` will tell confit to look in that directory + `/config` for config files.
+
+Look at `examples/config/config.json`
+
+```javascript
+{
+  "driver": {
+    "browser": "config:BROWSER"
+  },
+  "data": {
+    "baseUrl": "https://www.paypal.com"
+  },
+  "BROWSER": "firefox"
+}
+```
+
+That is almost the same config as the first example. But notice `"config:BROWSER"`. Yes, confit will resolve that to the config property `"BROWSER"`.
+
+Run this and it will open the Firefox browser:
+
+```bash
+$ node examples/setup.js
+Nemo successfully launched firefox
+```
+
+Now run this command:
+
+```bash
+$ node examples/setupWithConfigDir.js --BROWSER=chrome
+Nemo successfully launched chrome
+```
+
+Here, confit resolves the `--BROWSER=chrome` command line argument and overrides the `BROWSER` value from config.json
+
+Now this command:
+
+```bash
+$ BROWSER=chrome node examples/setupWithConfigDir.js
+Nemo successfully launched chrome
+```
+
+Here, confit resolves the `BROWSER` environment variable and overrides `BROWSER` from config.json
+
+What if we set both?
+
+```bash
+$ BROWSER=chrome node examples/setupWithConfigDir.js BROWSER=phantomjs
+Nemo successfully launched chrome
+```
+
+You can see that the environment variable wins.
+
+Now try this command:
+
+```
+$ NODE_ENV=special node examples/setupWithConfigDir.js
+Nemo successfully launched phantomjs
+```
+
+Note that confit uses the value of NODE_ENV to look for an override config file. In this case `config/special.json`:
+
+```javascript
+{
+  "driver": {
+    "browser": "phantomjs"
+  },
+  "data": {
+    "baseUrl": "https://www.paypal.com"
+  }
+}
+```
+
+Hopefully this was an instructive dive into the possibilities of Nemo + confit. There is more to learn but hopefully this is enough to whet your appetite for now!
+
+## Nemo and Plugins in 60 Seconds
+
+Look at the `example/setupWithPlugin.js` file:
+
+```javascript
+var nemo = Nemo(basedir, function (err) {
+  //always check for errors!
+  if (!!err) {
+    console.log('Error during Nemo setup', err);
+  }
+  nemo.driver.getCapabilities().
+    then(function (caps) {
+      console.info("Nemo successfully launched", caps.caps_.browserName);
+    });
+  nemo.driver.get(nemo.data.baseUrl);
+  nemo.cookie.deleteAll();
+  nemo.cookie.set('foo', 'bar');
+  nemo.cookie.getAll().then(function (cookies) {
+    console.log('cookies', cookies);
+    console.log('=======================');
+  });
+  nemo.cookie.deleteAll();
+  nemo.cookie.getAll().then(function (cookies) {
+    console.log('cookies', cookies);
+  });
+  nemo.driver.quit();
+});
+```
+
+Notice the `nemo.cookie` namespace. This is actually a plugin, and if you look at the config for this setup:
+```javascript
+{
+  "driver": {
+    "browser": "firefox"
+  },
+  "data": {
+    "baseUrl": "https://www.paypal.com"
+  },
+  "plugins": {
+    "cookie": {
+      "module": "path:./nemo-cookie"
+    }
+  }
+}
+```
+You'll see the `plugins.cookie` section, which is loading `examples/plugin/nemo-cookie.js` as a plugin:
+```javascript
+'use strict';
+
+module.exports = {
+  "setup": function (nemo, callback) {
+    nemo.cookie = {};
+    nemo.cookie.delete = function (name) {
+      return nemo.driver.manage().deleteCookie(name);
+    };
+    nemo.cookie.deleteAll = function () {
+      return nemo.driver.manage().deleteAllCookies();
+    };
+    nemo.cookie.set = function (name, value, path, domain, isSecure, expiry) {
+      return nemo.driver.manage().addCookie(name, value, path, domain, isSecure, expiry)
+    };
+    nemo.cookie.get = function (name) {
+      return nemo.driver.manage().getCookie(name);
+    };
+    nemo.cookie.getAll = function () {
+      return nemo.driver.manage().getCookies();
+    };
+    callback(null);
+
+  }
+};
+```
+
+Running this example:
+
+```bash
+$ node examples/setupWithPlugin.js
+Nemo successfully launched firefox
+cookies [ { name: 'foo',
+   value: 'bar',
+   path: '',
+   domain: 'www.paypal.com',
+   secure: false,
+   expiry: null } ]
+=======================
+cookies []
+$
+```
+
+This illustrates how you can create a plugin, and the sorts of things you might want to do with a plugin.
+
 ## Nemo Constructor
 
-The interface into Nemo is simple. The constructor is:
-`var nemo = Nemo([config, ]callback);`
+`var nemo = Nemo([[nemoBaseDir, ]config, ]callback);`
 
-You can provide configuration (defined below) into the constructor, or via the confit based configuration feature. The constructor will immediately
-return an empty object. After the internal setup routine, the object will be resoled as the `nemo` namespace. Use the callback to be notified
-of full `nemo` resolution.
+`@argument nemoBaseDir {String}` (optional) - If provided, should be a filesystem path to your test suite. Nemo will expect to find a `/config` directory beneath that.
+`<nemoBaseDir>/config/config.json` should have your default configuration (described below). `nemoBaseDir` can alternatively be set as an environment variable. If it is
+not set, you need to pass your configuration as the `config` parameter (see below).
+
+`@argument config {Object}` (optional) - Can be a full configuration (if `nemoBaseDir` not provided) or additional/override configuration to what's in your config files.
+
+`@argument callback {Function}` - This function will be called once the `nemo` object is fully resolved. It may be called with an error argument which has important
+debugging information. So make sure to check for an error.
+
+`@returns nemo {Object}` - The nemo object has the following properties:
+
+* **driver** The live `selenium-webdriver` API. See WebDriver API Doc: http://selenium.googlecode.com/git/docs/api/javascript/class_webdriver_WebDriver.html
+
+* **wd** This is a reference to the `selenium-webdriver` module: http://selenium.googlecode.com/git/docs/api/javascript/module_selenium-webdriver.html
+
+* **data** Pass through of any data included in the `data` property of the configuration
+
+* **_config** This is the confit configuration object. Documented here: https://github.com/krakenjs/confit#config-api
+
+* **plugin namespace(s)** Plugins are responsible for registering their own namespace under nemo. The convention is that the plugin should register the same namespace
+as is specified in the plugin configuration. E.g. the `nemo-view` module registers itself as `nemo.view` and is configured like this:
+
+```javascript
+{
+  "driver": ...
+  "plugins": {
+    "view": {
+      "module": "nemo-view"
+    }
+  }
+```
+
+You could also have a config that looks like this, and `nemo-view` will still register itself as `nemo.view`
+
+```javascript
+{
+  "driver": ...
+  "plugins": {
+    "cupcakes": {
+      "module": "nemo-view"
+    }
+  }
+```
+
+But that's confusing. So please stick to the convention.
+
+### Typical usage of Nemo constructor
 
 A typical pattern would be to use `mocha` as a test runner, resolve `nemo` in the context of the mocha `before` function, and use
 the mocha `done` function as the callback:
@@ -103,9 +339,9 @@ This configuration object is optional, as long as you've got `nemoData` set as a
 
 ### driver
 
-Here are the `driver` properties recognized by Nemo:
+Here are the `driver` properties recognized by Nemo. This is ALL of them. Please be aware that you really only need to supply "browser" to get things working initially.
 
-#### browser
+#### browser (optional)
 
 Browser you wish to automate. Make sure that your chosen webdriver has this browser option available
 
@@ -163,6 +399,15 @@ Default is 'direct'. For more information refer : https://selenium.googlecode.co
 }
 ```
 
+#### builders (optional)
+
+This is a JSON interface to any of the Builder methods which take simple arguments and return the builder. See the Builder class here: http://selenium.googlecode.com/git/docs/api/javascript/module_selenium-webdriver_class_Builder.html
+
+Useful such functions are:
+* forBrowser (can take the place of "browser", "local" and "jar" properties above)
+* withCapabilities (can take the place of "serverCaps" above)
+
+There may be some overlap between these functions and
 ### plugins
 
 Plugins are registered with JSON like the following (will vary based on your plugins)
@@ -182,71 +427,35 @@ Plugins are registered with JSON like the following (will vary based on your plu
 }
 ```
 
-#### module
+Plugin.pluginName parameters:
 
-Module must resolve to a require'able module, either via name (in the case it is in your dependency tree) or via path to the file or directory.
-As a convenience, you may use the "path" shortstop handler, which will prepend any value with the `process.env.nemoBaseDir` value, or the
-`process.cwd()` valuer if the environment variable is not set.
+* **module {String}** - Module must resolve to a require'able module, either via name (in the case it is in your dependency tree) or via path to the file or directory.
 
-#### arguments (optional, depending on plugin)
+* **arguments {Array}** (optional, depending on plugin) - Your plugin will be called via its setup method with these arguments: `[configArg1, configArg2, ..., ]nemo, callback`.
+Please note that the braces there indicate "optional". The arguments will be applied via `Function.apply`
 
-Array, to which the `nemo` namespace and a callback function will be `Array.push`'d, and then applied (using `Function.apply`) to the plugin's setup function.
-
-#### priority
-
-A `priority` value of < 100 will register this plugin BEFORE the selenium driver object is created. This means that such a plugin can modify properties of the driver (such as `serverProps`). It also means that any other elements of the Nemo setup will NOT be available to that plugin. Leaving `priority` unset will register the plugin after the driver object is created.
-
-## Nemo namespace
-
-The resolved `nemo` namespace has the following properties
-
-### driver
-
-The live `selenium-webdriver` API. See WebDriver API Doc: http://selenium.googlecode.com/git/docs/api/javascript/class_webdriver_WebDriver.html
-
-### wd
-
-This is a reference to the `selenium-webdriver` module: http://selenium.googlecode.com/git/docs/api/javascript/module_selenium-webdriver.html
+* **priority {Number}** (optional, depending on plugin) - A `priority` value of < 100 will register this plugin BEFORE the selenium driver object is created.
+This means that such a plugin can modify `config` properties prior to driver setup. Leaving `priority` unset will register the plugin after the driver object is created.
 
 ### data
 
-Pass through of any data included in the `data` property of the configuration
+Data will be arbitrary stuff that you might like to use in your tests. In a lot of the examples we set `data.baseUrl` but again, that's arbitrary and not required. You could
+pass and use `data.cupcakes` if you want. Cupcakes are awesome.
 
-### _config
-
-This is the confit configuration object. Documented here: https://github.com/krakenjs/confit#config-api
-
-### plugin namespace(s)
-
-Plugins are responsible for registering their own namespace under nemo. The convention is that the plugin should register the same namespace
-as is specified in the plugin configuration. E.g.
-
-## External configuration
-
-While you can fully configure nemo via the `config` argument in the constructor, you will get better flexibility by using the confit enabled configuration
-ability.
-
-In order to do this, you must:
-* set the `process.env.nemoBaseDir` environment variable to the base directory of your UI tests: e.g. `.../myApp/tests`
-* have a config directory under that: e.g. `.../myApp/tests/config`
-* have a config.json file in that directory, following the format of the Nemo constructor config (doc'd above)
-* have any `NODE_ENV` specific overrides in a config file named as the `NODE_ENV` (development, staging)
-  * please see the confit README for full documentation on confit override behavior based on `NODE_ENV`
-
-### Available shortstop handlers
+## Shortstop handlers
 
 Shortstop handlers are data processors that key off of directives in the JSON data. Ones that are enabled in nemo are:
 
-#### path
+### path
 
 use path to prepend the `nemoBaseDir` (or `process.cwd()`) to a value. E.g. if `nemoBaseDir` is `.../myApp/tests` then
 a config value of `'path:plugin/myPlugin'` will resolve to `.../myApp/tests/plugin/myPlugin`
 
-#### env
+### env
 
 use env to reference environment variables. E.g. a config value of `'env:PATH'` will resolve to `/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:...`
 
-#### config
+### config
 
 Use config to reference data in other parts of the JSON configuration. E.g. in the following config.json:
 
@@ -285,8 +494,13 @@ module.exports.setup = function myPlugin([arg1, arg2, ..., ]nemo, callback) {
   //add your plugin to the nemo namespace
   nemo.myPlugin = myPluginFactory([arg1, arg2, ...]); //adds myMethod1, myMethod2
 
+  //error in your plugin setup
+  if (err) {
+    callback(err);
+    return;
+  }
   //continue
-  callback(null, nemo);
+  callback(null);
 };
 ```
 

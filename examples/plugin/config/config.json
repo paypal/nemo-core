@@ -1,0 +1,13 @@
+{
+  "driver": {
+    "browser": "firefox"
+  },
+  "data": {
+    "baseUrl": "https://www.paypal.com"
+  },
+  "plugins": {
+    "cookie": {
+      "module": "path:./nemo-cookie"
+    }
+  }
+}

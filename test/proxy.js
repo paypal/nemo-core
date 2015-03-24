@@ -10,15 +10,15 @@ describe("@proxy@ ", function () {
     process.env.nemoBaseDir = path.join(process.cwd(), 'test');
     var nemo = Nemo({
       "driver": {
-        "local": false,
-        "browser": "phantomjs",
         "proxyDetails": {
           method: "manual",
           args: [{"http": "host:1234", "ftp": "host:1234", "https": "host:1234"}]
+        },
+        "builders": {
+          "forBrowser": ['phantomjs']
         }
       }
-    }, function () {
-      console.log(nemo.data.baseUrl);
+    }, function (err) {
       nemo.driver.getCapabilities().then(function (name) {
         var proxy = name.caps_.proxy;
         assert.equal(proxy.proxyType, 'manual');
