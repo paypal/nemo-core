@@ -53,7 +53,6 @@ function Nemo(_basedir, _configOverride, _cb) {
     var noCallbackError = new Error('Nemo constructor needs at least a callback');
     noCallbackError.name = 'nemoNoCallbackError';
     throw noCallbackError;
-    return;
   }
   else if (arguments.length === 1) {
     log('constructor: callback only');
@@ -196,7 +195,7 @@ var driversetup = function (_nemo, driverConfig) {
       callback(null);
 
     });
-  }
+  };
 };
 
 
@@ -214,7 +213,7 @@ var pluginReg = function (_nemo, pluginArgs, pluginModule) {
       pluginSetupError.name = 'nemoPluginSetupError';
       callback(pluginSetupError);
     }
-  }
+  };
 };
 
 var envToJSON = function (prop) {
@@ -225,7 +224,7 @@ var envToJSON = function (prop) {
       'json': {},
       'reset': function () {
       }
-    }
+    };
   }
   try {
     var grabJSON = JSON.parse(process.env[prop]);
@@ -239,6 +238,6 @@ var envToJSON = function (prop) {
     'reset': function () {
       process.env[prop] = originalValue;
     }
-  }
+  };
 };
 module.exports = Nemo;
