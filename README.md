@@ -23,7 +23,7 @@ fine.
 add the following to package.json devDependencies (assuming mocha is already integrated to your project):
 
 ```javascript
-"nemo": "git://github.com/grawk/nemo#1.0-develop",
+"nemo": "git://github.com/paypal/nemo#1.0-develop",
 ```
 
 Then `npm install`
