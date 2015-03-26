@@ -453,7 +453,13 @@ a config value of `'path:plugin/myPlugin'` will resolve to `.../myApp/tests/plug
 
 ### env
 
-use env to reference environment variables. E.g. a config value of `'env:PATH'` will resolve to `/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:...`
+use env to reference environment variables. E.g. a config value of `'env:PATH'` will resolve to
+`/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:...`
+
+### argv
+
+use argv to reference argv variables. E.g. a config value of `'argv:browser'` will resolve to `firefox` if you
+set `--browser firefox` as an argv on the command line
 
 ### config
 

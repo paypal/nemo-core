@@ -22,6 +22,7 @@ var async = require('async'),
   _ = require('lodash'),
   path = require('path'),
   confit = require('confit'),
+  yargs = require('yargs'),
   handlers = require('shortstop-handlers'),
   webdriver = require('selenium-webdriver');
 
@@ -81,7 +82,11 @@ function Nemo(_basedir, _configOverride, _cb) {
   confitOptions = {
     protocols: {
       path: handlers.path(basedir, {}),
-      env: handlers.env({})
+      env: handlers.env({}),
+      argv: function argHandler(val) {
+        var argv = yargs.argv;
+        return argv[val] || '';
+      }
     }
   };
   if (basedir) {
@@ -153,7 +158,7 @@ var setup = function setup(config, cb) {
     log('modulePath %s', modulePath);
     try {
       pluginModule = require(modulePath);
-    } catch(err) {
+    } catch (err) {
       error(err);
       var noPluginModuleError = new Error('Nemo plugin has invalide module');
       noPluginModuleError.name = 'nemoNoPluginModuleError';
