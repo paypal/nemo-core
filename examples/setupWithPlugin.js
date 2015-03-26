@@ -13,13 +13,8 @@ var nemo = Nemo(basedir, function (err) {
   nemo.driver.get(nemo.data.baseUrl);
   nemo.cookie.deleteAll();
   nemo.cookie.set('foo', 'bar');
-  nemo.cookie.getAll().then(function (cookies) {
-    console.log('cookies', cookies);
-    console.log('=======================');
-  });
+  nemo.cookie.showAll();
   nemo.cookie.deleteAll();
-  nemo.cookie.getAll().then(function (cookies) {
-    console.log('cookies', cookies);
-  });
+  nemo.cookie.showAll();
   nemo.driver.quit();
 });

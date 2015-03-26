@@ -18,6 +18,12 @@ module.exports = {
     nemo.cookie.getAll = function () {
       return nemo.driver.manage().getCookies();
     };
+    nemo.cookie.showAll = function () {
+      return nemo.cookie.getAll().then(function (cookies) {
+        console.log('cookies', cookies);
+        console.log('=======================');
+      });
+    };
     callback(null);
 
   }
