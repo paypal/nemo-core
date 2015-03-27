@@ -72,10 +72,24 @@ function Nemo(config) {
           'view': {},
           'locator': {},
           'driver': {},
-          'wd': webdriver
+          'wd': webdriver,
+          'tearDownArray' : []
         };
+
+        nemo.clean = function clean(callback){
+          async.waterfall(nemo.tearDownArray,function(err,result){
+            if(err){
+              callback(err);
+            }
+            else{
+              console.log("The result is \t" + result);
+              callback(null);
+            }
+          });
+        }
       var d = webdriver.promise.defer();
       preDriverArray = [datasetup];
+      nemo.tearDownArray = [datasetup];
 
       Object.keys(plugins).forEach(function pluginsKeys(key) {
         var modulePath,
@@ -93,6 +107,8 @@ function Nemo(config) {
           } else {
             postDriverArray.push(pluginModule.setup);
           }
+          if(pluginModule.teardown)
+            nemo.tearDownArray.push(pluginModule.teardown);
         }
       });
       waterFallArray = preDriverArray.concat([driversetup], postDriverArray);
