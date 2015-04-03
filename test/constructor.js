@@ -3,7 +3,7 @@
 
 var assert = require('assert'),
   path = require('path'),
-  nemo,
+  nemo = {},
   Nemo = require('../index');
 
 describe('@constructor@', function () {
