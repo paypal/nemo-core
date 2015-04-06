@@ -135,7 +135,7 @@ Here, confit resolves the `BROWSER` environment variable and overrides `BROWSER`
 What if we set both?
 
 ```bash
-$ BROWSER=chrome node examples/setupWithConfigDir.js BROWSER=phantomjs
+$ BROWSER=chrome node examples/setupWithConfigDir.js --BROWSER=phantomjs
 Nemo successfully launched chrome
 ```
 
