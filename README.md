@@ -354,8 +354,6 @@ Set local to true if you want Nemo to attempt to start a standalone binary on yo
 
 Webdriver server URL you wish to use.
 
-If you are using sauce labs, make sure `server` is set to correct url like `"http://yourkey:yoursecret@ondemand.saucelabs.com:80/wd/hub"`
-
 #### serverProps (optional/conditional)
 
 Additional server properties required of the 'targetServer'
