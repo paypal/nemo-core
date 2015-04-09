@@ -20,29 +20,26 @@ var fs = require('fs'),
   proxy = require('selenium-webdriver/proxy'),
   debug = require('debug'),
   log = debug('nemo:log'),
-  error = debug('nemo:error'),
-  nemoData = {},
-  driver;
+  error = debug('nemo:error');
 
 error.log = console.error.bind(console);
 
 function Setup() {
   log('new Setup instance created');
   return {
-    doSetup: function doSetup(_wd, nemoData, callback) {
+    doSetup: function doSetup(driverProps, callback) {
       log('entering doSetup');
-      if (nemoData === {}) {
-        callback(new Error('[Nemo::doSetup] The nemoData environment variable is missing or not fully defined!'));
-        return;
-      }
+
       var caps,
-        tgtBrowser = nemoData.targetBrowser || '',
-        localServer = nemoData.localServer || false,
-        customCaps = nemoData.serverCaps,
-        serverUrl = nemoData.targetServer,
-        serverProps = nemoData.serverProps || {},
-        serverJar = nemoData.seleniumJar,
-        proxyDetails = nemoData.proxyDetails,
+        driver,
+        tgtBrowser = driverProps.browser,
+        localServer = driverProps.local || false,
+        customCaps = driverProps.serverCaps,
+        serverUrl = driverProps.server,
+        serverProps = driverProps.serverProps || {},
+        serverJar = driverProps.jar,
+        builders = driverProps.builders,
+        proxyDetails = driverProps.proxyDetails,
         errorObject = null;
 
       function getServer() {
@@ -87,14 +84,15 @@ function Setup() {
         return caps;
       }
 
-      function getProxy(){
+      function getProxy() {
         if (proxyDetails) {
-          if (proxyDetails.method && proxy[proxyDetails.method]){
-            return proxy[proxyDetails.method].apply(proxy, proxyDetails.args);  
-          }else{
+          log('proxyDetails', proxyDetails);
+          if (proxyDetails.method && proxy[proxyDetails.method]) {
+            return proxy[proxyDetails.method].apply(proxy, proxyDetails.args);
+          } else {
             throw new Error('nemo: proxy configuration is incomplete or does not match the selenium-webdriver/proxy API');
           }
-          
+
         } else {
           return proxy.direct();
         }
@@ -102,16 +100,31 @@ function Setup() {
 
       try {
 
-        driver = new _wd.Builder().
-          usingServer(getServer()).
-          withCapabilities(getCapabilities()).setProxy(getProxy()).build();
+        var builder = new webdriver.Builder();
+        if (builders !== undefined) {
+          Object.keys(builders).forEach(function (bldr) {
+            builder = builder[bldr].apply(builder, builders[bldr]);
+          });
+        }
+        if (serverUrl !== undefined) {
+          builder = builder.usingServer(getServer());
+        }
+        if (tgtBrowser !== undefined) {
+          builder = builder.withCapabilities(getCapabilities());
+        }
+        if (proxyDetails !== undefined) {
+          builder = builder.setProxy(getProxy());
+        }
+        log('builder FINAL', builder);
+        driver = builder.build();
       } catch (err) {
         error('Encountered an error during driver setup: %', err);
         errorObject = err;
+        callback(errorObject);
+        return;
       }
-      callback(errorObject, {
-        'driver': driver
-      });
+      callback(errorObject, driver);
+
     }
   };
 }

@@ -1,0 +1,7 @@
+{
+  "driver": {
+    "builders": {
+      "forBrowser": ["chrome"]
+    }
+  }
+}
