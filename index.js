@@ -20,6 +20,10 @@ var async = require('async'),
   log = debug('nemo:log'),
   error = debug('nemo:error'),
   _ = require('lodash'),
+  path = require('path'),
+  confit = require('confit'),
+  yargs = require('yargs'),
+  handlers = require('shortstop-handlers'),
   webdriver = require('selenium-webdriver');
 
 error.log = console.error.bind(console);
@@ -31,137 +35,214 @@ error.log = console.error.bind(console);
  *
  */
 
-function Nemo(config) {
-  log('new Nemo instance created', JSON.stringify(config));
-  var nemoData = (config && config.nemoData) ? config.nemoData : undefined,
-    waterFallArray = [],
-    preDriverArray = [],
-    postDriverArray = [],
-    plugins = {};
-  //config is for registering plugins
-  if (config && config.plugins) {
-    plugins = config.plugins;
+function Nemo(_basedir, _configOverride, _cb) {
+  log('new Nemo instance created');
+  //argument vars
+  var basedir, configOverride, cb;
+
+  var nemo = {};
+  var confitOptions = {};
+  //hack because confit doesn't JSON.parse environment variables before merging
+  //look into using shorstop handler or pseudo-handler in place of this
+  var envdata = envToJSON('data');
+  var envdriver = envToJSON('driver');
+  var envplugins = envToJSON('plugins');
+
+  //settle arguments
+  if (arguments.length === 0) {
+    error('Nemo constructor needs at least a callback');
+    var noCallbackError = new Error('Nemo constructor needs at least a callback');
+    noCallbackError.name = 'nemoNoCallbackError';
+    throw noCallbackError;
+  }
+  else if (arguments.length === 1) {
+    log('constructor: callback only');
+    cb = arguments[0];
+    configOverride = {};
+    basedir = process.env.nemoBaseDir || undefined;
+  }
+  else if (arguments.length === 2) {
+    cb = arguments[1];
+    if (typeof arguments[0] === 'string') {
+      log('constructor: basedir + callback');
+      basedir = _basedir;
+      configOverride = {};
+    } else {
+      log('constructor: configOverride + callback');
+      configOverride = arguments[0];
+      basedir = process.env.nemoBaseDir || undefined;
+    }
+  }
+  else if (arguments.length === 3) {
+    basedir = _basedir;
+    configOverride = _configOverride;
+    cb = _cb;
   }
 
-
-  return {
-    /**
-     *
-     * setup
-     * @param {Object} config -
-     *  {
-     *    'view': ['example-login', 'serviceError']   //optional
-     *    ,'locator': ['wallet']                      //optional
-     *    ,<plugin config namespace>: <plugin config> //optional, depends on plugin setup
-     *  }
-       *@returns webdriver.promise - successful fulfillment will return an {Object} as below:
-       *  {
-     *    'view': {}                           //view instances if specified in config
-     *    ,'locator': {}                       //locator instances if specified in config
-     *    ,'driver': {}                        //driver instance. ALWAYS
-     *    ,'wd': {}                            //static reference to selenium-webdriver. ALWAYS
-     *    ,<plugin namespace>: <plugin object> //if plugin registers
-     *  }
-     */
-    setup: function setup(config) {
-      nemoData = (nemoData) ? nemoData : JSON.parse(process.env.nemoData);
-      config = config || {};
-      var me = this,
-        nemo = {
-          'props': nemoData,
-          'view': {},
-          'locator': {},
-          'driver': {},
-          'wd': webdriver
-        };
-      var d = webdriver.promise.defer();
-      preDriverArray = [datasetup];
-
-      Object.keys(plugins).forEach(function pluginsKeys(key) {
-        var modulePath,
-          pluginConfig,
-          pluginModule;
-
-        if ((plugins[key].register || config[key]) || key === 'view') {
-          log('register plugin %s', key);
-          //register this plugin
-          pluginConfig = plugins[key];
-          modulePath = pluginConfig.module;
-          pluginModule = require(modulePath);
-          if (plugins[key].priority && plugins[key].priority < 100) {
-            preDriverArray.push(pluginModule.setup);
-          } else {
-            postDriverArray.push(pluginModule.setup);
-          }
-        }
-      });
-      waterFallArray = preDriverArray.concat([driversetup], postDriverArray);
-      if (config.view || (plugins && plugins.view)) {
-        waterFallArray.push(viewsetup);
-      }
-      if (config.locator) {
-        waterFallArray.push(locatorsetup);
-      }
-      async.waterfall(waterFallArray, function waterfall(err, result) {
-        if (err) {
-          d.reject(err);
-        } else {
-          d.fulfill(nemo);
-        }
-      });
-      return d;
-
-      //waterfall functions
-      function datasetup(callback) {
-        callback(null, config, nemo);
-      }
-
-      function driversetup(config, _nemo, callback) {
-        //do driver/view/locator/vars setup
-        (Setup()).doSetup(webdriver, _nemo.props, function setupCallback(err, _nemo) {
-          if (err) {
-            callback(err);
-          } else {
-            //set driver
-            nemo.driver = _nemo.driver;
-            callback(null, config, nemo);
-          }
-        });
-      }
-
-      function locatorsetup(config, _nemo, callback) {
-        //setup locators
-        config.locator.forEach(function (key) {
-          nemo.locator[key] = require(nemo.props.autoBaseDir + '/locator/' + key);
-        });
-        callback(null, config, nemo);
-      }
-
-      function viewsetup(config, _nemo, callback) {
-        var viewModule = _nemo.view;
-        if (!config.view) {
-          config.view = [];
-        }
-        //setup views
-        config.view.forEach(function viewKeys(key) {
-          if (plugins.view) {
-            //process with the view interface
-            viewModule.addView(key);
-          } else {
-            //old views
-            //dedupe step
-            if (nemo.view[key]) {
-              return;
-            }
-            var viewMod = require(nemo.props.autoBaseDir + '/view/' + key);
-            nemo.view[key] = new viewMod(_nemo);
-          }
-
-        });
-        callback(null, config, nemo);
+  confitOptions = {
+    protocols: {
+      path: handlers.path(basedir, {}),
+      env: handlers.env({}),
+      argv: function argHandler(val) {
+        var argv = yargs.argv;
+        return argv[val] || '';
       }
     }
   };
+  if (basedir) {
+    confitOptions.basedir = path.join(basedir, 'config');
+  }
+  log('confit options', confitOptions);
+
+  //merge any environment JSON into configOverride
+  _.merge(configOverride, envdata.json, envdriver.json, envplugins.json);
+
+  confit(confitOptions).addOverride(configOverride).create(function (err, config) {
+    //reset env variables
+    envdata.reset();
+    envdriver.reset();
+    envplugins.reset();
+    //check for vital information
+    if (config.get('driver') === undefined) {
+      error('essential driver properties not found in configuration');
+      var badDriverProps = new Error('Nemo essential driver properties not found in configuration');
+      badDriverProps.name = 'nemoBadDriverProps';
+      cb(badDriverProps);
+      return;
+    }
+    setup(config, function (err, _nemo) {
+      if (err !== null) {
+        cb(err);
+        return;
+      }
+      _.merge(nemo, _nemo);
+      cb();
+    });
+  });
+
+  return nemo;
+
+
 }
 
+
+var setup = function setup(config, cb) {
+  var waterFallArray = [],
+    preDriverArray = [],
+    postDriverArray = [],
+    plugins = {},
+    pluginError = false;
+  var driverConfig = config.get('driver');
+  var nemo = {
+    'data': config.get('data'),
+    'driver': {},
+    'wd': webdriver,
+    '_config': null
+  };
+  //config is for registering plugins
+  if (config && config.get('plugins')) {
+    plugins = config.get('plugins');
+  }
+
+  Object.keys(plugins).forEach(function pluginsKeys(key) {
+    var modulePath,
+      pluginConfig,
+      pluginArgs,
+      pluginModule;
+
+    log('register plugin %s', key);
+    //register this plugin
+    pluginConfig = plugins[key];
+    pluginArgs = plugins[key].arguments || [];
+    modulePath = pluginConfig.module;
+    log('modulePath %s', modulePath);
+    try {
+      pluginModule = require(modulePath);
+    } catch (err) {
+      error(err);
+      var noPluginModuleError = new Error('Nemo plugin has invalide module');
+      noPluginModuleError.name = 'nemoNoPluginModuleError';
+      cb(noPluginModuleError);
+      pluginError = true;
+      return;
+    }
+    if (plugins[key].priority && plugins[key].priority < 100) {
+      preDriverArray.push(pluginReg(nemo, pluginArgs, pluginModule));
+    } else {
+      postDriverArray.push(pluginReg(nemo, pluginArgs, pluginModule));
+    }
+  });
+  if (pluginError) {
+    return;
+  }
+  waterFallArray = preDriverArray.concat([driversetup(nemo, driverConfig)], postDriverArray);
+
+  async.waterfall(waterFallArray, function waterfall(err, result) {
+    if (err) {
+      cb(err);
+    } else {
+      cb(null, nemo);
+    }
+  });
+
+};
+
+var driversetup = function (_nemo, driverConfig) {
+  return function driversetup(callback) {
+    //do driver/view/locator/vars setup
+    (Setup()).doSetup(driverConfig, function setupCallback(err, _driver) {
+      if (err) {
+        callback(err);
+        return;
+      }
+      //set driver
+      _nemo.driver = _driver;
+      callback(null);
+
+    });
+  };
+};
+
+
+var pluginReg = function (_nemo, pluginArgs, pluginModule) {
+  return function pluginReg(callback) {
+
+    pluginArgs.push(_nemo);
+    pluginArgs.push(callback);
+    try {
+      pluginModule.setup.apply(this, pluginArgs);
+    } catch (err) {
+      //dang, someone wrote a crap plugin
+      error(err);
+      var pluginSetupError = new Error('Nemo plugin threw error during setup');
+      pluginSetupError.name = 'nemoPluginSetupError';
+      callback(pluginSetupError);
+    }
+  };
+};
+
+var envToJSON = function (prop) {
+  var returnJSON = {};
+  var originalValue = process.env[prop];
+  if (originalValue === undefined) {
+    return {
+      'json': {},
+      'reset': function () {
+      }
+    };
+  }
+  try {
+    var grabJSON = JSON.parse(process.env[prop]);
+    returnJSON[prop] = grabJSON;
+    delete process.env[prop];
+  } catch (err) {
+    //noop
+  }
+  return {
+    'json': returnJSON,
+    'reset': function () {
+      process.env[prop] = originalValue;
+    }
+  };
+};
 module.exports = Nemo;

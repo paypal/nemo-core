@@ -1,0 +1,26 @@
+{
+  "plugins": {
+    "sample": {
+      "module": "path:plugin/sample"
+    },
+    "preDriver": {
+      "module": "path:plugin/sample",
+      "priority": 99,
+      "arguments": ["preDriver"]
+    },
+    "postDriver": {
+      "module": "path:plugin/sample",
+      "priority": 101,
+      "arguments": ["postDriver"]
+    }
+  },
+  "driver": {
+    "builders": {
+      "forBrowser": ["phantomjs"]
+    }
+  },
+  "data": {
+    "baseUrl": "https://www.google.com",
+    "passThroughFromJson": true
+  }
+}
