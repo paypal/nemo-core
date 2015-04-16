@@ -19,67 +19,78 @@
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
-        <h3>Introduction</h3>
-        <p>Nemo will help create a flexible and maintainable automation solution for any node.js based project. While all the examples maintained by the team illustrate Nemo used with Mocha and GruntJS, Nemo can be grouped with ANY test-runner/task-runner software.</p>
-        <h3>Getting Started</h3>
-        <p>You can get started in a few ways.</p>
+        <h3>Introducing Nemo</h3>
+        <p>Nemo can be used as a stand-alone tool for convenience scripts, or paired with test runner/task runner modules to create a UI
+        test automation suite. Nemo itself has very few lines of code. But it provides an excellent framework for you to build from,
+        whatever your automation needs.</p>
+        <h3>Plugins</h3>
+        <p>Nemo uses a <a href="https://github.com/paypal/nemo/blob/master/README.md#nemo-and-plugins-in-60-seconds">plugin based architecture</a>
+          to allow for a lightweight core module, customization, and the opportunity for YOU to contribute easily to the Nemo ecosystem.
+          The essential (in our opinion) plugin to put the diving helmet on Nemo is <a href="https://github.com/paypal/nemo-view">nemo-view</a>.
+          You can read about it in its <a href="https://github.com/paypal/nemo-view/blob/master/README.md">README</a>. You can also see it in action in the sample
+        application. You can also easily add it to your own node.js application using the generator-nemo yeoman generator.</p>
+
+        <h3>Configurability</h3>
+        <p>Using the clever, concise and powerful <a href="https://github.com/krakenjs/confit">confit</a> configuration
+          module and its <a href="https://github.com/krakenjs/confit#shortstop-handlers">shortstop handler syntax</a>, you have many elegant ways to configure -
+          and override - Nemo settings.</p>
+        <h3>Quick Start</h3>
         <ul>
-          <li>Watch the screencasts below</li>
-          <li>clone the <a href="https://github.com/paypal/nemo-example-app">nemo-example-app</a> kraken-js application, with a Nemo suite built in</li>
-          <li>Use <a href="https://github.com/paypal/generator-nemo">generator-nemo</a> yeoman generator to add Nemo to an existing kraken-js application</li>
-          <li>Dive into the details in the <a href="https://github.com/paypal/nemo-docs">markdown documentation</a></li>
+          <li>Create an empty npm project (press enter through all prompts): <pre>$ npm init</pre></li>
+          <li>Install Nemo:
+            <pre>$ npm install --save nemo</pre>
+          </li>
+          <li>Copy the following code into index.js
+            <pre>
+var Nemo = require('nemo');
+var nemo = Nemo({
+  'driver': {
+    'browser': 'chrome'
+  }
+}, function (err) {
+  //always check for errors!
+  if (err) {
+    console.log('Error during Nemo setup', err);
+    return false;
+  }
+  nemo.driver.get('https://www.paypal.com');
+  nemo.driver.getCapabilities().
+    then(function (caps) {
+      console.info("Nemo successfully launched", caps.caps_.browserName);
+    });
+  nemo.driver.quit();
+});
+            </pre>
+          </li>
+          <li>Run it:
+          <pre>
+$ node index.js
+Nemo successfully launched chrome
+          </pre></li>
+          <li>Now, use a shorstop handler to allow configuring the browser from argv by changing the following line:
+          <pre>'browser': 'chrome'</pre> to <pre>'browser': 'argv:browser'</pre>
+          </li>
+          <li>Run it again:
+          <pre>
+$ node index.js --browser firefox
+Nemo successfully launched firefox
+          </pre></li>
         </ul>
-        </h3>
-        <h3><a name="video-index">Screencasts</a></h3>
+        <p>This is barely getting your toe in the water so far. But it feels good right?</p>
+        <h3>Next steps</h3>
+        <p>Let's go for a deep dive!</p>
+        <h4>Go get the sample application</h4>
         <ul>
-          <li><a href="#generator-nemo">Use generator-nemo to add nemo automation</a></li>
-          <li><a href="#nemo-subgenerators">Add new tests using generator-nemo subgenerators</a></li>
-          <li><a href="#generator-sauce-labs">Use generator-nemo to configure SauceLabs testing</a></li>
-          <li><a href="#install-plugin">Install a plugin with generator-nemo</a></li>
-          <li><a href="#required-modules">Modules required for the Grunt/Mocha/Nemo examples</a></li>
-          <li><a href="#grunt-task-config">Grunt task configuration for Grunt/Mocha/Nemo examples</a></li>
-          <li><a href="#nemo-debug">Nemo/Selenium debugging tips</a></li>
-          <li><a href="#walkthrough-nemo-plugins">Walkthrough of Nemo and nemo-screenshot code</a></li>
+          <li>clone the <a href="https://github.com/paypal/nemo-example-app">sample application</a></li>
+          <li>follow the README instructions to run the application and its Nemo automation suite</li>
+          <li>look at the code in the test/functional directory</li>
         </ul>
-        <h4><a name="generator-nemo">Use generator-nemo to add nemo automation</a></h4>
-        <iframe src="//player.vimeo.com/video/97357081" width="500" height="313" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-        <p>The generator-nemo yeoman generator links up nicely with the <a href="https://github.com/krakenjs/generator-kraken">generator-kraken</a> yeoman generator by adding grunt tasks for running automation, as well as a spec to test the default homepage. <a href="#video-index">Video index</a></p>
-
-        <h4><a name="nemo-subgenerators">Add new tests using generator-nemo subgenerators</a></h4>
-        <iframe src="//player.vimeo.com/video/97357076" width="500" height="313" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-
-        <p>Video shows adding a small feature to the kraken app, then using generator-nemo to add tests. <a href="#video-index">Video index</a></p>
-
-        <h4><a name="generator-sauce-labs">Use generator-nemo to configure SauceLabs testing</a></h4>
-        <iframe src="//player.vimeo.com/video/97357343" width="500" height="313" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-        <p>Testing on SauceLabs is simple! Provide your user name and access key and away you go... <a href="#video-index">Video index</a></p>
-
-
-        <h4><a name="install-plugin">Install a plugin with generator-nemo</a></h4>
-        <iframe src="//player.vimeo.com/video/97357477" width="500" height="313" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-
-        <p>Quickly add to your setup any Nemo plugin published on npm, with the generator-nemo plugin subgenerator. <a href="#video-index">Video index</a></p>
-
-        <h4><a name="required-modules">Modules required for the Grunt/Mocha/Nemo examples</a></h4>
-        <iframe src="//player.vimeo.com/video/97357489" width="500" height="313" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-
-        <p>Breaking down which modules are required to embed Nemo functionality in a Mocha test suite, running from a grunt task. <a href="#video-index">Video index</a></p>
-
-        <h4><a name="grunt-task-config">Grunt task configuration for Grunt/Mocha/Nemo examples</a></h4>
-        <iframe src="//player.vimeo.com/video/97357616" width="500" height="313" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-
-        <p>Breaking down the grunt-loop-mocha configuration required to run against local browsers as well as the SauceLabs browsers. <a href="#video-index">Video index</a></p>
-
-        <h4><a name="nemo-debug">Nemo/Selenium debugging tips</a></h4>
-        <iframe src="//player.vimeo.com/video/97561531" width="500" height="313" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-
-        <p>Use node-inspector, grunt-loop-mocha, and some console.logging to troubleshoot or otherwise inspect your running Nemo suite. <a href="#video-index">Video index</a></p>
-
-        <h4><a name="walkthrough-nemo-plugins">Walkthrough of Nemo and nemo-screenshot code</a></h4>
-        <iframe src="//player.vimeo.com/video/97561542" width="500" height="313" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-
-        <p>Get a better idea of how Nemo does its thing. <a href="#video-index">Video index</a></p>
-
+        <h4>Put Nemo into YOUR application</h4>
+        <p><a href="https://github.com/paypal/generator-nemo">generator-nemo</a> is a yeoman generator which can
+          scaffold either a grunt/mocha based test suite or a grunt/cucumber based test suite into your existing
+          application. Please follow the instructions in the
+          <a href="https://github.com/paypal/generator-nemo/blob/master/README.md">generator-nemo README</a>
+          to get started.</p>
       </section>
     </div>
     <!-- FOOTER  -->
