@@ -137,7 +137,7 @@ var setup = function setup(config, cb) {
     'data': config.get('data'),
     'driver': {},
     'wd': webdriver,
-    '_config': null
+    '_config': config 
   };
   //config is for registering plugins
   if (config && config.get('plugins')) {
