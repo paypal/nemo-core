@@ -98,6 +98,10 @@ function Nemo(_basedir, _configOverride, _cb) {
   _.merge(configOverride, envdata.json, envdriver.json, envplugins.json);
 
   confit(confitOptions).addOverride(configOverride).create(function (err, config) {
+    if (err) {
+      error('Error encountered during confit.create');
+      return cb(err);
+    }
     //reset env variables
     envdata.reset();
     envdriver.reset();
@@ -132,12 +136,11 @@ var setup = function setup(config, cb) {
     postDriverArray = [],
     plugins = {},
     pluginError = false;
-  var driverConfig = config.get('driver');
   var nemo = {
     'data': config.get('data'),
     'driver': {},
     'wd': webdriver,
-    '_config': config
+    '_config': config 
   };
   //config is for registering plugins
   if (config && config.get('plugins')) {
@@ -175,7 +178,7 @@ var setup = function setup(config, cb) {
   if (pluginError) {
     return;
   }
-  waterFallArray = preDriverArray.concat([driversetup(nemo, driverConfig)], postDriverArray);
+  waterFallArray = preDriverArray.concat([driversetup(nemo)], postDriverArray);
 
   async.waterfall(waterFallArray, function waterfall(err, result) {
     if (err) {
@@ -187,8 +190,9 @@ var setup = function setup(config, cb) {
 
 };
 
-var driversetup = function (_nemo, driverConfig) {
+var driversetup = function (_nemo) {
   return function driversetup(callback) {
+    var driverConfig = _nemo._config.get('driver');
     //do driver/view/locator/vars setup
     (Setup()).doSetup(driverConfig, function setupCallback(err, _driver) {
       if (err) {
