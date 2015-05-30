@@ -1,105 +1,103 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-  <head>
-    <meta charset='utf-8' />
-    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="Nemo : Selenium-webdriver based automation in node.js" />
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
-    <title>Nemo</title>
-  </head>
-  <body>
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-      <header class="inner">
-        <a id="paypalos_banner" href="http://paypal.github.io/"><img src="images/paypalopensource.svg" width="160" height="20" alt="PayPal open source"></a>
-        <h1 id="project_title">Nemo<span>js</span></h1>
-        <h2 id="project_tagline">selenium-webdriver automation for node.js</h2>
-      </header>
-    </div>
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <h3>Introducing Nemo</h3>
-        <p>Nemo can be used as a stand-alone tool for convenience scripts, or paired with test runner/task runner modules to create a UI
-        test automation suite. Nemo itself has very few lines of code. But it provides an excellent framework for you to build from,
-        whatever your automation needs.</p>
-        <h3>Plugins</h3>
-        <p>Nemo uses a <a href="https://github.com/paypal/nemo/blob/master/README.md#nemo-and-plugins-in-60-seconds">plugin based architecture</a>
-          to allow for a lightweight core module, customization, and the opportunity for YOU to contribute easily to the Nemo ecosystem.
-          The essential (in our opinion) plugin to put the diving helmet on Nemo is <a href="https://github.com/paypal/nemo-view">nemo-view</a>.
-          You can read about it in its <a href="https://github.com/paypal/nemo-view/blob/master/README.md">README</a>. You can also see it in action in the sample
-        application. You can also easily add it to your own node.js application using the generator-nemo yeoman generator.</p>
-
-        <h3>Configurability</h3>
-        <p>Using the clever, concise and powerful <a href="https://github.com/krakenjs/confit">confit</a> configuration
-          module and its <a href="https://github.com/krakenjs/confit#shortstop-handlers">shortstop handler syntax</a>, you have many elegant ways to configure -
-          and override - Nemo settings.</p>
-        <h3>Quick Start</h3>
-        <ul>
-          <li>Create an empty npm project (press enter through all prompts): <pre>$ npm init</pre></li>
-          <li>Install Nemo:
-            <pre>$ npm install --save nemo</pre>
-          </li>
-          <li>Copy the following code into index.js
-            <pre>
-var Nemo = require('nemo');
-var nemo = Nemo({
-  'driver': {
-    'browser': 'chrome'
-  }
-}, function (err) {
-  //always check for errors!
-  if (err) {
-    console.log('Error during Nemo setup', err);
-    return false;
-  }
-  nemo.driver.get('https://www.paypal.com');
-  nemo.driver.getCapabilities().
-    then(function (caps) {
-      console.info("Nemo successfully launched", caps.caps_.browserName);
-    });
-  nemo.driver.quit();
-});
-            </pre>
-          </li>
-          <li>Run it:
-          <pre>
-$ node index.js
-Nemo successfully launched chrome
-          </pre></li>
-          <li>Now, use a shorstop handler to allow configuring the browser from argv by changing the following line:
-          <pre>'browser': 'chrome'</pre> to <pre>'browser': 'argv:browser'</pre>
-          </li>
-          <li>Run it again:
-          <pre>
-$ node index.js --browser firefox
-Nemo successfully launched firefox
-          </pre></li>
-        </ul>
-        <p>This is barely getting your toe in the water so far. But it feels good right?</p>
-        <h3>Next steps</h3>
-        <p>Let's go for a deep dive!</p>
-        <h4>Go get the sample application</h4>
-        <ul>
-          <li>clone the <a href="https://github.com/paypal/nemo-example-app">sample application</a></li>
-          <li>follow the README instructions to run the application and its Nemo automation suite</li>
-          <li>look at the code in the test/functional directory</li>
-        </ul>
-        <h4>Put Nemo into YOUR application</h4>
-        <p><a href="https://github.com/paypal/generator-nemo">generator-nemo</a> is a yeoman generator which can
-          scaffold either a grunt/mocha based test suite or a grunt/cucumber based test suite into your existing
-          application. Please follow the instructions in the
-          <a href="https://github.com/paypal/generator-nemo/blob/master/README.md">generator-nemo README</a>
-          to get started.</p>
-      </section>
-    </div>
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">Nemo maintained by <a href="https://github.com/paypal">paypal</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
-      </footer>
-    </div>
-
-  </body>
+	<head>
+		<title>Nemo</title>
+		<link rel='stylesheet' href='css/bootstrap.min.css'>
+		<link rel='stylesheet' href='css/style.css'>
+        <meta name='viewport' content='width=device-width, initial-scale=1'>
+	</head>
+	<body class='home'>
+		<section class='container-fluid hero-bg'>
+			<div class='container'>
+				<div class='clearfix'>
+					<ul class='nav navbar-nav navbar-right'>
+						<li><a href='getting-started.html'>Getting started</a></li>
+                        <li><a href='https://github.com/paypal/nemo-docs/blob/1.0-develop/README.md'>Documentation</a></li>
+                        <li><a href='http://paypal.github.io/'><img src='images/pp.png' class='pp'></a></li>
+					</ul>
+				</div>
+				<div class='hero text-center'>
+					<img src='images/logo.svg' class='nemo-logo'>
+					<h1>Nemo.js</h1>
+					<h2>Launch your web sites & applications</h2>
+					<h3>with confidence</h3>
+					<div class='get-nemo-container'>
+						<ul class='cmd'>
+							<li><span class='cmd-prompt'>$ </span><span class='cmd-subject'>git clone</span> <span class='cmd-predicate'>git@github.com:paypal/nemo-example-app.git</span></li>
+							<li><span class='cmd-prompt'>$ </span><span class='cmd-subject'>cd</span> <span class='cmd-predicate'>nemo-example-app</span></li>
+							<li><span class='cmd-prompt'>$ </span><span class='cmd-subject'>npm</span> <span class='cmd-predicate'>install</li>
+							<li><span class='cmd-prompt'>$ </span><span class='cmd-subject'>grunt</span> <span class='cmd-predicate'>build</li>
+							<li><span class='cmd-prompt'>$ </span><span class='cmd-subject'>grunt</span> <span class='cmd-predicate'>automation</li>
+						</ul>
+                    	<a href='https://github.com/paypal/nemo' class='btn'>GET NEMO</a>
+					</div>
+				</div>
+			</div>
+		</section>
+		<section class='container-fluid mobile-terminal'>
+			<div class='container'>
+				<ul class='cmd'>
+					<li><span class='cmd-prompt'>$ </span><span class='cmd-subject'>git clone</span> <span class='cmd-predicate'>git@github.com:paypal/nemo-example-app.git</span></li>
+					<li><span class='cmd-prompt'>$ </span><span class='cmd-subject'>cd</span> <span class='cmd-predicate'>nemo-example-app</span></li>
+					<li><span class='cmd-prompt'>$ </span><span class='cmd-subject'>npm</span> <span class='cmd-predicate'>install</li>
+					<li><span class='cmd-prompt'>$ </span><span class='cmd-subject'>grunt</span> <span class='cmd-predicate'>build</li>
+					<li><span class='cmd-prompt'>$ </span><span class='cmd-subject'>grunt</span> <span class='cmd-predicate'>automation</li>
+				</ul>
+			</div>
+		</section>
+		<section class='content container-fluid'>
+			<div class='container'>
+				<div class='row'>
+					<div class='col-lg-5 col-lg-push-1 col-sm-6'>
+						<hr>
+						<div class='clearfix'></div>
+						<h2 class='section-heading'>Plugin based architecture</h2>
+                        <p class='lead'>Nemo uses a plugin based architecture to allow for a lightweight core module, customization, and the opportunity for you to <a href='https://github.com/paypal/nemo'>contribute</a> easily to the Nemo ecosystem.</p>
+					</div>
+					<div class='col-lg-5 col-lg-push-1 col-sm-6 text-center'>
+						<img class='img img-responsive' src='images/plugins.png' alt=''>
+					</div>
+                </div>
+            </div>
+        </section>
+        <section class='content container-fluid home-section-alt'>
+			<div class='container'>
+                <div class='row'>
+					<div class='col-lg-5 col-lg-push-1 col-sm-6 text-center'>
+                        <img class='img img-responsive' src='images/config.png' alt=''>
+					</div>
+					<div class='col-lg-5 col-lg-push-1 col-sm-6'>
+						<hr>
+						<div class='clearfix'></div>
+						<h2 class='section-heading'>Clever Configurability</h2>
+                        <p class='lead'>Using the clever, concise and powerful <a href='https://github.com/krakenjs/confit'>confit configuration</a> module and its shortstop handler syntax, you have many elegant ways to configure and override.</p>
+					</div>
+                </div>
+            </div>
+        </section>
+        <section class='content container-fluid'>
+			<div class='container'>
+                <div class='row'>
+					<div class='col-lg-5 col-lg-push-1 col-sm-6'>
+						<hr>
+						<div class='clearfix'></div>
+						<h2 class='section-heading'>Easy to intergrate</h2>
+                        <p class='lead'>Nemo is an unopinionated framework and can be used with mocha, jasmine, cucumberjs or any other framework. Nemo can also be used as a <a href='https://github.com/paypal/nemo'>stand-alone tool</a> for convenience scripts, or paired with test runner/task runner modules to create a UI test automation suite.</p>
+					</div>
+					<div class='col-lg-5 col-lg-push-1 col-sm-6 text-center'>
+						<img src='images/easy.png' class='img img-responsive' alt=''>
+					</div>
+                </div>
+			</div>
+			<!-- /.container -->
+        </section>
+        <footer class='container-fluid'>
+            <div class='container'>
+                <a href='https://www.paypal.com/'><img src='images/paypal.png' class='paypal'></a>
+                <ul class='list-inline navbar-right'>
+                    <li><a href='https://twitter.com/nemojs_news'><img src='images/twitter.png'></a></li>
+                </ul>
+            </div>
+        </footer>
+	</body>
 </html>

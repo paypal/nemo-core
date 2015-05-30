@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Nemo : Selenium-webdriver based automation in node.js" />
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+    <title>Nemo</title>
+  </head>
+  <body>
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+      <header class="inner">
+        <a id="paypalos_banner" href="http://paypal.github.io/"><img src="images/paypalopensource.svg" width="160" height="20" alt="PayPal open source"></a>
+        <h1 id="project_title">Nemo<span>js</span></h1>
+        <h2 id="project_tagline">selenium-webdriver automation for node.js</h2>
+      </header>
+    </div>
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h3>Introducing Nemo</h3>
+        <p>Nemo can be used as a stand-alone tool for convenience scripts, or paired with test runner/task runner modules to create a UI
+        test automation suite. Nemo itself has very few lines of code. But it provides an excellent framework for you to build from,
+        whatever your automation needs.</p>
+        <h3>Plugins</h3>
+        <p>Nemo uses a <a href="https://github.com/paypal/nemo/blob/master/README.md#nemo-and-plugins-in-60-seconds">plugin based architecture</a>
+          to allow for a lightweight core module, customization, and the opportunity for YOU to contribute easily to the Nemo ecosystem.
+          The essential (in our opinion) plugin to put the diving helmet on Nemo is <a href="https://github.com/paypal/nemo-view">nemo-view</a>.
+          You can read about it in its <a href="https://github.com/paypal/nemo-view/blob/master/README.md">README</a>. You can also see it in action in the sample
+        application. You can also easily add it to your own node.js application using the generator-nemo yeoman generator.</p>
+
+        <h3>Configurability</h3>
+        <p>Using the clever, concise and powerful <a href="https://github.com/krakenjs/confit">confit</a> configuration
+          module and its <a href="https://github.com/krakenjs/confit#shortstop-handlers">shortstop handler syntax</a>, you have many elegant ways to configure -
+          and override - Nemo settings.</p>
+        <h3>Quick Start</h3>
+        <ul>
+          <li>Create an empty npm project (press enter through all prompts): <pre>$ npm init</pre></li>
+          <li>Install Nemo:
+            <pre>$ npm install --save nemo</pre>
+          </li>
+          <li>Copy the following code into index.js
+            <pre>
+var Nemo = require('nemo');
+var nemo = Nemo({
+  'driver': {
+    'browser': 'chrome'
+  }
+}, function (err) {
+  //always check for errors!
+  if (err) {
+    console.log('Error during Nemo setup', err);
+    return false;
+  }
+  nemo.driver.get('https://www.paypal.com');
+  nemo.driver.getCapabilities().
+    then(function (caps) {
+      console.info("Nemo successfully launched", caps.caps_.browserName);
+    });
+  nemo.driver.quit();
+});
+            </pre>
+          </li>
+          <li>Run it:
+          <pre>
+$ node index.js
+Nemo successfully launched chrome
+          </pre></li>
+          <li>Now, use a shorstop handler to allow configuring the browser from argv by changing the following line:
+          <pre>'browser': 'chrome'</pre> to <pre>'browser': 'argv:browser'</pre>
+          </li>
+          <li>Run it again:
+          <pre>
+$ node index.js --browser firefox
+Nemo successfully launched firefox
+          </pre></li>
+        </ul>
+        <p>This is barely getting your toe in the water so far. But it feels good right?</p>
+        <h3>Next steps</h3>
+        <p>Let's go for a deep dive!</p>
+        <h4>Go get the sample application</h4>
+        <ul>
+          <li>clone the <a href="https://github.com/paypal/nemo-example-app">sample application</a></li>
+          <li>follow the README instructions to run the application and its Nemo automation suite</li>
+          <li>look at the code in the test/functional directory</li>
+        </ul>
+        <h4>Put Nemo into YOUR application</h4>
+        <p><a href="https://github.com/paypal/generator-nemo">generator-nemo</a> is a yeoman generator which can
+          scaffold either a grunt/mocha based test suite or a grunt/cucumber based test suite into your existing
+          application. Please follow the instructions in the
+          <a href="https://github.com/paypal/generator-nemo/blob/master/README.md">generator-nemo README</a>
+          to get started.</p>
+      </section>
+    </div>
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Nemo maintained by <a href="https://github.com/paypal">paypal</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+  </body>
+</html>
