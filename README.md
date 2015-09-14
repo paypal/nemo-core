@@ -24,7 +24,7 @@ fine.
 add the following to package.json devDependencies (assuming mocha is already integrated to your project):
 
 ```javascript
-"nemo": "^1.0.0",
+"nemo": "^1.1.0",
 ```
 
 Then `npm install`
