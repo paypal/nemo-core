@@ -123,12 +123,12 @@ function Setup() {
         callback(errorObject);
         return;
       }
-      var checkSession = setInterval(function(){
-        if(driver.session_.state_ === 'fulfilled'){
-          clearInterval(checkSession);
-          callback(errorObject, driver);
-        }
-      },100);
+      driver.getSession().then(function () {
+        callback(null, driver);
+      }).thenCatch(function (err) {
+        error('Encountered an error during driver getSession: %', err);
+        callback(err);
+      });
 
     }
   };
