@@ -1,0 +1,325 @@
+@import url(http://fonts.googleapis.com/css?family=Lato:100,300,400,700);
+
+body {
+    font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 400;
+}
+
+/**
+ * A class of home is applied to the body on index page
+ * This is to separate it's design from the rest of the pages
+ */
+body.home {
+    background: #cebbad;
+}
+
+/**
+ * HERO SECTION
+ * This is the top half on the desktop site
+ * with the Nemo logo, title text and the Get Nemo section
+ */
+.hero-bg {
+	background: #61afaf;
+}
+
+.hero {
+    position: relative;
+}
+
+
+.hero h2 {
+	font-weight: 300;
+}
+
+.hero h3 {
+	font-weight: 500;
+}
+
+/**
+ * MOBILE terminal instructions
+ */
+.mobile-terminal {
+	background-color: #022734;
+	height: 180px;
+	display: none;
+	color: #fff;
+	overflow: hidden;
+}
+
+.mobile-terminal .container {
+	padding: 20px;
+}
+
+
+/**
+ * TERMINAL COMMAND PROMPT
+ */
+.cmd {
+	list-style: none;
+	text-align: left;
+	font-family: monospace;
+}
+
+.cmd-prompt {
+	color: #42FD2E;
+}
+
+.cmd-subject {
+	color: #e5e6e7;
+}
+
+.cmd-predicate {
+	color: #fffea2;
+}
+
+/**
+ * GET NEMO
+ * This section has the browsers, device and terminal
+ * as its background along with the text information to get Nemo.
+ */
+
+@media (max-width: 768px) {
+	/*mobile*/
+	.nemo-logo {
+		max-width: 200px;
+	}
+
+	/*Nemo.js*/
+	.hero h1 {
+		font-weight: 100;
+		margin-top: 0;
+		font-size: 36px;
+	}
+
+	/*Taglines*/
+	.hero h2, h3 {
+		font-size: 24px;
+		color: white;
+		margin: 3px;
+	}
+
+	.hero h3 {
+		margin-bottom: 20px;
+	}
+
+	.get-nemo-container, .nav {
+		display: none;
+	}
+
+	.mobile-terminal {
+		display: block;
+	}
+
+	.cmd {
+		font-size: 16px;
+		padding: 0px;
+	}
+
+	footer ul, .img-responsive {
+		display: none;
+	}
+}
+
+@media (min-width: 768px) {
+	.nemo-logo {
+		max-width: 160px;
+	}
+
+	/*Nemo.js*/
+	.hero h1 {
+		font-weight: 100;
+		margin-top: 0;
+		font-size: 36px;
+	}
+
+	/*Taglines*/
+	.hero h2, h3 {
+		font-size: 24px;
+		color: white;
+		margin: 3px;
+	}
+
+	.get-nemo-container {
+		width: 750px;
+		height: 213px;
+		background: url(../images/hero750.png);
+	}
+
+	.cmd {
+		padding-top: 40px;
+		font-size: 11px;
+		margin-left: 155px;
+	}
+}
+
+@media (min-width: 992px) {
+	.nemo-logo {
+		max-width: 180px;
+	}
+
+	/*Nemo.js*/
+	.hero h1 {
+		font-weight: 100;
+		margin-top: 0;
+		font-size: 40px;
+	}
+
+	/*Taglines*/
+	.hero h2, h3 {
+		font-size: 30px;
+		color: white;
+		margin: 4px;
+	}
+
+	.get-nemo-container {
+		width: 970px;
+		height: 250px;
+		background: url(../images/hero970.png);
+	}
+
+	.cmd {
+		padding-top: 60px;
+		font-size: 14px;
+		margin-left: 215px;
+	}
+}
+
+@media (min-width: 1200px) {
+	.nemo-logo {
+		max-width: 200px;
+	}
+
+	/*Nemo.js*/
+	.hero h1 {
+		font-weight: 100;
+		margin-top: 0;
+		font-size: 46px;
+	}
+
+	/*Taglines*/
+	.hero h2, h3 {
+		font-size: 36px;
+		color: white;
+		margin: 5px;
+	}
+
+	.get-nemo-container {
+		width: 1170px;
+		height: 332px;
+		background: url(../images/hero1170.png);
+	}
+
+	.cmd {
+		padding-top: 70px;
+		font-size: 17px;
+		margin-left: 262px;
+	}
+}
+
+.get-nemo-container .btn {
+    width: 200px;
+    position: absolute;
+    bottom: 5px;
+    margin-left: -100px;
+    background: #007894;
+    border: 1px solid #075f7f;
+    border-bottom: 8px solid #075f7f;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    text-shadow: -1px 0 1px #000;
+}
+
+.get-nemo-container .btn:hover {
+    color: white;
+    border-bottom: 6px solid #075f7f;
+}
+
+.get-nemo-container .btn:active {
+    color: 00ffff;
+    border-bottom: 2px solid #075f7f;
+}
+
+
+/**
+ * TOP NAV
+ */
+.nav a {
+	color: #439595;
+}
+
+.nav>li>a>img.pp {
+    max-width: 24px;
+}
+
+.home .nav a {
+	color: white;
+}
+
+.home .nav>li>a:hover {
+    background: #439595;
+}
+
+.lead {
+    font-size: 17px;
+    font-weight: 300;
+}
+
+.content a {
+    font-weight: bold;
+    color: #e85d0c;
+}
+
+.section-heading {
+   font-size: 22px;
+}
+
+/**
+ * ALTERNATE SECTION
+ * The home page content is divided into rows which
+ * have an alternate background color scheme.
+ */
+.home-section-alt {
+    background: #d6c6ba;
+}
+
+/** SECTION HEADING SPACER
+ * There is a solid strip right above the header text
+ * of each section on the home page
+ */
+.home .content hr {
+    border: none;
+    border-top: 5px solid #c2aa9a;
+    width: 50%;
+    margin-left: 0;
+}
+
+/**
+ * FOOTER
+ */
+footer {
+    background: #463330;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+footer ul {
+    padding-top: 20px;
+}
+
+footer ul a {
+    opacity: 0.5;
+    color: white;
+}
+
+footer ul a:hover {
+    opacity: 1;
+    color: white;
+}
+
+.paypal {
+    max-width: 140px;
+    padding: 20px;
+    opacity: 0.5;
+}
+
