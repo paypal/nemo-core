@@ -50,6 +50,13 @@ body.home {
 	padding: 20px;
 }
 
+/**
+ * Make bootstrap's hamburger visible
+ */
+.icon-bar {
+	background: #fff;
+}
+
 
 /**
  * TERMINAL COMMAND PROMPT
@@ -102,7 +109,11 @@ body.home {
 		margin-bottom: 20px;
 	}
 
-	.get-nemo-container, .nav {
+	.get-nemo-container, .btn {
+		display: none;
+	}
+
+	.desktop-terminal .cmd {
 		display: none;
 	}
 
