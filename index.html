@@ -7,15 +7,27 @@
         <meta name='viewport' content='width=device-width, initial-scale=1'>
 	</head>
 	<body class='home'>
-		<section class='container-fluid hero-bg'>
-			<div class='container'>
-				<div class='clearfix'>
-					<ul class='nav navbar-nav navbar-right'>
-						<li><a href='https://github.com/paypal/nemo-docs/blob/1.0-develop/README.md'>Getting started</a></li>
-                        <li><a href='https://github.com/paypal/nemo-docs/blob/1.0-develop/README.md'>Documentation</a></li>
-                        <li><a href='http://paypal.github.io/'><img src='images/pp.png' class='pp'></a></li>
-					</ul>
+		<section class='container-fluid desktop-terminal hero-bg'>
+			<nav class='navbar' role='navigation'>
+				<div class='container'>
+					<div class='navbar-header'>
+						<button type='button' class='navbar-toggle collapsed' data-toggle='collapse' data-target='#navbar'>
+							<span class='sr-only'>Toggle navigation</span>
+							<span class='icon-bar'></span>
+							<span class='icon-bar'></span>
+							<span class='icon-bar'></span>
+						</button>
+					</div>
+					<div class='clearfix collapse navbar-collapse' id='navbar'>
+						<ul class='nav navbar-nav navbar-right'>
+							<li><a href='https://github.com/paypal/nemo-docs/blob/1.0-develop/README.md'>Getting started</a></li>
+							<li><a href='https://github.com/paypal/nemo-docs/blob/1.0-develop/README.md'>Documentation</a></li>
+							<li><a href='http://paypal.github.io/'><img src='images/pp.png' class='pp'></a></li>
+						</ul>
+					</div>
 				</div>
+			</nav>
+			<div class='container'>
 				<div class='hero text-center'>
 					<img src='images/logo.svg' class='nemo-logo'>
 					<h1>Nemo.js</h1>
@@ -99,5 +111,7 @@
                 </ul>
             </div>
         </footer>
+		<script src='https://code.jquery.com/jquery-1.11.3.min.js'></script>
+		<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js'></script>
 	</body>
 </html>
