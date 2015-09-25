@@ -163,7 +163,7 @@ var setup = function setup(config, cb) {
       pluginModule = require(modulePath);
     } catch (err) {
       error(err);
-      var noPluginModuleError = new Error('Nemo plugin has invalide module');
+      var noPluginModuleError = new Error('Nemo plugin has invalid module');
       noPluginModuleError.name = 'nemoNoPluginModuleError';
       cb(noPluginModuleError);
       pluginError = true;
