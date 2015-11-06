@@ -1,117 +1,143 @@
 <!doctype html>
 <html>
-	<head>
-		<title>Nemo</title>
-		<link rel="stylesheet" href="css/bootstrap.min.css">
-		<link rel="stylesheet" href="css/style.css">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-	</head>
-	<body class="home">
-		<section class="container-fluid desktop-terminal hero-bg">
-			<nav class="navbar" role="navigation">
-				<div class="container">
-					<div class="navbar-header">
-						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
-							<span class="sr-only">Toggle navigation</span>
-							<span class="icon-bar"></span>
-							<span class="icon-bar"></span>
-							<span class="icon-bar"></span>
-						</button>
-					</div>
-					<div class="clearfix collapse navbar-collapse" id="navbar">
-						<ul class="nav navbar-nav navbar-right">
-							<li><a href="https://github.com/paypal/nemo-docs/blob/1.0-develop/README.md">Getting started</a></li>
-							<li><a href="https://github.com/paypal/nemo-docs/blob/1.0-develop/README.md">Documentation</a></li>
-							<li><a href="http://paypal.github.io/"><img src="images/pp.png" class="pp"></a></li>
-						</ul>
-					</div>
-				</div>
-			</nav>
-			<div class="container">
-				<div class="hero text-center">
-					<img src="images/logo.svg" class="nemo-logo">
-					<h1>Nemo.js</h1>
-					<h2>Launch your web sites & applications</h2>
-					<h3>with confidence</h3>
-					<div class="get-nemo-container">
-						<ul class="cmd">
-							<li><span class="cmd-prompt">$ </span><span class="cmd-subject">git clone</span> <span class="cmd-predicate">git@github.com:paypal/nemo-example-app.git</span></li>
-							<li><span class="cmd-prompt">$ </span><span class="cmd-subject">cd</span> <span class="cmd-predicate">nemo-example-app</span></li>
-							<li><span class="cmd-prompt">$ </span><span class="cmd-subject">npm</span> <span class="cmd-predicate">install</li>
-							<li><span class="cmd-prompt">$ </span><span class="cmd-subject">npm</span> <span class="cmd-predicate">start</li>
-							<li><span class="cmd-prompt">$ </span><span class="cmd-subject">grunt</span> <span class="cmd-predicate">automation</li>
-						</ul>
-                    	<a href="https://github.com/paypal/nemo" class="btn">GET NEMO</a>
-					</div>
-				</div>
-			</div>
-		</section>
-		<section class="container-fluid mobile-terminal">
-			<div class="container">
-				<ul class="cmd">
-					<li><span class="cmd-prompt">$ </span><span class="cmd-subject">git clone</span> <span class="cmd-predicate">git@github.com:paypal/nemo-example-app.git</span></li>
-					<li><span class="cmd-prompt">$ </span><span class="cmd-subject">cd</span> <span class="cmd-predicate">nemo-example-app</span></li>
-					<li><span class="cmd-prompt">$ </span><span class="cmd-subject">npm</span> <span class="cmd-predicate">install</li>
-					<li><span class="cmd-prompt">$ </span><span class="cmd-subject">grunt</span> <span class="cmd-predicate">build</li>
-					<li><span class="cmd-prompt">$ </span><span class="cmd-subject">grunt</span> <span class="cmd-predicate">automation</li>
-				</ul>
-			</div>
-		</section>
-		<section class="content container-fluid">
-			<div class="container">
-				<div class="row">
-					<div class="col-lg-5 col-lg-push-1 col-sm-6">
-						<hr>
-						<div class="clearfix"></div>
-						<h2 class="section-heading">Plugin based architecture</h2>
-                        <p class="lead">Nemo uses a plugin based architecture to allow for a lightweight core module, customization, and the opportunity for you to <a href="https://github.com/paypal/nemo">contribute</a> easily to the Nemo ecosystem.</p>
-					</div>
-					<div class="col-lg-5 col-lg-push-1 col-sm-6 text-center">
-						<img class="img img-responsive" src="images/plugins.png" alt="">
-					</div>
-                </div>
+<head>
+    <title>Nemo</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body class="home">
+<section class="container-fluid desktop-terminal hero-bg">
+    <nav class="navbar" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
             </div>
-        </section>
-        <section class="content container-fluid home-section-alt">
-			<div class="container">
-                <div class="row">
-					<div class="col-lg-5 col-lg-push-1 col-sm-6 text-center">
-                        <img class="img img-responsive" src="images/config.png" alt="">
-					</div>
-					<div class="col-lg-5 col-lg-push-1 col-sm-6">
-						<hr>
-						<div class="clearfix"></div>
-						<h2 class="section-heading">Clever Configurability</h2>
-                        <p class="lead">Using the clever, concise and powerful <a href="https://github.com/krakenjs/confit">confit configuration</a> module and its shortstop handler syntax, you have many elegant ways to configure and override.</p>
-					</div>
-                </div>
-            </div>
-        </section>
-        <section class="content container-fluid">
-			<div class="container">
-                <div class="row">
-					<div class="col-lg-5 col-lg-push-1 col-sm-6">
-						<hr>
-						<div class="clearfix"></div>
-						<h2 class="section-heading">Easy to integrate</h2>
-                        <p class="lead">Nemo adds a powerful configuration engine and plugin architecture to the <a href="http://www.seleniumhq.org/projects/webdriver/" target="_blank">selenium-webdriver</a> wrapper for node.js . It can be paired with most test runners (think mocha, cucumber, etc) and task runners (grunt, gulp) or used as a <a href="https://github.com/paypal/nemo">stand-alone tool</a> for convenience scripts.</p>
-					</div>
-					<div class="col-lg-5 col-lg-push-1 col-sm-6 text-center">
-						<img src="images/easy.png" class="img img-responsive" alt="">
-					</div>
-                </div>
-			</div>
-			<!-- /.container -->
-        </section>
-        <footer class="container-fluid">
-            <div class="container">
-                <a href="https://www.paypal.com/"><img src="images/paypal.png" class="paypal"></a>
-                <ul class="list-inline navbar-right">
-                    <li><a href="https://twitter.com/nemojs_news"><img src="images/twitter.png"></a></li>
+            <div class="clearfix collapse navbar-collapse" id="navbar">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="https://github.com/paypal/nemo-docs/blob/1.0-develop/README.md">Getting started</a>
+                    </li>
+                    <li><a href="https://github.com/paypal/nemo-docs/blob/1.0-develop/README.md">Documentation</a></li>
+                    <li><a href="http://paypal.github.io/"><img src="images/pp.png" class="pp"></a></li>
                 </ul>
             </div>
-        </footer>
-		<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-	</body>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="hero text-center">
+            <img src="images/logo.svg" class="nemo-logo">
+
+            <h1>Nemo.js</h1>
+
+            <h2>Launch your web sites & applications</h2>
+
+            <h3>with confidence</h3>
+
+            <div class="get-nemo-container">
+                <ul class="cmd">
+                    <li><span class="cmd-prompt">$ </span><span class="cmd-subject">git clone</span> <span
+                            class="cmd-predicate">git@github.com:paypal/nemo-example-app.git</span></li>
+                    <li><span class="cmd-prompt">$ </span><span class="cmd-subject">cd</span> <span
+                            class="cmd-predicate">nemo-example-app</span></li>
+                    <li><span class="cmd-prompt">$ </span><span class="cmd-subject">npm</span> <span
+                            class="cmd-predicate">install</li>
+                    <li><span class="cmd-prompt">$ </span><span class="cmd-subject">npm</span> <span
+                            class="cmd-predicate">start</li>
+                    <li><span class="cmd-prompt">$ </span><span class="cmd-subject">grunt</span> <span
+                            class="cmd-predicate">automation</li>
+                </ul>
+                <a href="https://github.com/paypal/nemo" class="btn">GET NEMO</a>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="container-fluid mobile-terminal">
+    <div class="container">
+        <ul class="cmd">
+            <li><span class="cmd-prompt">$ </span><span class="cmd-subject">git clone</span> <span
+                    class="cmd-predicate">git@github.com:paypal/nemo-example-app.git</span></li>
+            <li><span class="cmd-prompt">$ </span><span class="cmd-subject">cd</span> <span class="cmd-predicate">nemo-example-app</span>
+            </li>
+            <li><span class="cmd-prompt">$ </span><span class="cmd-subject">npm</span> <span class="cmd-predicate">install
+            </li>
+            <li><span class="cmd-prompt">$ </span><span class="cmd-subject">grunt</span> <span class="cmd-predicate">build
+            </li>
+            <li><span class="cmd-prompt">$ </span><span class="cmd-subject">grunt</span> <span class="cmd-predicate">automation
+            </li>
+        </ul>
+    </div>
+</section>
+<section class="content container-fluid">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-5 col-lg-push-1 col-sm-6">
+                <hr>
+                <div class="clearfix"></div>
+                <h2 class="section-heading">Why Nemo?</h2>
+                <p class="lead">Nemo adds a powerful configuration engine and plugin architecture to the <a
+                        href="http://www.seleniumhq.org/projects/webdriver/" target="_blank">selenium-webdriver</a>
+                    wrapper for node.js. It can be paired with most test runners (think mocha, cucumber, etc) and task
+                    runners (grunt, gulp) or used as a <a href="https://github.com/paypal/nemo">stand-alone tool</a> for
+                    convenience scripts.</p>
+
+            </div>
+            <div class="col-lg-5 col-lg-push-1 col-sm-6 text-center">
+                <img class="img img-responsive" src="images/easy.png" alt="">
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content container-fluid home-section-alt">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-5 col-lg-push-1 col-sm-6 text-center">
+                <img class="img img-responsive" src="images/config.png" alt="">
+            </div>
+            <div class="col-lg-5 col-lg-push-1 col-sm-6">
+                <hr>
+                <div class="clearfix"></div>
+                <h2 class="section-heading">Clever Configurability</h2>
+
+                <p class="lead">Using the clever, concise and powerful <a href="https://github.com/krakenjs/confit">confit
+                    configuration</a> module and its shortstop handler syntax, you have many elegant ways to configure
+                    and override.</p>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content container-fluid">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-5 col-lg-push-1 col-sm-6">
+                <hr>
+                <div class="clearfix"></div>
+                <h2 class="section-heading">Plugin architecture</h2>
+                <p class="lead">Nemo uses a plugin architecture to allow for a lightweight core module,
+                    customization, and the opportunity for you to <a
+                            href="https://github.com/paypal/nemo">contribute</a> easily to the Nemo ecosystem.</p>
+
+            </div>
+            <div class="col-lg-5 col-lg-push-1 col-sm-6 text-center">
+                <img src="images/plugins.png" class="img img-responsive" alt="">
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+</section>
+<footer class="container-fluid">
+    <div class="container">
+        <a href="https://www.paypal.com/"><img src="images/paypal.png" class="paypal"></a>
+        <ul class="list-inline navbar-right">
+            <li><a href="https://twitter.com/nemojs_news"><img src="images/twitter.png"></a></li>
+        </ul>
+    </div>
+</footer>
+<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</body>
 </html>
