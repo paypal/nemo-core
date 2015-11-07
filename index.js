@@ -15,7 +15,8 @@
 'use strict';
 
 var async = require('async'),
-  Setup = require('./setup'),
+  Setup = require('./lib/setup'),
+  Util = require('./lib/util'),
   debug = require('debug'),
   log = debug('nemo:log'),
   error = debug('nemo:error'),
@@ -44,9 +45,9 @@ function Nemo(_basedir, _configOverride, _cb) {
   var confitOptions = {};
   //hack because confit doesn't JSON.parse environment variables before merging
   //look into using shorstop handler or pseudo-handler in place of this
-  var envdata = envToJSON('data');
-  var envdriver = envToJSON('driver');
-  var envplugins = envToJSON('plugins');
+  var envdata = Util.envToJson('data');
+  var envdriver = Util.envToJson('driver');
+  var envplugins = Util.envToJson('plugins');
 
   //settle arguments
   if (arguments.length === 0) {
@@ -194,7 +195,7 @@ var driversetup = function (_nemo) {
   return function driversetup(callback) {
     var driverConfig = _nemo._config.get('driver');
     //do driver/view/locator/vars setup
-    (Setup()).doSetup(driverConfig, function setupCallback(err, _driver) {
+    Setup(driverConfig, function setupCallback(err, _driver) {
       if (err) {
         callback(err);
         return;
@@ -225,28 +226,4 @@ var pluginReg = function (_nemo, pluginArgs, pluginModule) {
   };
 };
 
-var envToJSON = function (prop) {
-  var returnJSON = {};
-  var originalValue = process.env[prop];
-  if (originalValue === undefined) {
-    return {
-      'json': {},
-      'reset': function () {
-      }
-    };
-  }
-  try {
-    var grabJSON = JSON.parse(process.env[prop]);
-    returnJSON[prop] = grabJSON;
-    delete process.env[prop];
-  } catch (err) {
-    //noop
-  }
-  return {
-    'json': returnJSON,
-    'reset': function () {
-      process.env[prop] = originalValue;
-    }
-  };
-};
 module.exports = Nemo;
