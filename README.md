@@ -1,4 +1,6 @@
 # Nemo [![Build Status](https://travis-ci.org/paypal/nemo.svg)](https://travis-ci.org/paypal/nemo)
+
+[![Join the chat at https://gitter.im/paypal/nemo](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/paypal/nemo?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![JS.ORG](https://img.shields.io/badge/js.org-nemo-ffb400.svg?style=flat-square)](http://js.org)
 
 Nemo provides a simple way to add selenium automation to your NodeJS web projects. With a powerful configuration ability provided by [krakenjs/confit](https://github.com/krakenjs/confit), and plugin
