@@ -123,7 +123,12 @@ function Setup() {
         callback(errorObject);
         return;
       }
-      callback(errorObject, driver);
+      driver.getSession().then(function () {
+        callback(null, driver);
+      }).thenCatch(function (err) {
+        error('Encountered an error during driver getSession: %', err);
+        callback(err);
+      });
 
     }
   };
