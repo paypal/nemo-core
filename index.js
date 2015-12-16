@@ -146,6 +146,13 @@ var setup = function setup(config, cb) {
   if (config && config.get('plugins')) {
     plugins = config.get('plugins');
   }
+  if (config.get('driver:selenium.version')) {
+    //install before driver setup
+    log('Now installing selenium '+ config.get('driver:selenium.version'));
+    var seleniumInstall = require('./setup/seleniumInstall');
+    preDriverArray.push(seleniumInstall(config.get('driver:selenium.version')));
+  }
+
 
   Object.keys(plugins).forEach(function pluginsKeys(key) {
     var modulePath,
@@ -163,12 +170,13 @@ var setup = function setup(config, cb) {
       pluginModule = require(modulePath);
     } catch (err) {
       error(err);
-      var noPluginModuleError = new Error('Nemo plugin has invalide module');
+      var noPluginModuleError = new Error('Nemo plugin has invalid module');
       noPluginModuleError.name = 'nemoNoPluginModuleError';
       cb(noPluginModuleError);
       pluginError = true;
       return;
     }
+
     if (plugins[key].priority && plugins[key].priority < 100) {
       preDriverArray.push(pluginReg(nemo, pluginArgs, pluginModule));
     } else {
@@ -180,7 +188,7 @@ var setup = function setup(config, cb) {
   }
   waterFallArray = preDriverArray.concat([driversetup(nemo)], postDriverArray);
 
-  async.waterfall(waterFallArray, function waterfall(err, result) {
+  async.waterfall(waterFallArray, function waterfall(err) {
     if (err) {
       cb(err);
     } else {
