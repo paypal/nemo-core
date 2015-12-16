@@ -1,5 +1,5 @@
 /*───────────────────────────────────────────────────────────────────────────*\
-│  Copyright (C) 2014 eBay Software Foundation                                │
+│  Copyright (C) 2014 PayPal                                                  │
 │                                                                             │
 │                                                                             │
 │   Licensed under the Apache License, Version 2.0 (the "License"); you may   │
