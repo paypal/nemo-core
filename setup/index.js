@@ -24,6 +24,8 @@ var fs = require('fs'),
 
 error.log = console.error.bind(console);
 
+Setup.executionCount = 0;
+
 function Setup() {
   log('new Setup instance created');
   return {
@@ -66,22 +68,63 @@ function Setup() {
         return serverUrl;
       }
 
-      function getCapabilities() {
+      // if tgtBrowser is defined, a new capabilities object will be created from it.  If it is not defined, then this
+      // will append the custom capabilities to the existing capabilities from the builder.
+      function getCapabilities(builder) {
+        caps = builder.capabilities_;
         //specified valid webdriver browser key?
-        if (!webdriver.Capabilities[tgtBrowser]) {
-          log('You have specified targetBrowser: ' + tgtBrowser + ' which is not a built-in webdriver.Capabilities browser option');
-          caps = new webdriver.Capabilities();
+        if (tgtBrowser !== undefined) {
+          if (!webdriver.Capabilities[tgtBrowser]) {
+            log('You have specified targetBrowser: ' + tgtBrowser + ' which is not a built-in webdriver.Capabilities browser option');
 
-        } else {
-          caps = webdriver.Capabilities[tgtBrowser]();
+          } else {
+            // tgtBrowser has been defined.  Don't use the builders capabilities
+            caps = webdriver.Capabilities[tgtBrowser]();
+          }
         }
+
+        //add users custom capabilities
         if (customCaps) {
           Object.keys(customCaps).forEach(function customCapsKeys(key) {
             caps.set(key, customCaps[key]);
           });
         }
+
+        //add project information to the capabilities
+        addProjectInformation(caps);
+
         log('Capabilities', caps);
         return caps;
+      }
+
+      function addProjectInformation(caps) {
+        try {
+          if (!caps.has('framework')) {
+            caps.set('framework', 'nemo');
+          }
+          var projectDirectory = process.env.nemoBaseDir || process.cwd();
+          var pkginfomodule = require('pkginfo')(module);
+          var pkginfo = pkginfomodule.read(module, projectDirectory).package;
+          if (pkginfo !== undefined && pkginfo.name !== undefined) {
+            // set teamname if user hasn't overridden it
+            if (!caps.has('teamname')) {
+              caps.set('teamname', pkginfo.name);
+            }
+          }
+          if (pkginfo !== undefined && pkginfo.description !== undefined) {
+            if (!caps.has('description')) {
+              caps.set('description', pkginfo.description);
+            }
+          }
+          // since we cannot get the mocha file name or description at this point, lets create a testname based on the pkginfo
+          if (!caps.has('name')) {
+            var testname = projectDirectory + '-' + caps.get('teamname') + '-' + Setup.executionCount;
+            caps.set('name', testname);
+          }
+        }
+        catch (e) {
+          error.log('Unable to obtain package information about the current execution due to exception:\n' + e);
+        }
       }
 
       function getProxy() {
@@ -99,22 +142,25 @@ function Setup() {
       }
 
       try {
-
+        Setup.executionCount++;
         var builder = new webdriver.Builder();
         if (builders !== undefined) {
           Object.keys(builders).forEach(function (bldr) {
             builder = builder[bldr].apply(builder, builders[bldr]);
           });
         }
+
         if (serverUrl !== undefined) {
           builder = builder.usingServer(getServer());
         }
-        if (tgtBrowser !== undefined) {
-          builder = builder.withCapabilities(getCapabilities());
-        }
+
+        // add capabilities to the builder
+        builder = builder.withCapabilities(getCapabilities(builder));
+
         if (proxyDetails !== undefined) {
           builder = builder.setProxy(getProxy());
         }
+
         log('builder FINAL', builder);
         driver = builder.build();
       } catch (err) {
