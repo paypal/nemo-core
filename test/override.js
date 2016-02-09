@@ -23,11 +23,7 @@ describe('@override@', function () {
   it("@fromArg@ over config.json data", function (done) {
     process.env.nemoBaseDir = path.join(process.cwd(), 'test');
 
-    nemo = Nemo({
-      data: {
-        baseUrl: 'http://www.ebay.com'
-      }
-    }, function () {
+    nemo = Nemo(sd, function () {
       assert.equal(nemo.data.baseUrl, 'http://www.ebay.com');
       nemo.driver.quit();
       done();

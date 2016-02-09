@@ -352,10 +352,6 @@ Browser you wish to automate. Make sure that your chosen webdriver has this brow
 
 Set local to true if you want Nemo to attempt to start a standalone binary on your system (like selenium-standalone-server) or use a local browser/driver like Chrome/chromedriver or PhantomJS.
 
-#### selenium.version (optional)
-
-If you want to override selenium-webdriver version used by nemo, you can provide `selenium.version` of your choice
-
 #### server (optional)
 
 Webdriver server URL you wish to use.
