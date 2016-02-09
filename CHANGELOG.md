@@ -1,9 +1,5 @@
 # nemo CHANGELOG
 
-## v2.1.0-alpha.1
-
-* moving the selenium.version feature here, while side-effects are dealt with. Please see #102
-
 ## v2.1.0 [UNPUBLISHED]
 
 * add ability to install custom selenium-webdriver version. Please see #98 
