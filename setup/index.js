@@ -106,10 +106,10 @@ function Setup() {
             builder = builder[bldr].apply(builder, builders[bldr]);
           });
         }
-        if (serverUrl !== undefined) {
+        if (serverUrl !== undefined && !(builders && builders.usingServer)) {
           builder = builder.usingServer(getServer());
         }
-        if (tgtBrowser !== undefined) {
+        if (tgtBrowser !== undefined && !(builders && builders.forBrowser)) {
           builder = builder.withCapabilities(getCapabilities());
         }
         if (proxyDetails !== undefined) {
