@@ -29,32 +29,4 @@ describe('@config@', function () {
       });
     });
   });
-
-  it('should install provided @selenium.version@', function (done) {
-    nemo = Nemo({
-      'driver': {
-        'browser': 'phantomjs',
-        'selenium.version': '2.45.0'
-      }
-    }, function (err) {
-      assert.equal(err, undefined);
-      var pac = require('selenium-webdriver/package.json');
-      assert.equal(pac.version, '2.45.0');
-      nemo.driver.quit().then(function () {
-        done();
-      });
-    });
-  });
-
-  it('should throw an error for invalid @invalid.selenium.version@', function (done) {
-    nemo = Nemo({
-      'driver': {
-        'browser': 'phantomjs',
-        'selenium.version': 'foo'
-      }
-    }, function (err) {
-      assert(err);
-      done();
-    });
-  });
 });

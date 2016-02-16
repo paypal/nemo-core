@@ -146,12 +146,6 @@ var setup = function setup(config, cb) {
   if (config && config.get('plugins')) {
     plugins = config.get('plugins');
   }
-  if (config.get('driver:selenium.version')) {
-    //install before driver setup
-    log('Now installing selenium '+ config.get('driver:selenium.version'));
-    var seleniumInstall = require('./setup/seleniumInstall');
-    preDriverArray.push(seleniumInstall(config.get('driver:selenium.version')));
-  }
 
 
   Object.keys(plugins).forEach(function pluginsKeys(key) {
