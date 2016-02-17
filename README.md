@@ -344,19 +344,16 @@ Here are the `driver` properties recognized by Nemo. This is ALL of them. Please
 
 #### browser (optional)
 
-Browser you wish to automate. Make sure that your chosen webdriver has this browser option available. While this is "optional" you must choose a browser. Either use this property or the "builders.forBrowser" option (see below).
+Browser you wish to automate. Make sure that your chosen webdriver has this browser option available. While this is "optional" you must choose a browser. Either use this property or the `builders.forBrowser` option (see below). 
+If both are specified, `builders.forBrowser` takes precedence.
 
 #### local (optional, defaults to false)
 
 Set local to true if you want Nemo to attempt to start a standalone binary on your system (like selenium-standalone-server) or use a local browser/driver like Chrome/chromedriver or PhantomJS.
 
-#### selenium.version (optional)
-
-If you want to override selenium-webdriver version used by nemo, you can provide `selenium.version` of your choice
-
 #### server (optional)
 
-Webdriver server URL you wish to use.
+Webdriver server URL you wish to use. This setting will be overridden if you are using `builders.usingServer`
 
 #### serverProps (optional/conditional)
 
