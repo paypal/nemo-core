@@ -568,6 +568,9 @@ To see just one:
 $ DEBUG=nemo:error <nemo command>
 ```
 
+## BrowserStack Integration
+
+When you want to perform web testing on multiple browsers and operating systems, it can be quite complicated to maintain machines for each of the target environments. BrowserStack provides "remote web browsers as a service", making it easy to do this sort of matrix testing without having to maintain the multiple browser installations yourself. Check out [BrowserStack's repository](https://github.com/browserstack/nemo-browserstack) for a sample Nemo integration with BrowserStack.
 
 ## Why Nemo?
 
