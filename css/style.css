@@ -99,7 +99,7 @@ body.home {
 	}
 
 	/*Taglines*/
-	.hero h2, h3 {
+	.hero h2, .hero h3 {
 		font-size: 24px;
 		color: white;
 		margin: 3px;
@@ -144,7 +144,7 @@ body.home {
 	}
 
 	/*Taglines*/
-	.hero h2, h3 {
+	.hero h2, .hero h3 {
 		font-size: 24px;
 		color: white;
 		margin: 3px;
@@ -176,7 +176,7 @@ body.home {
 	}
 
 	/*Taglines*/
-	.hero h2, h3 {
+	.hero h2, .hero h3 {
 		font-size: 30px;
 		color: white;
 		margin: 4px;
@@ -208,7 +208,7 @@ body.home {
 	}
 
 	/*Taglines*/
-	.hero h2, h3 {
+	.hero h2, .hero h3 {
 		font-size: 36px;
 		color: white;
 		margin: 5px;
@@ -334,3 +334,6 @@ footer ul a:hover {
     opacity: 0.5;
 }
 
+pre {
+	width:100%;
+}
