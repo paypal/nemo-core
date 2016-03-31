@@ -23,27 +23,12 @@ var seleniumInstall = function (version) {
       function (err, stdout, stderr) {
         log('stdout', stdout);
         error('stderr', stderr);
-        callback(null);
         if (err !== null) {
           error('exec error', err);
-          callback(err);
+          return callback(err);
         }
+        callback(null);
       });
-    //npmi(options, function (err) {
-    //  if (err) {
-    //    if (err.code === npmi.LOAD_ERR) {
-    //      error('npm load error');
-    //    }
-    //    else if (err.code === npmi.INSTALL_ERR) {
-    //      error('npm install error');
-    //    }
-    //    callback(err);
-    //  }
-    //  // installed
-    //  log(options.name + '@' + options.version + ' installed successfully in ' + path.resolve(options.path));
-    //  callback(null);
-    //});
-
   };
 
 
