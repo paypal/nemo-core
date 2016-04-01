@@ -1,0 +1,149 @@
+<!doctype html>
+<html>
+<head>
+    <title>Nemo</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body class="inner">
+<section class="container-fluid desktop-terminal">
+    <nav class="navbar" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="clearfix collapse navbar-collapse" id="navbar">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="../">Home</a>
+                    </li>
+                    <li><a href="ecosystem.html">Ecosystem</a></li>
+                    <li><a href="http://paypal.github.io/"><img src="../images/pp.png" class="pp"></a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+</section>
+
+<section class="content container-fluid">
+    <div class="container">
+
+                <div class="clearfix"></div>
+                <h1>Getting started</h1>
+                <p class="lead">Below is a recipe to combine nemo with:
+                <ul>
+                    <li><a href="https://www.npmjs.com/package/nemo-view">nemo-view</a> (handy webdriver abstractions and locator organization)</li>
+                    <li><a href="https://www.npmjs.com/package/mocha">MochaJS</a> (popular node.js unit testing framework)</li>
+                </ul>
+                </p>
+                <p>The instructions assume you are running shell commands from within a node.js project with a package.json file and a test directory.</p>
+                <h2>Installation</h2>
+<pre>npm install --save-dev nemo nemo-view mocha
+mkdir test
+mkdir test/functional
+mkdir test/functional/spec
+touch test/functional/spec/first-spec.js
+mkdir test/functional/config
+touch test/functional/config/config.json
+</pre>
+                <h2>Create files</h2>
+                <h3>first-spec.js</h3>
+<pre>/*global describe:true, it:true */
+
+var basedir = require('path').resolve(__dirname, '..');
+var Nemo = require('nemo');
+var nemo;
+
+describe('suite using @generic@ nemo-view methods', function () {
+  before(function (done) {
+    nemo = Nemo(basedir, function (err) {
+      if (err) {
+        return done(err);
+      }
+      done();
+    });
+  });
+  after(function (done) {
+    nemo.driver.quit().then(done);
+  });
+  it('should automate the browser', function (done) {
+    //login
+    nemo.driver.get(nemo.data.baseUrl);
+    nemo.view._waitVisible('id:signup-button').click();
+    nemo.view._waitVisible('id:cta-btn').click();
+    nemo.view._waitVisible('id:email').sendKeys('mynewpaypalaccount@geemail.paypal');
+    nemo.driver.sleep(3000).then(function () {
+      done();
+    }, function (err) {
+      done(err);
+    })
+  });
+});
+</pre>
+        <h3>config.json</h3>
+<pre>{
+  "plugins": {
+    "view": {
+      "module": "nemo-view",
+      "arguments": ["path:locator"]
+    }
+  },
+  "driver": {
+    "browser": "firefox"
+  },
+  "data": {
+    "baseUrl": "https://www.paypal.com"
+  }
+}
+
+</pre>
+        <h2>Run tests</h2>
+<pre>node_modules/.bin/mocha test/functional/spec/*.js --timeout 30000 --reporter spec</pre>
+        <h2>Results</h2>
+    <p>You should have seen a Firefox browser open, load paypal.com, and begin the personal account signup flow. If this didn't happen, some common issues/solutions are below:</p>
+    <ul>
+        <li><b>Problem:</b> Browser opens, nothing happens
+            <ul>
+                <li><b>Solution:</b> probably your Firefox version is not supported by the selenium-webdriver version installed under nemo</li>
+                <li>find your selenium-webdriver version (use the command "npm ls selenium-webdriver")</li>
+                <li>find your Firefox version (Firefox > About Firefox)</li>
+                <li>Cross-reference your Firefox version with the selenium-webdriver version installed with the <a href="https://github.com/SeleniumHQ/selenium/blob/master/java/CHANGELOG">selenium changelog</a>.</li>
+                <li>Either downgrade your Firefox browser, or upgrade selenium-webdriver via the <a href="https://github.com/paypal/nemo/tree/master#seleniumversion-optional">selenium.version</a> driver property</li>
+            </ul>
+        </li>
+        <li><b>Problem:</b> Firefox opens, paypal.com loads, but automation does not progress and test times out or fails
+            <ul><b>Solution:</b> It may be that the paypal.com website structure changed. Please file an issue here: https://github.com/paypal/nemo/issues</ul>
+        </li>
+    </ul>
+        <h2>Next steps</h2>
+        <p>To build a substantial test suite, you will probably want to:
+            <ul>
+                <li><a href="https://github.com/paypal/nemo-view">use the "locator" feature of nemo-view</a></li>
+                <li>integrate your test suite using a task runner like <a href="https://www.npmjs.com/package/grunt">grunt</a> or <a href="https://www.npmjs.com/package/gulp">gulp</a></li>
+                <li>differentiate test environments using the configuration features of nemo</li>
+                <li>The <a href="">nemo-example-app</a> illustrates all of the above. It can be a good place to find ideas and patterns.</li>
+            </ul>
+        </p>
+            </div>
+
+
+</section>
+
+<footer class="container-fluid">
+    <div class="container">
+        <a href="https://www.paypal.com/"><img src="../images/paypal.png" class="paypal"></a>
+        <ul class="list-inline navbar-right">
+            <li><a href="https://twitter.com/nemojs_news"><img src="../images/twitter.png"></a></li>
+        </ul>
+    </div>
+</footer>
+<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</body>
+</html>
