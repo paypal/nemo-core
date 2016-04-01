@@ -1,6 +1,5 @@
 'use strict';
-var npmi = require('npmi'),
-  path = require('path'),
+var path = require('path'),
   debug = require('debug'),
   log = debug('nemo:log'),
   error = debug('nemo:error'),

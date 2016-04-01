@@ -32,12 +32,12 @@ describe('@config@', function () {
     nemo = Nemo({
       'driver': {
         'browser': 'phantomjs',
-        'selenium.version': '2.45.0'
+        'selenium.version': '2.53.1'
       }
     }, function (err) {
       assert.equal(err, undefined);
       var pac = require('selenium-webdriver/package.json');
-      assert.equal(pac.version, '2.45.0');
+      assert.equal(pac.version, '2.53.1');
       nemo.driver.quit().then(function () {
         done();
       });
