@@ -9,9 +9,11 @@ body {
  * A class of home is applied to the body on index page
  * This is to separate it's design from the rest of the pages
  */
-body.home {
+body.home, body.inner {
     background: #cebbad;
 }
+
+
 
 /**
  * HERO SECTION
@@ -263,12 +265,16 @@ body.home {
     max-width: 24px;
 }
 
-.home .nav a {
+.home .nav a, .inner .nav a {
 	color: white;
 }
 
 .home .nav>li>a:hover {
     background: #439595;
+}
+
+.inner .nav>li>a:hover {
+	background: #463330;
 }
 
 .lead {
@@ -280,6 +286,8 @@ body.home {
     font-weight: bold;
     color: #e85d0c;
 }
+
+
 
 .section-heading {
    font-size: 22px;
