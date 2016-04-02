@@ -9,6 +9,10 @@ body {
  * A class of home is applied to the body on index page
  * This is to separate it's design from the rest of the pages
  */
+
+body {
+	background: #FFF4EC;
+}
 body.home {
     background: #cebbad;
 }
@@ -263,11 +267,11 @@ body.home {
     max-width: 24px;
 }
 
-.home .nav a {
+.nav a {
 	color: white;
 }
 
-.home .nav>li>a:hover {
+.nav>li>a:hover {
     background: #439595;
 }
 
@@ -335,5 +339,30 @@ footer ul a:hover {
 }
 
 pre {
-	width:100%;
+	background: #E6D3C6;
+}
+
+
+.branding a {
+	color: black;
+	font-weight: 100;
+	font-size: 36px;
+	display: flex;
+	height: 60px;
+}
+
+.branding a:hover {
+	text-decoration: none;
+}
+
+.branding span {
+	display: block;
+	margin: auto;
+	padding-top: 12px;
+}
+
+.nemo-logo-small {
+	max-height: 70px;
+	display: block;
+	margin: auto;
 }

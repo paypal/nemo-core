@@ -5,12 +5,21 @@
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.2.0/styles/default.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.2.0/styles/agate.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.2.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
 </head>
-<body class="home">
-<section class="container-fluid desktop-terminal">
+<body>
+<section class="container-fluid desktop-terminal hero-bg">
     <nav class="navbar" role="navigation">
         <div class="container">
             <div class="navbar-header">
+                <h2 class="branding">
+                    <a href="/">
+                        <img src="../images/logo.svg" class="nemo-logo-small"> <span>Nemo.js</span>
+                    </a>
+                </h2>
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
@@ -20,8 +29,6 @@
             </div>
             <div class="clearfix collapse navbar-collapse" id="navbar">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="../">Home</a>
-                    </li>
                     <li><a href="https://github.com/paypal/nemo-docs/blob/master/README.md">Documentation</a></li>
                     <li><a href="http://paypal.github.io/"><img src="../images/pp.png" class="pp"></a></li>
                 </ul>
@@ -36,25 +43,21 @@
 
                 <div class="clearfix"></div>
                 <h1>Getting started</h1>
-                <p class="lead">Below is a recipe to combine nemo with:
-                <ul>
-                    <li><a href="https://www.npmjs.com/package/nemo-view">nemo-view</a> (handy webdriver abstractions and locator organization)</li>
-                    <li><a href="https://www.npmjs.com/package/mocha">MochaJS</a> (popular node.js unit testing framework)</li>
-                </ul>
+                <p class="lead">Nemo can be combined with many plugins and test runners. Here is a recipe to combine nemo with <a href="https://www.npmjs.com/package/nemo-view">nemo-view</a> (handy webdriver abstractions and locator organization) and <a href="https://www.npmjs.com/package/mocha">MochaJS</a> (popular node.js unit testing framework).
                 </p>
                 <p>The instructions assume you are running shell commands from within a node.js project with a package.json file and a test directory.</p>
                 <h2>Installation</h2>
-<pre>npm install --save-dev nemo nemo-view mocha
+<pre><code class="bash">npm install --save-dev nemo nemo-view mocha
 mkdir test
 mkdir test/functional
 mkdir test/functional/spec
 touch test/functional/spec/first-spec.js
 mkdir test/functional/config
 touch test/functional/config/config.json
-</pre>
+</code></pre>
                 <h2>Create files</h2>
                 <h3>first-spec.js</h3>
-<pre>/*global describe:true, it:true */
+<pre><code class="javascript">/*global describe:true, it:true */
 
 var basedir = require('path').resolve(__dirname, '..');
 var Nemo = require('nemo');
@@ -85,9 +88,9 @@ describe('suite using @generic@ nemo-view methods', function () {
     })
   });
 });
-</pre>
+</code></pre>
         <h3>config.json</h3>
-<pre>{
+<pre><code class="json">{
   "plugins": {
     "view": {
       "module": "nemo-view",
@@ -102,9 +105,9 @@ describe('suite using @generic@ nemo-view methods', function () {
   }
 }
 
-</pre>
+</code></pre>
         <h2>Run tests</h2>
-<pre>node_modules/.bin/mocha test/functional/spec/*.js --timeout 30000 --reporter spec</pre>
+<pre><code class="bash">node_modules/.bin/mocha test/functional/spec/*.js --timeout 30000 --reporter spec</code></pre>
         <h2>Results</h2>
     <p>You should have seen a Firefox browser open, load paypal.com, and begin the personal account signup flow. If this didn't happen, some common issues/solutions are below:</p>
     <ul>
