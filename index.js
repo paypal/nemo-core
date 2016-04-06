@@ -24,7 +24,7 @@ var async = require('async'),
   confit = require('confit'),
   yargs = require('yargs'),
   handlers = require('shortstop-handlers'),
-  webdriver = require('selenium-webdriver');
+  webdriver;
 
 error.log = console.error.bind(console);
 
@@ -139,7 +139,6 @@ var setup = function setup(config, cb) {
   var nemo = {
     'data': config.get('data'),
     'driver': {},
-    'wd': webdriver,
     '_config': config
   };
   //config is for registering plugins
@@ -152,7 +151,11 @@ var setup = function setup(config, cb) {
     var seleniumInstall = require('./setup/seleniumInstall');
     preDriverArray.push(seleniumInstall(config.get('driver:selenium.version')));
   }
-
+  preDriverArray.push(function (callback) {
+    webdriver = require('selenium-webdriver');
+    nemo.wd = webdriver;
+    callback(null);
+  });
   Object.keys(plugins).forEach(function pluginsKeys(key) {
     var modulePath,
       pluginConfig,
