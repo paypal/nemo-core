@@ -15,7 +15,7 @@
 /* global require,module */
 'use strict';
 var fs = require('fs'),
-  webdriver = require('selenium-webdriver'),
+  webdriver,
   SeleniumServer = require('selenium-webdriver/remote').SeleniumServer,
   proxy = require('selenium-webdriver/proxy'),
   debug = require('debug'),
@@ -26,6 +26,7 @@ error.log = console.error.bind(console);
 
 function Setup() {
   log('new Setup instance created');
+  webdriver = require('selenium-webdriver');
   return {
     doSetup: function doSetup(driverProps, callback) {
       log('entering doSetup');
