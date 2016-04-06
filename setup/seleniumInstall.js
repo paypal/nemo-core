@@ -18,7 +18,7 @@ var seleniumInstall = function (version) {
     };
     var cmd = 'npm install ' + options.name + '@' + options.version;
     log('install cmd is', cmd);
-    exec(cmd,
+    exec(cmd, {cwd: path.resolve(__dirname, '..')},
       function (err, stdout, stderr) {
         log('stdout', stdout);
         error('stderr', stderr);

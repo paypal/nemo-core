@@ -20,7 +20,7 @@ describe("@proxy@ ", function () {
       }
     }, function (err, nemo) {
       nemo.driver.getCapabilities().then(function (name) {
-        var proxy = name.caps_.proxy;
+        var proxy = name.get('proxy');
         assert.equal(proxy.proxyType, 'manual');
         assert.equal(proxy.ftpProxy, 'host:1234');
         assert.equal(proxy.httpProxy, 'host:1234');
