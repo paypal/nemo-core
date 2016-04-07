@@ -51,11 +51,12 @@ describe('@plugin@', function () {
         }
       }
     }, function (err) {
-      if (err) {
-        return done(err);
-      }
+
       if (err && err.name && err.name === 'nemoPluginSetupError') {
         return done();
+      }
+      else if (err) {
+        done(err);
       }
     });
   });
