@@ -9,7 +9,7 @@ var assert = require('assert'),
 describe('@plugin@', function () {
 
   it("should @priorityRegister@", function (done) {
-    process.env.nemoBaseDir = path.join(process.cwd(), 'test');
+    process.env.nemoBaseDir = path.resolve(__dirname);
 
     Nemo(function(err, nemo) {
       assert.equal(nemo.preDriver.isDriverSetup, false);
@@ -20,7 +20,7 @@ describe('@plugin@', function () {
   });
   it('should handle @nonexistPlugin@', function (done) {
     delete process.env.nemoBaseDir;
-    Nemo(path.join(process.cwd(), 'test'), {
+    Nemo(__dirname, {
       "driver": {
         "browser": "phantomjs"
       },
@@ -40,7 +40,7 @@ describe('@plugin@', function () {
   it('should handle @failedPluginRegistration@', function (done) {
     delete process.env.nemoBaseDir;
 
-    Nemo(path.join(process.cwd(), 'test'), {
+    Nemo(__dirname, 'test'), {
       "driver": {
         "browser": "phantomjs"
       },
@@ -51,11 +51,12 @@ describe('@plugin@', function () {
         }
       }
     }, function (err) {
-      if (err && err.name && err.name === 'nemoPluginSetupError') {
-        done();
-        return;
+      if (err) {
+        return done(err);
       }
-      done(new Error('didnt get the correct exception'));
+      if (err && err.name && err.name === 'nemoPluginSetupError') {
+        return done();
+      }
     });
   });
 });

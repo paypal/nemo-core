@@ -93,7 +93,7 @@ function Nemo(_basedir, _configOverride, _cb) {
     confitOptions.basedir = path.join(basedir, 'config');
   }
   log('confit options', confitOptions);
-
+  log('confit overrides: \ndata: %j,\ndriver: %j\nplugins: %j', envdata.json, envdriver.json, envplugins.json);
   //merge any environment JSON into configOverride
   _.merge(configOverride, envdata.json, envdriver.json, envplugins.json);
 
@@ -145,16 +145,8 @@ var setup = function setup(config, cb) {
   if (config && config.get('plugins')) {
     plugins = config.get('plugins');
   }
-  if (config.get('driver:selenium.version')) {
-    //install before driver setup
-    log('Now installing selenium '+ config.get('driver:selenium.version'));
-    var seleniumInstall = require('./setup/seleniumInstall');
-    preDriverArray.push(seleniumInstall(config.get('driver:selenium.version')));
-  }
-  preDriverArray.push(function (callback) {
-    nemo.wd = require('selenium-webdriver');
-    callback(null);
-  });
+
+
   Object.keys(plugins).forEach(function pluginsKeys(key) {
     var modulePath,
       pluginConfig,
@@ -187,8 +179,18 @@ var setup = function setup(config, cb) {
   if (pluginError) {
     return;
   }
+  preDriverArray.unshift(function setWebdriver(callback) {
+    nemo.wd = require('selenium-webdriver');
+    callback(null);
+  });
+  if (config.get('driver:selenium.version')) {
+    //install before driver setup
+    log('Now installing selenium version %s', config.get('driver:selenium.version'));
+    var seleniumInstall = require('./setup/seleniumInstall');
+    preDriverArray.unshift(seleniumInstall(config.get('driver:selenium.version')));
+  }
   waterFallArray = preDriverArray.concat([driversetup(nemo)], postDriverArray);
-
+  log(waterFallArray);
   async.waterfall(waterFallArray, function waterfall(err) {
     if (err) {
       cb(err);

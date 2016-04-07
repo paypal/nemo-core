@@ -119,7 +119,7 @@ function Setup() {
         log('builder FINAL', builder);
         driver = builder.build();
       } catch (err) {
-        error('Encountered an error during driver setup: %', err);
+        error('Encountered an error during driver setup: %j', err);
         errorObject = err;
         callback(errorObject);
         return;
@@ -127,7 +127,7 @@ function Setup() {
       driver.getSession().then(function () {
         callback(null, driver);
       }).thenCatch(function (err) {
-        error('Encountered an error during driver getSession: %', err);
+        error('Encountered an error during driver getSession: %j', err);
         callback(err);
       });
 

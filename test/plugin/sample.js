@@ -1,7 +1,7 @@
 var async = require("async");
 module.exports = {
   "setup": function (whoami, nemo, callback) {
-
+    console.log('args to sample plugin', whoami.constructor, (nemo && nemo.constructor), (callback && callback.constructor));
     if (arguments.length === 2) {
       callback = nemo;
       nemo = whoami;
@@ -13,6 +13,7 @@ module.exports = {
     nemo[whoami] = {};
     nemo[whoami].isDriverSetup = (!!nemo.driver.get);
     process.nextTick(function () {
+      console.log('callback', callback.constructor);
       callback(null);
     });
 

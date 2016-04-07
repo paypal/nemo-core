@@ -7,7 +7,7 @@ var path = require('path');
 describe("@proxy@ ", function () {
 
   it("should load problem loading page error", function (done) {
-    process.env.nemoBaseDir = path.join(process.cwd(), 'test');
+    process.env.nemoBaseDir = __dirname;
     Nemo({
       "driver": {
         "proxyDetails": {
@@ -19,6 +19,9 @@ describe("@proxy@ ", function () {
         }
       }
     }, function (err, nemo) {
+      if (err) {
+        return done(err);
+      }
       nemo.driver.getCapabilities().then(function (name) {
         var proxy = name.get('proxy');
         assert.equal(proxy.proxyType, 'manual');

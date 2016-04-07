@@ -29,15 +29,16 @@ describe('@config@', function () {
     });
   });
   it('should install provided @selenium.version@', function (done) {
+    var ver = '2.53.1';
     nemo = Nemo({
       'driver': {
         'browser': 'phantomjs',
-        'selenium.version': '2.53.1'
+        'selenium.version': ver
       }
     }, function (err) {
       assert.equal(err, undefined);
       var pac = require('selenium-webdriver/package.json');
-      assert.equal(pac.version, '2.53.1');
+      assert.equal(pac.version, ver);
       nemo.driver.quit().then(function () {
         done();
       });
