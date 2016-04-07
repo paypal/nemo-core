@@ -15,9 +15,6 @@
 /* global require,module */
 'use strict';
 var fs = require('fs'),
-  webdriver,
-  SeleniumServer = require('selenium-webdriver/remote').SeleniumServer,
-  proxy = require('selenium-webdriver/proxy'),
   debug = require('debug'),
   log = debug('nemo:log'),
   error = debug('nemo:error');
@@ -26,12 +23,15 @@ error.log = console.error.bind(console);
 
 function Setup() {
   log('new Setup instance created');
-  webdriver = require('selenium-webdriver');
+
   return {
     doSetup: function doSetup(driverProps, callback) {
       log('entering doSetup');
 
-      var caps,
+      var webdriver = require('selenium-webdriver'),
+        SeleniumServer = require('selenium-webdriver/remote').SeleniumServer,
+        proxy = require('selenium-webdriver/proxy'),
+        caps,
         driver,
         tgtBrowser = driverProps.browser,
         localServer = driverProps.local || false,

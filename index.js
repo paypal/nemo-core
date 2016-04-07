@@ -152,8 +152,7 @@ var setup = function setup(config, cb) {
     preDriverArray.push(seleniumInstall(config.get('driver:selenium.version')));
   }
   preDriverArray.push(function (callback) {
-    webdriver = require('selenium-webdriver');
-    nemo.wd = webdriver;
+    nemo.wd = require('selenium-webdriver');
     callback(null);
   });
   Object.keys(plugins).forEach(function pluginsKeys(key) {
