@@ -10,7 +10,7 @@ var config = {
 
 function recall() {
   console.log('start recall');
-  var nemo = Nemo(config, function () {
+  Nemo(config, function (err, nemo) {
     nemo.driver.get(nemo.data.baseUrl);
     nemo.driver.quit().then(function () {
       console.log('and again');
