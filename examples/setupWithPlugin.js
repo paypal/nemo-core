@@ -1,7 +1,7 @@
 var Nemo = require("../");
 var path = require('path');
 var basedir = path.resolve(__dirname, 'plugin');
-var nemo = Nemo(basedir, function (err) {
+Nemo(basedir, function (err, nemo) {
   //always check for errors!
   if (!!err) {
     console.log('Error during Nemo setup', err);
