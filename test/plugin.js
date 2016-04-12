@@ -3,7 +3,6 @@
 
 var assert = require('assert'),
   path = require('path'),
-  nemo,
   Nemo = require('../index');
 
 
@@ -12,7 +11,7 @@ describe('@plugin@', function () {
   it("should @priorityRegister@", function (done) {
     process.env.nemoBaseDir = path.join(process.cwd(), 'test');
 
-    nemo = Nemo(function () {
+    Nemo(function(err, nemo) {
       assert.equal(nemo.preDriver.isDriverSetup, false);
       assert.equal(nemo.postDriver.isDriverSetup, true);
       nemo.driver.quit();
@@ -21,7 +20,7 @@ describe('@plugin@', function () {
   });
   it('should handle @nonexistPlugin@', function (done) {
     delete process.env.nemoBaseDir;
-    nemo = Nemo(path.join(process.cwd(), 'test'), {
+    Nemo(path.join(process.cwd(), 'test'), {
       "driver": {
         "browser": "phantomjs"
       },
@@ -30,7 +29,7 @@ describe('@plugin@', function () {
           'module': 'path:plugin/sampe'
         }
       }
-    }, function (err) {
+  }, function (err) {
       if (err && err.name && err.name === 'nemoNoPluginModuleError') {
         done();
         return;
@@ -41,7 +40,7 @@ describe('@plugin@', function () {
   it('should handle @failedPluginRegistration@', function (done) {
     delete process.env.nemoBaseDir;
 
-    nemo = Nemo(path.join(process.cwd(), 'test'), {
+    Nemo(path.join(process.cwd(), 'test'), {
       "driver": {
         "browser": "phantomjs"
       },
@@ -60,6 +59,3 @@ describe('@plugin@', function () {
     });
   });
 });
-
-
-
