@@ -8,7 +8,7 @@ describe("@proxy@ ", function () {
 
   it("should load problem loading page error", function (done) {
     process.env.nemoBaseDir = path.join(process.cwd(), 'test');
-    var nemo = Nemo({
+    Nemo({
       "driver": {
         "proxyDetails": {
           method: "manual",
@@ -18,7 +18,7 @@ describe("@proxy@ ", function () {
           "forBrowser": ['phantomjs']
         }
       }
-    }, function (err) {
+    }, function (err, nemo) {
       nemo.driver.getCapabilities().then(function (name) {
         var proxy = name.caps_.proxy;
         assert.equal(proxy.proxyType, 'manual');
