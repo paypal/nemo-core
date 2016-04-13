@@ -35,14 +35,14 @@ describe('@override@', function () {
   it("@builders@ overrides tgtBrowser abstraction", function (done) {
     process.env.nemoBaseDir = path.join(process.cwd(), 'test');
 
-    nemo = Nemo({
+    Nemo({
       driver: {
         browser: 'firefox'
       },
       data: {
         baseUrl: 'http://www.ebay.com'
       }
-    }, function () {
+    }, function (err, nemo) {
       nemo.driver.getCapabilities().then(function (caps) {
         assert.notEqual(caps.browserName, 'firefox');
         nemo.driver.quit();
