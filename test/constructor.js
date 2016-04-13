@@ -86,4 +86,17 @@ describe('@constructor@', function () {
       });
     });
   });
+  it("should return the resolved nemo object when the callback is called", function (done) {
+    var nemoBaseDir = path.join(process.cwd(), 'test');
+    var returnedNemo = Nemo(nemoBaseDir, {
+      'data': {
+        'argPassthrough': true
+      }
+  }, function (err, nemo) {
+      assert.equal(nemo, returnedNemo);
+      nemo.driver.quit().then(function () {
+        done();
+      });
+    });
+  });
 });
