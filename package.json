@@ -10,7 +10,7 @@
     "confit": "^2.0.0",
     "debug": "^2.1.0",
     "lodash": "^2.4.0",
-    "selenium-webdriver": "2.53.1",
+    "selenium-webdriver": "~2.48.0",
     "shortstop-handlers": "^1.0.0",
     "yargs": "^3.6.0"
   },

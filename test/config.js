@@ -29,7 +29,7 @@ describe('@config@', function () {
     });
   });
   it('should install provided @selenium.version@', function (done) {
-    var ver = '2.48.2';
+    var ver = '2.53.1';
     nemo = Nemo({
       'driver': {
         'browser': 'phantomjs',
