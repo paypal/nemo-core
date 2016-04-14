@@ -20,7 +20,8 @@
     "grunt": "~0.4.1",
     "grunt-contrib-jshint": "~0.7.1",
     "grunt-simple-mocha": "~0.4.0",
-    "mocha": "^2.0.0"
+    "mocha": "^2.0.0",
+    "nconf": "^0.8.4"
   },
   "repository": {
     "type": "git",
