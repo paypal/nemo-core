@@ -1,6 +1,6 @@
 # nemo CHANGELOG
 
-## v2.1.0 
+## v2.1.1 
 
 * add resolved nemo as the second argument to the constructor's callback. See: https://github.com/paypal/nemo/pull/114
 
