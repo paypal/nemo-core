@@ -35,7 +35,7 @@ describe('@constructor@', function () {
       "driver": {
         "browser": "phantomjs"
       }
-  }, function (err, nemo) {
+    }, function (err, nemo) {
       assert(nemo.driver);
       nemo.driver.get('http://www.google.com');
       nemo.driver.quit().then(function () {

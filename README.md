@@ -311,16 +311,16 @@ the mocha `done` function as the callback:
 
 ```javascript
 var nemo;
-describe('my nemo suite', function() {
-  before(function(done) {
-    Nemo(config, function(err, resolvedNemo) {
+describe('my nemo suite', function () {
+  before(function (done) {
+    Nemo(config, function (err, resolvedNemo) {
         nemo = resolvedNemo;
         done(err)
     });
   });
-  it('will launch browsers!', function(done) {
+  it('will launch browsers!', function (done) {
     nemo.driver.get('https://www.paypal.com');
-    nemo.driver.quit().then(function() {
+    nemo.driver.quit().then(function () {
        done();
     });
   });
@@ -346,7 +346,7 @@ Here are the `driver` properties recognized by Nemo. This is ALL of them. Please
 
 #### browser (optional)
 
-Browser you wish to automate. Make sure that your chosen webdriver has this browser option available. While this is "optional" you must choose a browser. Either use this property or the `builders.forBrowser` option (see below). 
+Browser you wish to automate. Make sure that your chosen webdriver has this browser option available. While this is "optional" you must choose a browser. Either use this property or the `builders.forBrowser` option (see below).
 If both are specified, `builders.forBrowser` takes precedence.
 
 #### local (optional, defaults to false)
@@ -534,7 +534,7 @@ Nemo({
       'priority': 99
     },
   }
-}, function(err, nemo) {
+}, function (err, nemo) {
   nemo.driver.get(nemo.data.baseUrl);
   nemo.myPlugin.myMethod1();
   nemo.myPlugin.myMethod2();
