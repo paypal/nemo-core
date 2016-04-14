@@ -19,8 +19,12 @@ var seleniumInstall = function (version) {
     log('npm install cmd', cmd);
     exec(cmd, {cwd: path.resolve(__dirname, '..')},
       function (err, stdout, stderr) {
-        if (stdout) console.log('stdout', stdout);
-        if (stderr) console.error('stderr', stderr);
+        if (stdout) {
+          console.log('stdout', stdout);
+        }
+        if (stderr) {
+          console.error('stderr', stderr);
+        }
         if (err !== null) {
           error('exec error', err);
           return callback(err);
@@ -35,7 +39,7 @@ var seleniumInstall = function (version) {
           if (err) {
             return callback(err);
           }
-          process.nextTick(function () {callback(null);});
+          callback(null);
         });
 
       });
