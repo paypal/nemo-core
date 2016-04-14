@@ -3,13 +3,12 @@
 
 var assert = require('assert'),
   path = require('path'),
-  nemo = {},
   Nemo = require('../index');
 
 describe('@constructor@', function () {
   it("should throw an error with @noArguments@", function (done) {
     try {
-      nemo = Nemo();
+      Nemo();
     } catch (err) {
       if (err.name === 'nemoNoCallbackError') {
         done();
@@ -20,7 +19,7 @@ describe('@constructor@', function () {
   });
   it("should throw an error with @noDriverProps@", function (done) {
 
-      nemo = Nemo(function(err) {
+      Nemo(function (err) {
         if (err.name === 'nemoBadDriverProps') {
           done();
           return;
@@ -32,11 +31,11 @@ describe('@constructor@', function () {
 
   it("should launch nemo with @noConfigPath@overrideArg@", function (done) {
     delete process.env.nemoBaseDir;
-    nemo = Nemo({
+    Nemo({
       "driver": {
         "browser": "phantomjs"
       }
-    }, function () {
+    }, function (err, nemo) {
       assert(nemo.driver);
       nemo.driver.get('http://www.google.com');
       nemo.driver.quit().then(function () {
@@ -49,7 +48,7 @@ describe('@constructor@', function () {
 
   it("should launch nemo with @envConfigPath@noOverrideArg@", function (done) {
     process.env.nemoBaseDir = path.join(process.cwd(), 'test');
-    nemo = Nemo(function () {
+    Nemo(function (err, nemo) {
       assert(nemo.driver);
       assert(nemo.data.passThroughFromJson);
       nemo.driver.get(nemo.data.baseUrl);
@@ -62,7 +61,7 @@ describe('@constructor@', function () {
 
   it("should launch nemo with @argConfigPath@noOverrideArg@", function (done) {
     var nemoBaseDir = path.join(process.cwd(), 'test');
-    nemo = Nemo(nemoBaseDir, function () {
+    Nemo(nemoBaseDir, function (err, nemo) {
       assert(nemo.driver);
       assert(nemo.data.passThroughFromJson);
       nemo.driver.get(nemo.data.baseUrl);
@@ -73,15 +72,28 @@ describe('@constructor@', function () {
   });
   it("should launch nemo with @allArgs@", function (done) {
     var nemoBaseDir = path.join(process.cwd(), 'test');
-    nemo = Nemo(nemoBaseDir, {
+    Nemo(nemoBaseDir, {
       'data': {
         'argPassthrough': true
       }
-    }, function () {
+  }, function (err, nemo) {
       assert(nemo.driver);
       assert(nemo.data.passThroughFromJson);
       assert(nemo.data.argPassthrough);
       nemo.driver.get(nemo.data.baseUrl);
+      nemo.driver.quit().then(function () {
+        done();
+      });
+    });
+  });
+  it("should return the resolved nemo object when the callback is called", function (done) {
+    var nemoBaseDir = path.join(process.cwd(), 'test');
+    var returnedNemo = Nemo(nemoBaseDir, {
+      'data': {
+        'argPassthrough': true
+      }
+  }, function (err, nemo) {
+      assert.equal(nemo, returnedNemo);
       nemo.driver.quit().then(function () {
         done();
       });
