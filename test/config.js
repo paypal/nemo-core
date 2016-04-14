@@ -19,7 +19,7 @@ describe('@config@', function () {
           }
         }
       }
-  }, function (err, nemo) {
+    }, function (err, nemo) {
       assert.equal(err, undefined);
       assert(nemo._config);
       assert.equal(nemo._config.get('data:Roger:Federer:is'), 'GOAT');

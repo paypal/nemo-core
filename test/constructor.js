@@ -19,13 +19,13 @@ describe('@constructor@', function () {
   });
   it("should throw an error with @noDriverProps@", function (done) {
 
-      Nemo(function (err) {
-        if (err.name === 'nemoBadDriverProps') {
-          done();
-          return;
-        }
-        done(new Error('didnt get back the expected error'));
-      });
+    Nemo(function (err) {
+      if (err.name === 'nemoBadDriverProps') {
+        done();
+        return;
+      }
+      done(new Error('didnt get back the expected error'));
+    });
 
   });
 
@@ -76,7 +76,7 @@ describe('@constructor@', function () {
       'data': {
         'argPassthrough': true
       }
-  }, function (err, nemo) {
+    }, function (err, nemo) {
       assert(nemo.driver);
       assert(nemo.data.passThroughFromJson);
       assert(nemo.data.argPassthrough);
@@ -92,7 +92,7 @@ describe('@constructor@', function () {
       'data': {
         'argPassthrough': true
       }
-  }, function (err, nemo) {
+    }, function (err, nemo) {
       assert.equal(nemo, returnedNemo);
       nemo.driver.quit().then(function () {
         done();
