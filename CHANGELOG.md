@@ -1,5 +1,9 @@
 # nemo CHANGELOG
 
+## v2.1.1 
+
+* add resolved nemo as the second argument to the constructor's callback. See: https://github.com/paypal/nemo/pull/114
+
 ## v2.1.0 [UNPUBLISHED]
 
 * add ability to install custom selenium-webdriver version. Please see #98 

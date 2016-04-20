@@ -120,7 +120,7 @@ function Nemo(_basedir, _configOverride, _cb) {
         return;
       }
       _.merge(nemo, _nemo);
-      cb();
+      cb(null, nemo);
     });
   });
 
@@ -140,7 +140,7 @@ var setup = function setup(config, cb) {
     'data': config.get('data'),
     'driver': {},
     'wd': webdriver,
-    '_config': config 
+    '_config': config
   };
   //config is for registering plugins
   if (config && config.get('plugins')) {

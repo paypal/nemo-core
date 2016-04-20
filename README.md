@@ -41,14 +41,14 @@ If you install this repo you'll get the following in `examples/setup.js`. Note t
 along with a callback function.
 
 ```javascript
-var nemo = Nemo({
+Nemo({
   "driver": {
     "browser": "firefox"
   },
   'data': {
     'baseUrl': 'https://www.paypal.com'
   }
-}, function (err) {
+}, function (err, nemo) {
   //always check for errors!
   if (!!err) {
     console.log('Error during Nemo setup', err);
@@ -77,7 +77,7 @@ Look at `examples/setupWithConfigFiles.js`
 ```javascript
 //passing __dirname as the first argument tells confit to
 //look in __dirname + '/config' for config files
-var nemo = Nemo(__dirname, function (err) {
+Nemo(__dirname, function (err, nemo) {
   //always check for errors!
   if (!!err) {
     console.log('Error during Nemo setup', err);
@@ -171,7 +171,7 @@ Hopefully this was an instructive dive into the possibilities of Nemo + confit. 
 Look at the `example/setupWithPlugin.js` file:
 
 ```javascript
-var nemo = Nemo(basedir, function (err) {
+Nemo(basedir, function (err, nemo) {
   //always check for errors!
   if (!!err) {
     console.log('Error during Nemo setup', err);
@@ -267,8 +267,7 @@ not set, you need to pass your configuration as the `config` parameter (see belo
 
 `@argument config {Object}` (optional) - Can be a full configuration (if `nemoBaseDir` not provided) or additional/override configuration to what's in your config files.
 
-`@argument callback {Function}` - This function will be called once the `nemo` object is fully resolved. It may be called with an error argument which has important
-debugging information. So make sure to check for an error.
+`@argument callback {Function}` - This function will be called once the `nemo` object is fully resolved. It may be called with an error as the first argument which has important debugging information. So make sure to check for an error. The second argument is the resolved `nemo` object.
 
 `@returns nemo {Object}` - The nemo object has the following properties:
 
@@ -314,13 +313,16 @@ the mocha `done` function as the callback:
 
 ```javascript
 var nemo;
-describe('my nemo suite', function() {
-  before(function(done) {
-    nemo = Nemo(config, done);
+describe('my nemo suite', function () {
+  before(function (done) {
+    Nemo(config, function (err, resolvedNemo) {
+        nemo = resolvedNemo;
+        done(err)
+    });
   });
-  it('will launch browsers!', function(done) {
+  it('will launch browsers!', function (done) {
     nemo.driver.get('https://www.paypal.com');
-    nemo.driver.quit().then(function() {
+    nemo.driver.quit().then(function () {
        done();
     });
   });
@@ -346,19 +348,16 @@ Here are the `driver` properties recognized by Nemo. This is ALL of them. Please
 
 #### browser (optional)
 
-Browser you wish to automate. Make sure that your chosen webdriver has this browser option available. While this is "optional" you must choose a browser. Either use this property or the "builders.forBrowser" option (see below).
+Browser you wish to automate. Make sure that your chosen webdriver has this browser option available. While this is "optional" you must choose a browser. Either use this property or the `builders.forBrowser` option (see below).
+If both are specified, `builders.forBrowser` takes precedence.
 
 #### local (optional, defaults to false)
 
 Set local to true if you want Nemo to attempt to start a standalone binary on your system (like selenium-standalone-server) or use a local browser/driver like Chrome/chromedriver or PhantomJS.
 
-#### selenium.version (optional)
-
-If you want to override selenium-webdriver version used by nemo, you can provide `selenium.version` of your choice
-
 #### server (optional)
 
-Webdriver server URL you wish to use.
+Webdriver server URL you wish to use. This setting will be overridden if you are using `builders.usingServer`
 
 #### serverProps (optional/conditional)
 
@@ -521,7 +520,7 @@ Then in your module where you use Nemo, you will be able to access the plugin fu
 
 ```javascript
 var Nemo = require('nemo');
-var nemo = Nemo({
+Nemo({
   'driver': {
     'browser': 'firefox',
     'local': true,
@@ -537,12 +536,12 @@ var nemo = Nemo({
       'priority': 99
     },
   }
-}, function () {
+}, function (err, nemo) {
   nemo.driver.get(nemo.data.baseUrl);
   nemo.myPlugin.myMethod1();
   nemo.myPlugin.myMethod2();
   nemo.driver.sleep(5000).
-    then(function () {
+    then(function() {
       console.info('Nemo was successful!!');
       nemo.driver.quit();
     });
@@ -574,6 +573,3 @@ $ DEBUG=nemo:error <nemo command>
 Because we NEed MOre automation testing!
 
 [![NPM](https://nodei.co/npm/nemo.png?downloads=true&stars=true)](https://nodei.co/npm/nemo/)
-
-
-

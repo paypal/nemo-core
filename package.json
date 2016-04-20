@@ -1,6 +1,6 @@
 {
   "name": "nemo",
-  "version": "2.0.0",
+  "version": "2.1.1",
   "description": "Abstraction for automation test components",
   "scripts": {
     "test": "grunt"
@@ -36,14 +36,9 @@
   },
   "author": "Matt Edelman <medelman@paypal.com>",
   "contributors": [
-    {
-      "name": "Matt Edelman",
-      "email": "medelman@paypal.com"
-    },
-    {
-      "name": "Nilesh Kulkarni",
-      "email": "nikulkarni@paypal.com"
-    }
+    "Matt Edelman <medelman@paypal.com>",
+    "Nilesh Kulkarni <nikulkarni@paypal.com>",
+    "Shay Davidson <shay.h.davidson@gmail.com>"
   ],
   "licenses": [
     {
