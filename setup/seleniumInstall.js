@@ -10,7 +10,7 @@ var seleniumInstall = function (version) {
   return function installSelenium(callback) {
     //check package.json
     var pkg = require(path.resolve(__dirname, '../package.json'));
-    if (pkg.dependencies['selenium-webdriver'] === version) {
+    if (pkg.nemoMetadata && pkg.nemoMetadata.seleniumVersion && pkg.nemoMetadata.seleniumVersion === version) {
       log('selenium version %s already installed', version);
       return callback(null);
     }
@@ -29,8 +29,10 @@ var seleniumInstall = function (version) {
           error('exec error', err);
           return callback(err);
         }
-        pkg.dependencies['selenium-webdriver'] = version;
-
+        if (!pkg.nemoMetadata) {
+          pkg.nemoMetadata = {};
+        }
+        pkg.nemoMetadata.seleniumVersion = version;
         //below is for local testing where we don't want to overwrite package.json
         //fs.writeFile = function (what, ever, dude) {
         //  dude(null);

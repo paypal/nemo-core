@@ -9,7 +9,7 @@ var assert = require('assert'),
 describe('@override@', function () {
 
   it("@fromEnv@ over config.json data", function (done) {
-    process.env.nemoBaseDir = path.resolve(__dirname);
+    process.env.nemoBaseDir = __dirname;
     process.env.data = JSON.stringify({
       baseUrl: 'http://www.ebay.com'
     });
@@ -23,7 +23,7 @@ describe('@override@', function () {
     });
   });
   it("@fromArg@ over config.json data", function (done) {
-    process.env.nemoBaseDir = path.resolve(__dirname);
+    process.env.nemoBaseDir = __dirname;
 
     Nemo({
       data: {
@@ -39,7 +39,7 @@ describe('@override@', function () {
     });
   });
   it("@builders@ overrides tgtBrowser abstraction", function (done) {
-    process.env.nemoBaseDir = path.join(process.cwd(), 'test');
+    process.env.nemoBaseDir = __dirname;
 
     Nemo({
       driver: {

@@ -40,7 +40,7 @@ describe('@plugin@', function () {
   it('should handle @failedPluginRegistration@', function (done) {
     delete process.env.nemoBaseDir;
 
-    Nemo(__dirname, 'test'), {
+    Nemo(__dirname, {
       "driver": {
         "browser": "phantomjs"
       },

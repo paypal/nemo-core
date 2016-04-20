@@ -30,12 +30,12 @@ describe('@config@', function () {
   });
   it('should install provided @selenium.version@', function (done) {
     var ver = '2.53.1';
-    nemo = Nemo({
+    Nemo({
       'driver': {
         'browser': 'phantomjs',
         'selenium.version': ver
       }
-    }, function (err) {
+    }, function (err, nemo) {
       assert.equal(err, undefined);
       var pac = require('selenium-webdriver/package.json');
       assert.equal(pac.version, ver);
@@ -46,12 +46,12 @@ describe('@config@', function () {
   });
 
   it('should throw an error for invalid @invalid.selenium.version@', function (done) {
-    nemo = Nemo({
+    Nemo({
       'driver': {
         'browser': 'phantomjs',
         'selenium.version': 'foo'
       }
-    }, function (err) {
+    }, function (err, nemo) {
       assert(err);
       done();
     });
