@@ -1,7 +1,6 @@
 var async = require("async");
 module.exports = {
   "setup": function (whoami, nemo, callback) {
-    //console.log('args to sample plugin', whoami.constructor, (nemo && nemo.constructor), (callback && callback.constructor));
     if (arguments.length === 2) {
       callback = nemo;
       nemo = whoami;
