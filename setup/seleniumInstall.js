@@ -14,16 +14,16 @@ var seleniumInstall = function (version) {
       log('selenium version %s already installed', version);
       return callback(null);
     }
-
-    var cmd = 'npm install --save selenium-webdriver@' + version;
+    var save = (process.env.NEMO_UNIT_TEST) ? '' : '--save';
+    var cmd = 'npm install ' + save + ' selenium-webdriver@' + version;
     log('npm install cmd', cmd);
     exec(cmd, {cwd: path.resolve(__dirname, '..')},
       function (err, stdout, stderr) {
         if (stdout) {
-          console.log('stdout', stdout);
+          log('seleniumInstall: stdout', stdout);
         }
         if (stderr) {
-          console.error('stderr', stderr);
+          error('seleniumInstall: stderr', stderr);
         }
         if (err !== null) {
           error('exec error', err);

@@ -6,7 +6,7 @@ var assert = require('assert'),
   Nemo = require('../index');
 
 describe('@config@', function () {
-
+  process.env['NEMO_UNIT_TEST'] = 'true';
   it('should pass confit object as nemo._config', function (done) {
     Nemo({
       'driver': {
@@ -29,7 +29,7 @@ describe('@config@', function () {
     });
   });
   it('should install provided @selenium.version@', function (done) {
-    var ver = '2.53.1';
+    var ver = '^2.53.1';
     Nemo({
       'driver': {
         'browser': 'phantomjs',
@@ -38,7 +38,7 @@ describe('@config@', function () {
     }, function (err, nemo) {
       assert.equal(err, undefined);
       var pac = require('selenium-webdriver/package.json');
-      assert.equal(pac.version, ver);
+      assert.ok(pac.version.indexOf('2.53') !== -1);
       nemo.driver.quit().then(function () {
         done();
       });

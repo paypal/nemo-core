@@ -48,7 +48,6 @@ describe('@constructor@', function () {
 
   it("should launch nemo with @envConfigPath@noOverrideArg@", function (done) {
     process.env.nemoBaseDir = __dirname;
-    console.log('NEMOBASEDIR', process.env.nemoBaseDir);
     Nemo(function (err, nemo) {
       assert(nemo.driver);
       assert(nemo.data.passThroughFromJson);
@@ -62,7 +61,6 @@ describe('@constructor@', function () {
 
   it("should launch nemo with @argConfigPath@noOverrideArg@", function (done) {
     var nemoBaseDir = __dirname;
-    console.log('NEMOBASEDIR', nemoBaseDir);
 
     Nemo(nemoBaseDir, function (err, nemo) {
       assert(nemo.driver);
@@ -73,33 +71,33 @@ describe('@constructor@', function () {
       });
     });
   });
-  //it("should launch nemo with @allArgs@", function (done) {
-  //  var nemoBaseDir = __dirname;
-  //  Nemo(nemoBaseDir, {
-  //    'data': {
-  //      'argPassthrough': true
-  //    }
-  //  }, function (err, nemo) {
-  //    assert(nemo.driver);
-  //    assert(nemo.data.passThroughFromJson);
-  //    assert(nemo.data.argPassthrough);
-  //    nemo.driver.get(nemo.data.baseUrl);
-  //    nemo.driver.quit().then(function () {
-  //      done();
-  //    });
-  //  });
-  //});
-  //it("should return the resolved nemo object when the callback is called", function (done) {
-  //  var nemoBaseDir = __dirname;
-  //  var returnedNemo = Nemo(nemoBaseDir, {
-  //    'data': {
-  //      'argPassthrough': true
-  //    }
-  //  }, function (err, nemo) {
-  //    assert.equal(nemo, returnedNemo);
-  //    nemo.driver.quit().then(function () {
-  //      done();
-  //    });
-  //  });
-  //});
+  it("should launch nemo with @allArgs@", function (done) {
+    var nemoBaseDir = __dirname;
+    Nemo(nemoBaseDir, {
+      'data': {
+        'argPassthrough': true
+      }
+    }, function (err, nemo) {
+      assert(nemo.driver);
+      assert(nemo.data.passThroughFromJson);
+      assert(nemo.data.argPassthrough);
+      nemo.driver.get(nemo.data.baseUrl);
+      nemo.driver.quit().then(function () {
+        done();
+      });
+    });
+  });
+  it("should return the resolved nemo object when the callback is called", function (done) {
+    var nemoBaseDir = __dirname;
+    var returnedNemo = Nemo(nemoBaseDir, {
+      'data': {
+        'argPassthrough': true
+      }
+    }, function (err, nemo) {
+      assert.equal(nemo, returnedNemo);
+      nemo.driver.quit().then(function () {
+        done();
+      });
+    });
+  });
 });

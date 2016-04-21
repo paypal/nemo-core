@@ -131,7 +131,7 @@ function Nemo(_basedir, _configOverride, _cb) {
 
 
 var setup = function setup(config, cb) {
-  var waterFallArray = [],
+  var waterfallArray = [],
     preDriverArray = [],
     postDriverArray = [],
     plugins = {},
@@ -185,13 +185,13 @@ var setup = function setup(config, cb) {
   });
   if (config.get('driver:selenium.version')) {
     //install before driver setup
-    log('Now installing selenium version %s', config.get('driver:selenium.version'));
+    log('Requested install of selenium version %s', config.get('driver:selenium.version'));
     var seleniumInstall = require('./setup/seleniumInstall');
     preDriverArray.unshift(seleniumInstall(config.get('driver:selenium.version')));
   }
-  waterFallArray = preDriverArray.concat([driversetup(nemo)], postDriverArray);
-  log(waterFallArray);
-  async.waterfall(waterFallArray, function waterfall(err) {
+  waterfallArray = preDriverArray.concat([driversetup(nemo)], postDriverArray);
+  log('waterfallArray', waterfallArray);
+  async.waterfall(waterfallArray, function waterfall(err) {
     if (err) {
       cb(err);
     } else {
