@@ -1,7 +1,6 @@
 var async = require("async");
 module.exports = {
   "setup": function (whoami, nemo, callback) {
-
     if (arguments.length === 2) {
       callback = nemo;
       nemo = whoami;

@@ -15,9 +15,6 @@
 /* global require,module */
 'use strict';
 var fs = require('fs'),
-  webdriver = require('selenium-webdriver'),
-  SeleniumServer = require('selenium-webdriver/remote').SeleniumServer,
-  proxy = require('selenium-webdriver/proxy'),
   debug = require('debug'),
   log = debug('nemo:log'),
   error = debug('nemo:error');
@@ -26,11 +23,15 @@ error.log = console.error.bind(console);
 
 function Setup() {
   log('new Setup instance created');
+
   return {
     doSetup: function doSetup(driverProps, callback) {
       log('entering doSetup');
 
-      var caps,
+      var webdriver = require('selenium-webdriver'),
+        SeleniumServer = require('selenium-webdriver/remote').SeleniumServer,
+        proxy = require('selenium-webdriver/proxy'),
+        caps,
         driver,
         tgtBrowser = driverProps.browser,
         localServer = driverProps.local || false,
@@ -118,7 +119,7 @@ function Setup() {
         log('builder FINAL', builder);
         driver = builder.build();
       } catch (err) {
-        error('Encountered an error during driver setup: %', err);
+        error('Encountered an error during driver setup: %j', err);
         errorObject = err;
         callback(errorObject);
         return;
@@ -126,7 +127,7 @@ function Setup() {
       driver.getSession().then(function () {
         callback(null, driver);
       }).thenCatch(function (err) {
-        error('Encountered an error during driver getSession: %', err);
+        error('Encountered an error during driver getSession: %j', err);
         callback(err);
       });
 

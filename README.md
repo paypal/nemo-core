@@ -1,4 +1,6 @@
 # Nemo [![Build Status](https://travis-ci.org/paypal/nemo.svg)](https://travis-ci.org/paypal/nemo)
+
+[![Join the chat at https://gitter.im/paypal/nemo](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/paypal/nemo?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![JS.ORG](https://img.shields.io/badge/js.org-nemo-ffb400.svg?style=flat-square)](http://js.org)
 
 Nemo provides a simple way to add selenium automation to your NodeJS web projects. With a powerful configuration ability provided by [krakenjs/confit](https://github.com/krakenjs/confit), and plugin
@@ -408,7 +410,22 @@ Useful such functions are:
 * forBrowser (can take the place of "browser", "local" and "jar" properties above)
 * withCapabilities (can take the place of "serverCaps" above)
 
-There may be some overlap between these functions and
+The nemo setup routine will prefer these "builder" properties over other abstracted properties above, if there is a conflict.
+
+#### selenium.version (optional)
+
+Since nemo requires a narrow range of versions of selenium-webdriver, you may have a need to upgrade selenium-webdriver (or downgrade) outside of the supported versions that nemo uses. 
+You can do that by using `selenium.version`. E.g.
+
+```js
+"driver": {
+  "browser": "firefox",
+  "selenium.version": "^2.53.1"
+}
+```
+
+Nemo will upgrade its internal dependency to what is set in this property. The `npm install` will only run if the version specified is not already installed.
+
 ### plugins
 
 Plugins are registered with JSON like the following (will vary based on your plugins)
