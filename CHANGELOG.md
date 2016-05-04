@@ -1,5 +1,9 @@
 # nemo CHANGELOG
 
+## v2.2.0
+
+* add `selenium.version` feature. Please see: https://github.com/paypal/nemo/pull/107
+
 ## v2.1.1 
 
 * add resolved nemo as the second argument to the constructor's callback. See: https://github.com/paypal/nemo/pull/114
