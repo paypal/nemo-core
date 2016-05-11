@@ -47,7 +47,7 @@ describe('@constructor@', function () {
 
 
   it("should launch nemo with @envConfigPath@noOverrideArg@", function (done) {
-    process.env.nemoBaseDir = path.join(process.cwd(), 'test');
+    process.env.nemoBaseDir = __dirname;
     Nemo(function (err, nemo) {
       assert(nemo.driver);
       assert(nemo.data.passThroughFromJson);
@@ -60,7 +60,8 @@ describe('@constructor@', function () {
 
 
   it("should launch nemo with @argConfigPath@noOverrideArg@", function (done) {
-    var nemoBaseDir = path.join(process.cwd(), 'test');
+    var nemoBaseDir = __dirname;
+
     Nemo(nemoBaseDir, function (err, nemo) {
       assert(nemo.driver);
       assert(nemo.data.passThroughFromJson);
@@ -71,7 +72,7 @@ describe('@constructor@', function () {
     });
   });
   it("should launch nemo with @allArgs@", function (done) {
-    var nemoBaseDir = path.join(process.cwd(), 'test');
+    var nemoBaseDir = __dirname;
     Nemo(nemoBaseDir, {
       'data': {
         'argPassthrough': true
@@ -87,7 +88,7 @@ describe('@constructor@', function () {
     });
   });
   it("should return the resolved nemo object when the callback is called", function (done) {
-    var nemoBaseDir = path.join(process.cwd(), 'test');
+    var nemoBaseDir = __dirname;
     var returnedNemo = Nemo(nemoBaseDir, {
       'data': {
         'argPassthrough': true

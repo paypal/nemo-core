@@ -410,7 +410,22 @@ Useful such functions are:
 * forBrowser (can take the place of "browser", "local" and "jar" properties above)
 * withCapabilities (can take the place of "serverCaps" above)
 
-There may be some overlap between these functions and
+The nemo setup routine will prefer these "builder" properties over other abstracted properties above, if there is a conflict.
+
+#### selenium.version (optional)
+
+Since nemo requires a narrow range of versions of selenium-webdriver, you may have a need to upgrade selenium-webdriver (or downgrade) outside of the supported versions that nemo uses. 
+You can do that by using `selenium.version`. E.g.
+
+```js
+"driver": {
+  "browser": "firefox",
+  "selenium.version": "^2.53.1"
+}
+```
+
+Nemo will upgrade its internal dependency to what is set in this property. The `npm install` will only run if the version specified is not already installed.
+
 ### plugins
 
 Plugins are registered with JSON like the following (will vary based on your plugins)

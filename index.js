@@ -24,7 +24,7 @@ var async = require('async'),
   confit = require('confit'),
   yargs = require('yargs'),
   handlers = require('shortstop-handlers'),
-  webdriver = require('selenium-webdriver');
+  webdriver;
 
 error.log = console.error.bind(console);
 
@@ -93,7 +93,7 @@ function Nemo(_basedir, _configOverride, _cb) {
     confitOptions.basedir = path.join(basedir, 'config');
   }
   log('confit options', confitOptions);
-
+  log('confit overrides: \ndata: %j,\ndriver: %j\nplugins: %j', envdata.json, envdriver.json, envplugins.json);
   //merge any environment JSON into configOverride
   _.merge(configOverride, envdata.json, envdriver.json, envplugins.json);
 
@@ -131,7 +131,7 @@ function Nemo(_basedir, _configOverride, _cb) {
 
 
 var setup = function setup(config, cb) {
-  var waterFallArray = [],
+  var waterfallArray = [],
     preDriverArray = [],
     postDriverArray = [],
     plugins = {},
@@ -139,7 +139,6 @@ var setup = function setup(config, cb) {
   var nemo = {
     'data': config.get('data'),
     'driver': {},
-    'wd': webdriver,
     '_config': config
   };
   //config is for registering plugins
@@ -180,9 +179,19 @@ var setup = function setup(config, cb) {
   if (pluginError) {
     return;
   }
-  waterFallArray = preDriverArray.concat([driversetup(nemo)], postDriverArray);
-
-  async.waterfall(waterFallArray, function waterfall(err) {
+  preDriverArray.unshift(function setWebdriver(callback) {
+    nemo.wd = require('selenium-webdriver');
+    callback(null);
+  });
+  if (config.get('driver:selenium.version')) {
+    //install before driver setup
+    log('Requested install of selenium version %s', config.get('driver:selenium.version'));
+    var seleniumInstall = require('./setup/seleniumInstall');
+    preDriverArray.unshift(seleniumInstall(config.get('driver:selenium.version')));
+  }
+  waterfallArray = preDriverArray.concat([driversetup(nemo)], postDriverArray);
+  log('waterfallArray', waterfallArray);
+  async.waterfall(waterfallArray, function waterfall(err) {
     if (err) {
       cb(err);
     } else {
