@@ -9,8 +9,13 @@ architecture, Nemo is flexible enough to handle any browser/device automation ne
 Nemo is built to easily plug into any task runner and test runner. But in this README we will only cover setup and architecture of Nemo
 as a standalone entity.
 
-
 ## Getting started
+
+### Install
+
+```
+npm install --save-dev nemo
+```
 
 ### Pre-requisites
 
@@ -21,15 +26,6 @@ As long as you have the appropriate browser or browser driver (selenium-standalo
 fine.
 
 
-#### package.json changes
-
-add the following to package.json devDependencies (assuming mocha is already integrated to your project):
-
-```javascript
-"nemo": "^1.1.0",
-```
-
-Then `npm install`
 
 ### Nemo and Confit in 90 seconds
 
@@ -414,7 +410,7 @@ The nemo setup routine will prefer these "builder" properties over other abstrac
 
 #### selenium.version (optional)
 
-Since nemo requires a narrow range of versions of selenium-webdriver, you may have a need to upgrade selenium-webdriver (or downgrade) outside of the supported versions that nemo uses. 
+Since nemo requires a narrow range of versions of selenium-webdriver, you may have a need to upgrade selenium-webdriver (or downgrade) outside of the supported versions that nemo uses.
 You can do that by using `selenium.version`. E.g.
 
 ```js
