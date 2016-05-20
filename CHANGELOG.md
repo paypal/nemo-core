@@ -1,6 +1,6 @@
 # nemo CHANGELOG
 
-##
+## v2.3.0
 
 Selenium web driver was outdated and had a node security advisory. Bumped other outdated modules;
 
