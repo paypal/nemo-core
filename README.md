@@ -2,6 +2,8 @@
 
 [![Join the chat at https://gitter.im/paypal/nemo](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/paypal/nemo?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![JS.ORG](https://img.shields.io/badge/js.org-nemo-ffb400.svg?style=flat-square)](http://js.org)
+[![Dependency Status](https://david-dm.org/paypal/nemo.svg)](https://david-dm.org/paypal/nemo)
+[![devDependency Status](https://david-dm.org/paypal/nemo/dev-status.svg)](https://david-dm.org/paypal/nemo#info=devDependencies)
 
 Nemo provides a simple way to add selenium automation to your NodeJS web projects. With a powerful configuration ability provided by [krakenjs/confit](https://github.com/krakenjs/confit), and plugin
 architecture, Nemo is flexible enough to handle any browser/device automation need.
@@ -9,8 +11,13 @@ architecture, Nemo is flexible enough to handle any browser/device automation ne
 Nemo is built to easily plug into any task runner and test runner. But in this README we will only cover setup and architecture of Nemo
 as a standalone entity.
 
-
 ## Getting started
+
+### Install
+
+```
+npm install --save-dev nemo
+```
 
 ### Pre-requisites
 
@@ -21,15 +28,6 @@ As long as you have the appropriate browser or browser driver (selenium-standalo
 fine.
 
 
-#### package.json changes
-
-add the following to package.json devDependencies (assuming mocha is already integrated to your project):
-
-```javascript
-"nemo": "^1.1.0",
-```
-
-Then `npm install`
 
 ### Nemo and Confit in 90 seconds
 
@@ -414,7 +412,7 @@ The nemo setup routine will prefer these "builder" properties over other abstrac
 
 #### selenium.version (optional)
 
-Since nemo requires a narrow range of versions of selenium-webdriver, you may have a need to upgrade selenium-webdriver (or downgrade) outside of the supported versions that nemo uses. 
+Since nemo requires a narrow range of versions of selenium-webdriver, you may have a need to upgrade selenium-webdriver (or downgrade) outside of the supported versions that nemo uses.
 You can do that by using `selenium.version`. E.g.
 
 ```js
