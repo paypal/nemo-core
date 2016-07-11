@@ -1,5 +1,8 @@
 # nemo CHANGELOG
 
+## Unreleased
+- Fix: [#115](https://github.com/paypal/nemo/issues/115)
+
 ## v2.3.0
 
 Selenium web driver was outdated and had a node security advisory. Bumped other outdated modules;
