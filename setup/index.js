@@ -119,7 +119,7 @@ function Setup() {
         log('builder FINAL', builder);
         driver = builder.build();
       } catch (err) {
-        error('Encountered an error during driver setup: %s', err);
+        error('Encountered an error during driver setup: %j', err);
         errorObject = err;
         callback(errorObject);
         return;
