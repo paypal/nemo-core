@@ -93,7 +93,7 @@ function Nemo(_basedir, _configOverride, _cb) {
     confitOptions.basedir = path.join(basedir, 'config');
   }
   log('confit options', confitOptions);
-  log('confit overrides: \ndata: %j,\ndriver: %j\nplugins: %j', envdata.json, envdriver.json, envplugins.json);
+  log('confit overrides: \ndata: %s,\ndriver: %s\nplugins: %s', envdata.json, envdriver.json, envplugins.json);
   //merge any environment JSON into configOverride
   _.merge(configOverride, envdata.json, envdriver.json, envplugins.json);
 
@@ -163,7 +163,7 @@ var setup = function setup(config, cb) {
       pluginModule = require(modulePath);
     } catch (err) {
       error(err);
-      var noPluginModuleError = new Error('Nemo plugin has invalid module');
+      var noPluginModuleError = new Error('Nemo plugin has invalid module %s' , modulePath);
       noPluginModuleError.name = 'nemoNoPluginModuleError';
       cb(noPluginModuleError);
       pluginError = true;

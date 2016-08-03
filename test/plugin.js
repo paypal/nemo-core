@@ -26,15 +26,15 @@ describe('@plugin@', function () {
       },
       'plugins': {
         'noexist': {
-          'module': 'path:plugin/sampe'
+          'module': 'ModuleThatDoesNotExist'
         }
       }
   }, function (err) {
-      if (err && err.name && err.name === 'nemoNoPluginModuleError') {
-        done();
-        return;
-      }
-      done(new Error('didnt get the correct exception'));
+        if (err && err.name && err.name === 'nemoNoPluginModuleError' && err.message.includes('ModuleThatDoesNotExist')) {
+            done();
+            return;
+        }
+        done(new Error('didnt get the correct exception'));
     });
   });
   it('should handle @failedPluginRegistration@', function (done) {
