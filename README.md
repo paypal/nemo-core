@@ -598,6 +598,7 @@ Because we NEed MOre automation testing!
 configuration, for example the browser section under `test/config/config.json` like [here](https://github.com/paypal/nemo/blob/master/test/config/config.json#L19)
 
 * How to run unit tests?
+  * `npm test` will run unit tests as well as lint task
   * `grunt simplemocha` will just run unit tests
   * `grunt` - default grunt task will run linting as well as unit tests
   * To run directly using mocha assuming its globally installed on your system `mocha -t 60s`
