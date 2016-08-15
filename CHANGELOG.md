@@ -1,6 +1,7 @@
 # nemo CHANGELOG
 
-## Unreleased
+## v2.3.1
+
 - Fix: [#115](https://github.com/paypal/nemo/issues/115)
 - %j placeholder for debug module doesn't print Error objects. %s should be used instead for Strings and Error objects.
 %j is appropriate where we expect JSON objects and want logger to convert JSON.stringify() for us
