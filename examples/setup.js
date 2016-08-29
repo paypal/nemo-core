@@ -14,7 +14,7 @@ Nemo({
   nemo.driver.get(nemo.data.baseUrl);
   nemo.driver.getCapabilities().
     then(function (caps) {
-      console.info("Nemo successfully launched", caps.caps_.browserName);
+      console.log("Nemo successfully launched", caps.get('browserName'));
     });
   nemo.driver.quit();
 });

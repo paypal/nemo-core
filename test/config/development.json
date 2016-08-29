@@ -1,7 +1,7 @@
 {
   "driver": {
     "builders": {
-      "forBrowser": ["chrome"]
+      "forBrowser": ["phantomjs"]
     }
   }
 }
