@@ -50,8 +50,9 @@ function Nemo(_basedir, _configOverride, _cb) {
 
   //settle arguments
   if (arguments.length === 0) {
-    error('Nemo constructor needs at least a callback');
-    var noCallbackError = new Error('Nemo constructor needs at least a callback');
+    var errorMessage = 'Nemo constructor needs at least a callback';
+    error(errorMessage);
+    var noCallbackError = new Error(errorMessage);
     noCallbackError.name = 'nemoNoCallbackError';
     throw noCallbackError;
   }
@@ -108,8 +109,9 @@ function Nemo(_basedir, _configOverride, _cb) {
     envplugins.reset();
     //check for vital information
     if (config.get('driver') === undefined) {
-      error('essential driver properties not found in configuration');
-      var badDriverProps = new Error('Nemo essential driver properties not found in configuration');
+      var errorMessage = 'Nemo essential driver properties not found in configuration';
+      error(errorMessage);
+      var badDriverProps = new Error(errorMessage);
       badDriverProps.name = 'nemoBadDriverProps';
       cb(badDriverProps);
       return;
@@ -163,7 +165,7 @@ var setup = function setup(config, cb) {
       pluginModule = require(modulePath);
     } catch (err) {
       error(err);
-      var noPluginModuleError = new Error('Nemo plugin has invalid module ' + modulePath);
+      var noPluginModuleError = new Error('Nemo plugin has invalid module ' + modulePath + '. ' + err);
       noPluginModuleError.name = 'nemoNoPluginModuleError';
       cb(noPluginModuleError);
       pluginError = true;
@@ -229,7 +231,7 @@ var pluginReg = function (_nemo, pluginArgs, pluginModule) {
     } catch (err) {
       //dang, someone wrote a crap plugin
       error(err);
-      var pluginSetupError = new Error('Nemo plugin threw error during setup');
+      var pluginSetupError = new Error('Nemo plugin threw error during setup. ' + err);
       pluginSetupError.name = 'nemoPluginSetupError';
       callback(pluginSetupError);
     }
@@ -247,8 +249,7 @@ var envToJSON = function (prop) {
     };
   }
   try {
-    var grabJSON = JSON.parse(process.env[prop]);
-    returnJSON[prop] = grabJSON;
+    returnJSON[prop] = JSON.parse(process.env[prop]);
     delete process.env[prop];
   } catch (err) {
     //noop
