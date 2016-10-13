@@ -4,22 +4,22 @@ var path = require('path'),
   log = debug('nemo:log'),
   error = debug('nemo:error'),
   fs = require('fs'),
-  _ = require('lodash'),
   exec = require('child_process').exec;
 
 var seleniumInstall = function (version) {
   return function installSelenium(callback) {
 
-    var seleniumVersion = _.get(require('selenium-webdriver/package.json'), 'version');
-
+    var seleniumVersion = require('selenium-webdriver/package.json').version;
     if (seleniumVersion === version) {
       log('selenium version %s already installed', version);
       return callback(null);
     }
+
     var save = (process.env.NEMO_UNIT_TEST) ? '' : ' --save';
-    var cmd = 'npm install ' + save + 'selenium-webdriver@' + version;
+    var cmd = 'npm install' + save + ' selenium-webdriver@' + version;
     log('install selenium version %s', version);
-    log('npm install cmd', cmd);
+    log(cmd);
+
     exec(cmd, {cwd: path.resolve(__dirname, '..')},
       function (err, stdout, stderr) {
         if (stdout) {

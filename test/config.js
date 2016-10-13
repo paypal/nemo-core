@@ -3,7 +3,6 @@
 
 var assert = require('assert'),
   path = require('path'),
-  _ = require('lodash'),
   Nemo = require('../index');
 
 describe('@config@', function () {
@@ -39,7 +38,7 @@ describe('@config@', function () {
       }
     }, function (err, nemo) {
       assert.equal(err, undefined);
-      var seleniumVersion = _.get(require('rewire')('selenium-webdriver/package.json'), 'version');
+      var seleniumVersion = require('rewire')('selenium-webdriver/package.json').version;
       assert.equal(seleniumVersion, expectedSeleniumVersion);
       nemo.driver.quit().then(function () {
         done();
