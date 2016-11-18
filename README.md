@@ -364,10 +364,10 @@ Additional server properties required of the 'targetServer'
 You can also set args and jvmArgs to the selenium jar process as follows:
 
 ```javascript
-'serverProps': {
-  'port': 4444,
-  'args': ['-firefoxProfileTemplate','/Users/medelman/Desktop/ffprofiles'],
-  'jvmArgs': ['-someJvmArg', 'someJvmArgValue']
+"serverProps": {
+  "port": 4444,
+  "args": ["-firefoxProfileTemplate","/Users/medelman/Desktop/ffprofiles"],
+  "jvmArgs": ["-someJvmArg", "someJvmArgValue"]
 }
 ```
 
@@ -395,8 +395,8 @@ Default is 'direct'. For more information refer : https://selenium.googlecode.co
 
 ```javascript
 "proxyDetails" : {
-    method: "manual",
-    args: [{"http": "localhost:9001","ftp":"localhost:9001","https":"localhost:9001"}]
+    "method": "manual",
+    "args": [{"http": "localhost:9001","ftp":"localhost:9001","https":"localhost:9001"}]
 }
 ```
 
@@ -433,7 +433,7 @@ Plugins are registered with JSON like the following (will vary based on your plu
 	"plugins": {
 		"samplePlugin": {
 			"module": "path:plugin/sample-plugin",
-			"arguments: [...]
+			"arguments": [...],
 			"priority": 99
 		},
 		"view": {
@@ -483,17 +483,17 @@ Use config to reference data in other parts of the JSON configuration. E.g. in t
 
 ```javascript
 {
-  'driver': {
+  "driver": {
     ...
   },
-  'plugins': {
-    'myPlugin': {
-      'module': 'nemo-some-plugin',
-      'arguments': ['config:data.someProp']
+  "plugins": {
+    "myPlugin": {
+      "module": "nemo-some-plugin",
+      "arguments": ["config:data.someProp"]
     }
   },
-  'data': {
-    'someProp': 'someVal'
+  "data": {
+    "someProp": "someVal"
   }
 }
 ```
