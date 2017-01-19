@@ -23,7 +23,9 @@ var async = require('async'),
   path = require('path'),
   confit = require('confit'),
   yargs = require('yargs'),
+    wd = require('selenium-webdriver'),
   handlers = require('shortstop-handlers'),
+
   webdriver;
 
 error.log = console.error.bind(console);
@@ -182,7 +184,7 @@ var setup = function setup(config, cb) {
     return;
   }
   preDriverArray.unshift(function setWebdriver(callback) {
-    nemo.wd = require('selenium-webdriver');
+    nemo.wd = wd;
     callback(null);
   });
   if (config.get('driver:selenium.version')) {
