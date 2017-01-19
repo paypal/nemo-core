@@ -1,5 +1,9 @@
 # nemo CHANGELOG
 
+## v3.0.0-alpha.1
+
+- Add support for selenium-webdriver@^3.0.0
+
 ## v2.3.1
 
 - Fix: [#115](https://github.com/paypal/nemo/issues/115)
