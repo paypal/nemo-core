@@ -68,6 +68,10 @@ function Setup() {
       }
 
       function getCapabilities() {
+        if (nemoData.useCustomBrowser) {
+          // for custom browser, first set default selenium caps for firefox, then overwrite with custom caps
+          tgtBrowser = 'firefox';
+        }
         //specified valid webdriver browser key?
         if (!webdriver.Capabilities[tgtBrowser]) {
           log('You have specified targetBrowser: ' + tgtBrowser + ' which is not a built-in webdriver.Capabilities browser option');
