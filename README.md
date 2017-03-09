@@ -269,9 +269,9 @@ not set, you need to pass your configuration as the `config` parameter (see belo
 
 `@returns nemo {Object}` - The nemo object has the following properties:
 
-* **driver** The live `selenium-webdriver` API. See WebDriver API Doc: http://selenium.googlecode.com/git/docs/api/javascript/class_webdriver_WebDriver.html
+* **driver** The live `selenium-webdriver` API. See WebDriver API Doc: http://seleniumhq.github.io/selenium/docs/api/javascript/module/selenium-webdriver/index_exports_WebDriver.html
 
-* **wd** This is a reference to the `selenium-webdriver` module: http://selenium.googlecode.com/git/docs/api/javascript/module_selenium-webdriver.html
+* **wd** This is a reference to the `selenium-webdriver` module: http://seleniumhq.github.io/selenium/docs/api/javascript/module/selenium-webdriver/index.html
 
 * **data** Pass through of any data included in the `data` property of the configuration
 
@@ -377,7 +377,7 @@ Path to your webdriver server Jar file. Leave unset if you aren't using a local 
 
 #### serverCaps (optional)
 
-serverCaps would map to the capabilities here: http://selenium.googlecode.com/git/docs/api/javascript/source/lib/webdriver/capabilities.js.src.html
+serverCaps would map to the capabilities here: http://seleniumhq.github.io/selenium/docs/api/javascript/module/selenium-webdriver/index_exports_Capabilities.html
 
 Some webdrivers (for instance ios-driver, or appium) would have additional capabilities which can be set via this variable. As an example, you can connect to saucelabs by adding this serverCaps:
 
@@ -391,7 +391,7 @@ Some webdrivers (for instance ios-driver, or appium) would have additional capab
 ```
 #### proxyDetails (optional)
 If you want to run test by setting proxy in the browser, you can use 'proxyDetails' configuration. Following options are available: direct, manual, pac and system.
-Default is 'direct'. For more information refer : https://selenium.googlecode.com/git/docs/api/javascript/module_selenium-webdriver_proxy.html
+Default is 'direct'. For more information refer : http://seleniumhq.github.io/selenium/docs/api/javascript/module/selenium-webdriver/proxy.html
 
 ```javascript
 "proxyDetails" : {
@@ -402,7 +402,7 @@ Default is 'direct'. For more information refer : https://selenium.googlecode.co
 
 #### builders (optional)
 
-This is a JSON interface to any of the Builder methods which take simple arguments and return the builder. See the Builder class here: http://selenium.googlecode.com/git/docs/api/javascript/module_selenium-webdriver_class_Builder.html
+This is a JSON interface to any of the Builder methods which take simple arguments and return the builder. See the Builder class here: http://seleniumhq.github.io/selenium/docs/api/javascript/module/selenium-webdriver/index_exports_Builder.html
 
 Useful such functions are:
 * forBrowser (can take the place of "browser", "local" and "jar" properties above)
