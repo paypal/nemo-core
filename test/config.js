@@ -28,17 +28,18 @@ describe('@config@', function () {
       });
     });
   });
+
   it('should install provided @selenium.version@', function (done) {
-    var ver = '^2.53.1';
+    var expectedSeleniumVersion = '2.53.1';
     Nemo({
       'driver': {
         'browser': 'phantomjs',
-        'selenium.version': ver
+        'selenium.version': expectedSeleniumVersion
       }
     }, function (err, nemo) {
       assert.equal(err, undefined);
-      var pac = require('selenium-webdriver/package.json');
-      assert.ok(pac.version.indexOf('2.53') !== -1);
+      var seleniumVersion = require('rewire')('selenium-webdriver/package.json').version;
+      assert.equal(seleniumVersion, expectedSeleniumVersion);
       nemo.driver.quit().then(function () {
         done();
       });

@@ -21,7 +21,8 @@
     "grunt-contrib-jshint": "^1.0.0",
     "grunt-simple-mocha": "~0.4.0",
     "mocha": "^2.0.0",
-    "nconf": "^0.8.4"
+    "nconf": "^0.8.4",
+    "rewire": "^2.5.2"
   },
   "repository": {
     "type": "git",
@@ -37,7 +38,8 @@
   "contributors": [
     "Matt Edelman <medelman@paypal.com>",
     "Nilesh Kulkarni <nikulkarni@paypal.com>",
-    "Shay Davidson <shay.h.davidson@gmail.com>"
+    "Shay Davidson <shay.h.davidson@gmail.com>",
+    "Kushang Gajjar <g.kushang@gmail.com>"
   ],
   "licenses": [
     {

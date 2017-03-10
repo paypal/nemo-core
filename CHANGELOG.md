@@ -1,5 +1,10 @@
 # nemo CHANGELOG
 
+## Unreleased
+
+- Fix [#131](https://github.com/paypal/nemo/pull/131): Improve error messages during plugin setup
+- Fix [#132](https://github.com/paypal/nemo/pull/132): Install Selenium only if required
+
 ## v2.3.1
 
 - Fix: [#115](https://github.com/paypal/nemo/issues/115)
