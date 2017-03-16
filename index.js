@@ -40,7 +40,7 @@ error.log = console.error.bind(console);
 function Nemo(_basedir, _configOverride, _cb) {
   log('new Nemo instance created');
   //argument vars
-  var basedir, configOverride, cb;
+  var basedir, configOverride, cb, prom;
 
   var nemo = {};
   var confitOptions = {};
@@ -51,36 +51,26 @@ function Nemo(_basedir, _configOverride, _cb) {
   var envplugins = envToJSON('plugins');
 
   //settle arguments
-  if (arguments.length === 0) {
-    var errorMessage = 'Nemo constructor needs at least a callback';
-    error(errorMessage);
-    var noCallbackError = new Error(errorMessage);
-    noCallbackError.name = 'nemoNoCallbackError';
-    throw noCallbackError;
-  }
-  else if (arguments.length === 1) {
-    log('constructor: callback only');
-    cb = arguments[0];
-    configOverride = {};
-    basedir = process.env.nemoBaseDir || undefined;
-  }
-  else if (arguments.length === 2) {
-    cb = arguments[1];
-    if (typeof arguments[0] === 'string') {
-      log('constructor: basedir + callback');
-      basedir = _basedir;
-      configOverride = {};
-    } else {
-      log('constructor: configOverride + callback');
-      configOverride = arguments[0];
-      basedir = process.env.nemoBaseDir || undefined;
+  cb = (arguments.length && typeof arguments[arguments.length - 1] === 'function') ? arguments[arguments.length - 1] : undefined;
+  basedir = (arguments.length && typeof arguments[0] === 'string') ? arguments[0] : undefined;
+  configOverride = (!basedir && arguments.length && typeof arguments[0] === 'object') ? arguments[0] : undefined;
+  configOverride = (!configOverride && arguments.length && arguments[1] && typeof arguments[1] === 'object') ? arguments[1] : configOverride;
+  basedir = basedir || process.env.nemoBaseDir || undefined;
+  configOverride = configOverride || {};
+  if (!cb) {
+    log('returning promise');
+    prom = wd.promise.defer();
+    cb = function (err, n) {
+      if (err) {
+        return prom.reject(err);
+      }
+      prom.fulfill(n);
     }
   }
-  else if (arguments.length === 3) {
-    basedir = _basedir;
-    configOverride = _configOverride;
-    cb = _cb;
-  }
+  log('promise?', !!prom);
+  log('basedir', basedir);
+  log('configOverride', configOverride);
+
 
   confitOptions = {
     protocols: {
@@ -128,7 +118,7 @@ function Nemo(_basedir, _configOverride, _cb) {
     });
   });
 
-  return nemo;
+  return prom && prom.promise || nemo;
 
 
 }
