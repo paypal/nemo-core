@@ -59,12 +59,21 @@ function Nemo(_basedir, _configOverride, _cb) {
   configOverride = configOverride || {};
   if (!cb) {
     log('returning promise');
-    prom = wd.promise.defer();
+    let fulfill = function (n) {
+      prom.fulfill(n);
+    };
+    let reject = function (err) {
+      prom.reject(err);
+    };
+    prom = (global.Promise) ? new Promise(function (good, bad) {
+      fulfill = good;
+      reject = bad;
+    }) : wd.promise.defer();
     cb = function (err, n) {
       if (err) {
-        return prom.reject(err);
+        return reject(err);
       }
-      prom.fulfill(n);
+      fulfill(n);
     }
   }
   log('promise?', !!prom);
@@ -118,7 +127,7 @@ function Nemo(_basedir, _configOverride, _cb) {
     });
   });
 
-  return prom && prom.promise || nemo;
+  return prom && prom.promise || prom || nemo;
 
 
 }
