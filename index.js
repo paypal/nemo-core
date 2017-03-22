@@ -23,7 +23,7 @@ var async = require('async'),
   path = require('path'),
   confit = require('confit'),
   yargs = require('yargs'),
-    wd = require('selenium-webdriver'),
+  wd = require('selenium-webdriver'),
   handlers = require('shortstop-handlers'),
 
   webdriver;
@@ -43,12 +43,6 @@ function Nemo(_basedir, _configOverride, _cb) {
   var basedir, configOverride, cb, prom;
 
   var nemo = {};
-  var confitOptions = {};
-  //hack because confit doesn't JSON.parse environment variables before merging
-  //look into using shorstop handler or pseudo-handler in place of this
-  var envdata = envToJSON('data');
-  var envdriver = envToJSON('driver');
-  var envplugins = envToJSON('plugins');
 
   //settle arguments
   cb = (arguments.length && typeof arguments[arguments.length - 1] === 'function') ? arguments[arguments.length - 1] : undefined;
@@ -74,58 +68,22 @@ function Nemo(_basedir, _configOverride, _cb) {
         return reject(err);
       }
       fulfill(n);
-    }
+    };
   }
   log('promise?', !!prom);
   log('basedir', basedir);
   log('configOverride', configOverride);
+  Configure(basedir, configOverride)
+    .then(function (config) {
 
-
-  confitOptions = {
-    protocols: {
-      path: handlers.path(basedir, {}),
-      env: handlers.env({}),
-      argv: function argHandler(val) {
-        var argv = yargs.argv;
-        return argv[val] || '';
-      }
-    }
-  };
-  if (basedir) {
-    confitOptions.basedir = path.join(basedir, 'config');
-  }
-  log('confit options', confitOptions);
-  log('confit overrides: \ndata: %s,\ndriver: %s\nplugins: %s', envdata.json, envdriver.json, envplugins.json);
-  //merge any environment JSON into configOverride
-  _.merge(configOverride, envdata.json, envdriver.json, envplugins.json);
-
-  confit(confitOptions).addOverride(configOverride).create(function (err, config) {
-    if (err) {
-      error('Error encountered during confit.create');
-      return cb(err);
-    }
-    //reset env variables
-    envdata.reset();
-    envdriver.reset();
-    envplugins.reset();
-    //check for vital information
-    if (config.get('driver') === undefined) {
-      var errorMessage = 'Nemo essential driver properties not found in configuration';
-      error(errorMessage);
-      var badDriverProps = new Error(errorMessage);
-      badDriverProps.name = 'nemoBadDriverProps';
-      cb(badDriverProps);
-      return;
-    }
-    setup(config, function (err, _nemo) {
-      if (err !== null) {
-        cb(err);
-        return;
-      }
+      return CompleteSetup(config);
+    })
+    .then(function (_nemo) {
       _.merge(nemo, _nemo);
       cb(null, nemo);
-    });
-  });
+      return true;
+    }, cb)
+    .catch(cb);
 
   return prom && prom.promise || prom || nemo;
 
@@ -262,4 +220,103 @@ var envToJSON = function (prop) {
     }
   };
 };
+
+var Configure = function (basedir, configOverride) {
+  basedir = basedir || process.env.nemoBaseDir || undefined;
+  let fulfill = function (n) {
+    prom.fulfill(n);
+  };
+  let reject = function (err) {
+    prom.reject(err);
+  };
+ let prom = (global.Promise) ? new Promise(function (good, bad) {
+    fulfill = good;
+    reject = bad;
+  }) : wd.promise.defer();
+  var confitOptions = {};
+  //hack because confit doesn't JSON.parse environment variables before merging
+  //look into using shorstop handler or pseudo-handler in place of this
+  var envdata = envToJSON('data');
+  var envdriver = envToJSON('driver');
+  var envplugins = envToJSON('plugins');
+  confitOptions = {
+    protocols: {
+      path: handlers.path(basedir, {}),
+      env: handlers.env({}),
+      argv: function argHandler(val) {
+        var argv = yargs.argv;
+        return argv[val] || '';
+      }
+    }
+  };
+  if (basedir) {
+    confitOptions.basedir = path.join(basedir, 'config');
+  }
+  log('confit options', confitOptions);
+  log('confit overrides: \ndata: %s,\ndriver: %s\nplugins: %s', envdata.json, envdriver.json, envplugins.json);
+  //merge any environment JSON into configOverride
+  _.merge(configOverride, envdata.json, envdriver.json, envplugins.json);
+  confitOptions = {
+    protocols: {
+      path: handlers.path(basedir, {}),
+      env: handlers.env({}),
+      argv: function argHandler(val) {
+        var argv = yargs.argv;
+        return argv[val] || '';
+      }
+    }
+  };
+  if (basedir) {
+    confitOptions.basedir = path.join(basedir, 'config');
+  }
+  log('confit options', confitOptions);
+  log('confit overrides: \ndata: %s,\ndriver: %s\nplugins: %s', envdata.json, envdriver.json, envplugins.json);
+  //merge any environment JSON into configOverride
+  _.merge(configOverride, envdata.json, envdriver.json, envplugins.json);
+  confit(confitOptions).addOverride(configOverride).create(function (err, config) {
+    //reset env variables
+    envdata.reset();
+    envdriver.reset();
+    envplugins.reset();
+    if (err) {
+      reject(err);
+    }
+    fulfill(config);
+  });
+  return prom;
+};
+
+var CompleteSetup = function (config) {
+  let fulfill = function (n) {
+    prom.fulfill(n);
+  };
+  let reject = function (err) {
+    prom.reject(err);
+  };
+  let prom = (global.Promise) ? new Promise(function (good, bad) {
+    fulfill = good;
+    reject = bad;
+  }) : wd.promise.defer();
+  //check for vital information
+  if (config.get('driver') === undefined) {
+    var errorMessage = 'Nemo essential driver properties not found in configuration';
+    error(errorMessage);
+    var badDriverProps = new Error(errorMessage);
+    badDriverProps.name = 'nemoBadDriverProps';
+    process.nextTick(function () {reject(badDriverProps);});
+  } else {
+    setup(config, function (err, nemo) {
+      if (err !== null) {
+        reject(err);
+        return;
+      }
+      fulfill(nemo);
+    });
+  }
+
+  return prom;
+};
+
 module.exports = Nemo;
+module.exports.Configure = Configure;
+module.exports.CompleteSetup = CompleteSetup;
