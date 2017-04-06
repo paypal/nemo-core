@@ -17,6 +17,7 @@ describe('@constructor@', function () {
       done(new Error('didnt get back the expected error'));
     }
   });
+
   it("should throw an error with @noDriverProps@", function (done) {
 
     Nemo(function (err) {
@@ -45,7 +46,6 @@ describe('@constructor@', function () {
     });
   });
 
-
   it("should launch nemo with @envConfigPath@noOverrideArg@", function (done) {
     process.env.nemoBaseDir = __dirname;
     Nemo(function (err, nemo) {
@@ -57,7 +57,6 @@ describe('@constructor@', function () {
       });
     });
   });
-
 
   it("should launch nemo with @argConfigPath@noOverrideArg@", function (done) {
     var nemoBaseDir = __dirname;
@@ -71,6 +70,7 @@ describe('@constructor@', function () {
       });
     });
   });
+
   it("should launch nemo with @allArgs@", function (done) {
     var nemoBaseDir = __dirname;
     Nemo(nemoBaseDir, {
@@ -87,6 +87,7 @@ describe('@constructor@', function () {
       });
     });
   });
+
   it("should return the resolved nemo object when the callback is called", function (done) {
     var nemoBaseDir = __dirname;
     var returnedNemo = Nemo(nemoBaseDir, {

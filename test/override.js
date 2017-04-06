@@ -7,7 +7,6 @@ var assert = require('assert'),
 
 
 describe('@override@', function () {
-
   it("@fromEnv@ over config.json data", function (done) {
     process.env.nemoBaseDir = __dirname;
     process.env.data = JSON.stringify({
@@ -22,6 +21,7 @@ describe('@override@', function () {
       done();
     });
   });
+
   it("@fromArg@ over config.json data", function (done) {
     process.env.nemoBaseDir = __dirname;
 
@@ -29,7 +29,7 @@ describe('@override@', function () {
       data: {
         baseUrl: 'http://www.ebay.com'
       }
-  }, function (err, nemo) {
+    }, function (err, nemo) {
       if (err) {
         return done(err);
       }
@@ -38,6 +38,7 @@ describe('@override@', function () {
       done();
     });
   });
+
   it("@builders@ overrides tgtBrowser abstraction", function (done) {
     process.env.nemoBaseDir = __dirname;
 

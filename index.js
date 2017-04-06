@@ -84,6 +84,10 @@ function Nemo(_basedir, _configOverride, _cb) {
     protocols: {
       path: handlers.path(basedir, {}),
       env: handlers.env({}),
+      file: handlers.file(basedir),
+      base64: handlers.base64(),
+      require: handlers.require(basedir),
+      exec: handlers.exec(basedir),
       argv: function argHandler(val) {
         var argv = yargs.argv;
         return argv[val] || '';
@@ -127,10 +131,7 @@ function Nemo(_basedir, _configOverride, _cb) {
   });
 
   return nemo;
-
-
 }
-
 
 var setup = function setup(config, cb) {
   var waterfallArray = [],
@@ -200,7 +201,6 @@ var setup = function setup(config, cb) {
       cb(null, nemo);
     }
   });
-
 };
 
 var driversetup = function (_nemo) {
@@ -219,7 +219,6 @@ var driversetup = function (_nemo) {
     });
   };
 };
-
 
 var pluginReg = function (_nemo, pluginArgs, pluginModule) {
   return function pluginReg(callback) {
@@ -261,4 +260,5 @@ var envToJSON = function (prop) {
     }
   };
 };
+
 module.exports = Nemo;

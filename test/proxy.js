@@ -29,9 +29,7 @@ describe("@proxy@ ", function () {
         assert.equal(proxy.httpProxy, 'host:1234');
         assert.equal(proxy.sslProxy, 'host:1234');
         done();
-
       });
-
     });
   });
 });
