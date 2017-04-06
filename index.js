@@ -82,8 +82,8 @@ function Nemo(_basedir, _configOverride, _cb) {
 
   confitOptions = {
     protocols: {
-      path: handlers.path(basedir, {}),
-      env: handlers.env({}),
+      path: handlers.path(basedir),
+      env: handlers.env(),
       file: handlers.file(basedir),
       base64: handlers.base64(),
       require: handlers.require(basedir),
