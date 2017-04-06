@@ -88,6 +88,7 @@ function Nemo(_basedir, _configOverride, _cb) {
       base64: handlers.base64(),
       require: handlers.require(basedir),
       exec: handlers.exec(basedir),
+      globa: handlers.glob(basedir),
       argv: function argHandler(val) {
         var argv = yargs.argv;
         return argv[val] || '';
