@@ -9,9 +9,9 @@ Nemo(__dirname, function (err, nemo) {
   }
 
   nemo.driver.get(nemo.data.baseUrl);
-  nemo.driver.getCapabilities().
-    then(function (caps) {
-      console.info("Nemo successfully launched", caps.caps_.browserName);
-    });
+  nemo.driver.getCapabilities().then(function (caps) {
+    var browserName = caps.get && caps.get('browserName') || caps.caps_.browserName;
+    console.info("Nemo successfully launched", browserName);
+  });
   nemo.driver.quit();
 });
