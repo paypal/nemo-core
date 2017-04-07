@@ -1,5 +1,8 @@
 # nemo CHANGELOG
 
+## 2.3.2
+- Added missing shortstop handlers (glob, file, require, exec)
+
 ## v2.3.1
 
 - Fix: [#115](https://github.com/paypal/nemo/issues/115)
