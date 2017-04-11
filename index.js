@@ -14,8 +14,10 @@
  \*───────────────────────────────────────────────────────────────────────────*/
 'use strict';
 
-var async = require('async'),
-  Setup = require('./setup'),
+let async = require('async'),
+  Driver = require('./lib/driver'),
+  Promiz = require('./lib/promise'),
+  Plugin = require('./lib/plugin'),
   debug = require('debug'),
   log = debug('nemo:log'),
   error = debug('nemo:error'),
@@ -25,7 +27,6 @@ var async = require('async'),
   yargs = require('yargs'),
   wd = require('selenium-webdriver'),
   handlers = require('shortstop-handlers'),
-
   webdriver;
 
 error.log = console.error.bind(console);
@@ -40,7 +41,7 @@ error.log = console.error.bind(console);
 function Nemo(_basedir, _configOverride, _cb) {
   log('new Nemo instance created');
   //argument vars
-  var basedir, configOverride, cb, prom;
+  var basedir, configOverride, cb, promiz;
 
   var nemo = {};
 
@@ -53,41 +54,26 @@ function Nemo(_basedir, _configOverride, _cb) {
   configOverride = configOverride || {};
   if (!cb) {
     log('returning promise');
-    let fulfill = function (n) {
-      prom.fulfill(n);
-    };
-    let reject = function (err) {
-      prom.reject(err);
-    };
-    prom = (global.Promise) ? new Promise(function (good, bad) {
-      fulfill = good;
-      reject = bad;
-    }) : wd.promise.defer();
+    promiz = Promiz();
     cb = function (err, n) {
       if (err) {
-        return reject(err);
+        return promiz.reject(err);
       }
-      fulfill(n);
+      promiz.fulfill(n);
     };
   }
-  log('promise?', !!prom);
   log('basedir', basedir);
   log('configOverride', configOverride);
   Configure(basedir, configOverride)
     .then(function (config) {
-
       return CompleteSetup(config);
     })
     .then(function (_nemo) {
       _.merge(nemo, _nemo);
-      cb(null, nemo);
-      return true;
-    }, cb)
+      return cb(null, nemo);
+    })
     .catch(cb);
-
-  return prom && prom.promise || prom || nemo;
-
-
+  return promiz && promiz.promise || nemo;
 }
 
 
@@ -102,63 +88,71 @@ var setup = function setup(config, cb) {
     'driver': {},
     '_config': config
   };
-  //config is for registering plugins
-  if (config && config.get('plugins')) {
-    plugins = config.get('plugins');
-  }
-
-
-  Object.keys(plugins).forEach(function pluginsKeys(key) {
-    var modulePath,
-      pluginConfig,
-      pluginArgs,
-      pluginModule;
-
-    log('register plugin %s', key);
-    //register this plugin
-    pluginConfig = plugins[key];
-    pluginArgs = plugins[key].arguments || [];
-    modulePath = pluginConfig.module;
-    log('modulePath %s', modulePath);
-    try {
-      pluginModule = require(modulePath);
-    } catch (err) {
-      error(err);
-      var noPluginModuleError = new Error('Nemo plugin has invalid module ' + modulePath + '. ' + err);
-      noPluginModuleError.name = 'nemoNoPluginModuleError';
-      cb(noPluginModuleError);
-      pluginError = true;
-      return;
-    }
-
-    if (plugins[key].priority && plugins[key].priority < 100) {
-      preDriverArray.push(pluginReg(nemo, pluginArgs, pluginModule));
-    } else {
-      postDriverArray.push(pluginReg(nemo, pluginArgs, pluginModule));
-    }
-  });
-  if (pluginError) {
-    return;
-  }
-  preDriverArray.unshift(function setWebdriver(callback) {
-    nemo.wd = wd;
-    callback(null);
-  });
-  if (config.get('driver:selenium.version')) {
-    //install before driver setup
-    log('Requested install of selenium version %s', config.get('driver:selenium.version'));
-    var seleniumInstall = require('./setup/seleniumInstall');
-    preDriverArray.unshift(seleniumInstall(config.get('driver:selenium.version')));
-  }
-  waterfallArray = preDriverArray.concat([driversetup(nemo)], postDriverArray);
-  log('waterfallArray', waterfallArray);
-  async.waterfall(waterfallArray, function waterfall(err) {
-    if (err) {
+  Plugin.registration(config.get('plugins'))
+    .then(function (registerFns) {
+      cb(new Error('totes registered functions'));
+    })
+    .catch(function (err) {
       cb(err);
-    } else {
-      cb(null, nemo);
-    }
-  });
+    })
+  // //config is for registering plugins
+  // if (config && config.get('plugins')) {
+  //   plugins = config.get('plugins');
+  // }
+  //
+  //
+  // Object.keys(plugins).forEach(function pluginsKeys(key) {
+  //   var modulePath,
+  //     pluginConfig,
+  //     pluginArgs,
+  //     pluginModule;
+  //
+  //   log('register plugin %s', key);
+  //   //register this plugin
+  //   pluginConfig = plugins[key];
+  //   pluginArgs = plugins[key].arguments || [];
+  //   modulePath = pluginConfig.module;
+  //   log('modulePath %s', modulePath);
+  //   try {
+  //     pluginModule = require(modulePath);
+  //   } catch (err) {
+  //     error(err);
+  //     var noPluginModuleError = new Error('Nemo plugin has invalid module ' + modulePath + '. ' + err);
+  //     noPluginModuleError.name = 'nemoNoPluginModuleError';
+  //     cb(noPluginModuleError);
+  //     pluginError = true;
+  //     return;
+  //   }
+  //
+  //   if (plugins[key].priority && plugins[key].priority < 100) {
+  //     preDriverArray.push(pluginReg(nemo, pluginArgs, pluginModule));
+  //   } else {
+  //     postDriverArray.push(pluginReg(nemo, pluginArgs, pluginModule));
+  //   }
+  // });
+  // if (pluginError) {
+  //   return;
+  // }
+
+  // preDriverArray.unshift(function setWebdriver(callback) {
+  //   nemo.wd = wd;
+  //   callback(null);
+  // });
+  // if (config.get('driver:selenium.version')) {
+  //   //install before driver setup
+  //   log('Requested install of selenium version %s', config.get('driver:selenium.version'));
+  //   var seleniumInstall = require('./lib/install');
+  //   preDriverArray.unshift(seleniumInstall(config.get('driver:selenium.version')));
+  // }
+  // waterfallArray = preDriverArray.concat([driversetup(nemo)], postDriverArray);
+  // log('waterfallArray', waterfallArray);
+  // async.waterfall(waterfallArray, function waterfall(err) {
+  //   if (err) {
+  //     cb(err);
+  //   } else {
+  //     cb(null, nemo);
+  //   }
+  // });
 
 };
 
@@ -166,7 +160,7 @@ var driversetup = function (_nemo) {
   return function driversetup(callback) {
     var driverConfig = _nemo._config.get('driver');
     //do driver/view/locator/vars setup
-    (Setup()).doSetup(driverConfig, function setupCallback(err, _driver) {
+    (Driver()).setup(driverConfig, function setupCallback(err, _driver) {
       if (err) {
         callback(err);
         return;
@@ -229,7 +223,7 @@ var Configure = function (basedir, configOverride) {
   let reject = function (err) {
     prom.reject(err);
   };
- let prom = (global.Promise) ? new Promise(function (good, bad) {
+  let prom = (global.Promise) ? new Promise(function (good, bad) {
     fulfill = good;
     reject = bad;
   }) : wd.promise.defer();
@@ -287,34 +281,26 @@ var Configure = function (basedir, configOverride) {
 };
 
 var CompleteSetup = function (config) {
-  let fulfill = function (n) {
-    prom.fulfill(n);
-  };
-  let reject = function (err) {
-    prom.reject(err);
-  };
-  let prom = (global.Promise) ? new Promise(function (good, bad) {
-    fulfill = good;
-    reject = bad;
-  }) : wd.promise.defer();
-  //check for vital information
+  let promiz = Promiz();
   if (config.get('driver') === undefined) {
     var errorMessage = 'Nemo essential driver properties not found in configuration';
     error(errorMessage);
     var badDriverProps = new Error(errorMessage);
     badDriverProps.name = 'nemoBadDriverProps';
-    process.nextTick(function () {reject(badDriverProps);});
+    process.nextTick(function () {
+      promiz.reject(badDriverProps);
+    });
   } else {
     setup(config, function (err, nemo) {
       if (err !== null) {
-        reject(err);
+        promiz.reject(err);
         return;
       }
-      fulfill(nemo);
+      promiz.fulfill(nemo);
     });
   }
 
-  return prom;
+  return promiz.promise;
 };
 
 module.exports = Nemo;
