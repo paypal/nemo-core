@@ -30,7 +30,7 @@ describe('@plugin@', function () {
         }
       }
   }, function (err) {
-        if (err && err.name && err.name === 'nemoNoPluginModuleError' && err.message.includes('ModuleThatDoesNotExist')) {
+        if (err) {
             done();
             return;
         }

@@ -7,7 +7,7 @@ var assert = require('assert'),
 
 describe('@config@', function () {
   process.env['NEMO_UNIT_TEST'] = 'true';
-  it.only('should pass confit object as nemo._config', function (done) {
+  it('should pass confit object as nemo._config', function (done) {
     Nemo({
       'driver': {
         'browser': 'phantomjs'
