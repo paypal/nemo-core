@@ -7,7 +7,6 @@ var assert = require('assert'),
 
 
 describe('@plugin@', function () {
-
   it("should @priorityRegister@", function (done) {
     process.env.nemoBaseDir = path.resolve(__dirname);
 
@@ -18,6 +17,7 @@ describe('@plugin@', function () {
       done();
     });
   });
+
   it('should handle @nonexistPlugin@', function (done) {
     delete process.env.nemoBaseDir;
     Nemo(__dirname, {
@@ -37,6 +37,7 @@ describe('@plugin@', function () {
         done(new Error('didnt get the correct exception'));
     });
   });
+
   it('should handle @failedPluginRegistration@', function (done) {
     delete process.env.nemoBaseDir;
 

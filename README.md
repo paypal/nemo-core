@@ -501,6 +501,26 @@ Use config to reference data in other parts of the JSON configuration. E.g. in t
 The value of `plugins.myPlugin.arguments[0]` will be `someVal`
 
 
+### file
+
+Please see [https://github.com/krakenjs/shortstop-handlers#handlersfilebasedir-options](https://github.com/krakenjs/shortstop-handlers#handlersfilebasedir-options)
+
+### base64
+
+Please see [https://github.com/krakenjs/shortstop-handlers#handlersbase64](https://github.com/krakenjs/shortstop-handlers#handlersbase64)
+
+### require
+
+Please see [https://github.com/krakenjs/shortstop-handlers#handlersrequirebasedir](https://github.com/krakenjs/shortstop-handlers#handlersrequirebasedir)
+
+### exec
+
+Please see [https://github.com/krakenjs/shortstop-handlers#handlersexecbasedir](https://github.com/krakenjs/shortstop-handlers#handlersexecbasedir)
+
+### glob
+
+Please see [https://github.com/krakenjs/shortstop-handlers#handlersglobbasediroptions](https://github.com/krakenjs/shortstop-handlers#handlersglobbasediroptions)
+
 ## Plugins
 
 Authoring a plugin, or using an existing plugin, is a great way to increase the power and usefulness of your Nemo installation. A plugin should add
