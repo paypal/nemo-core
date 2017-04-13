@@ -1,6 +1,7 @@
 # nemo CHANGELOG
 
-## 2.3.2
+## UNRELEASED
+
 - Added missing shortstop handlers (glob, file, require, exec)
 
 ## v2.3.1
