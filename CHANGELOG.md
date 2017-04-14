@@ -1,8 +1,9 @@
 # nemo CHANGELOG
 
-## v3.0.0-alpha.1
+## v3.0.0-alpha
 
 - Add support for selenium-webdriver@^3.0.0
+- refactor index.js into several lib/ modules
 
 ## v2.3.1
 
