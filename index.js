@@ -14,18 +14,16 @@
  \*───────────────────────────────────────────────────────────────────────────*/
 'use strict';
 
-var async = require('async'),
-  Setup = require('./setup'),
+var Promiz = require('./lib/promise'),
+  Configure = require('./lib/configure'),
+  Setup = require('./lib/setup'),
   debug = require('debug'),
   log = debug('nemo:log'),
   error = debug('nemo:error'),
   _ = require('lodash'),
-  path = require('path'),
-  confit = require('confit'),
-  yargs = require('yargs'),
-  handlers = require('shortstop-handlers'),
-  webdriver;
+  path = require('path');
 
+log.log = console.log.bind(console);
 error.log = console.error.bind(console);
 
 /**
@@ -36,230 +34,44 @@ error.log = console.error.bind(console);
  */
 
 function Nemo(_basedir, _configOverride, _cb) {
-  log('new Nemo instance created');
+  log('Nemo constructor begin');
   //argument vars
-  var basedir, configOverride, cb;
-
+  var basedir, configOverride, cb, promiz;
   var nemo = {};
-  var confitOptions = {};
-  //hack because confit doesn't JSON.parse environment variables before merging
-  //look into using shorstop handler or pseudo-handler in place of this
-  var envdata = envToJSON('data');
-  var envdriver = envToJSON('driver');
-  var envplugins = envToJSON('plugins');
 
   //settle arguments
-  if (arguments.length === 0) {
-    var errorMessage = 'Nemo constructor needs at least a callback';
-    error(errorMessage);
-    var noCallbackError = new Error(errorMessage);
-    noCallbackError.name = 'nemoNoCallbackError';
-    throw noCallbackError;
-  }
-  else if (arguments.length === 1) {
-    log('constructor: callback only');
-    cb = arguments[0];
-    configOverride = {};
-    basedir = process.env.nemoBaseDir || undefined;
-  }
-  else if (arguments.length === 2) {
-    cb = arguments[1];
-    if (typeof arguments[0] === 'string') {
-      log('constructor: basedir + callback');
-      basedir = _basedir;
-      configOverride = {};
-    } else {
-      log('constructor: configOverride + callback');
-      configOverride = arguments[0];
-      basedir = process.env.nemoBaseDir || undefined;
-    }
-  }
-  else if (arguments.length === 3) {
-    basedir = _basedir;
-    configOverride = _configOverride;
-    cb = _cb;
-  }
-
-  confitOptions = {
-    protocols: {
-      path: handlers.path(basedir),
-      env: handlers.env(),
-      file: handlers.file(basedir),
-      base64: handlers.base64(),
-      require: handlers.require(basedir),
-      exec: handlers.exec(basedir),
-      glob: handlers.glob(basedir),
-      argv: function argHandler(val) {
-        var argv = yargs.argv;
-        return argv[val] || '';
-      }
-    }
-  };
-  if (basedir) {
-    confitOptions.basedir = path.join(basedir, 'config');
-  }
-  log('confit options', confitOptions);
-  log('confit overrides: \ndata: %s,\ndriver: %s\nplugins: %s', envdata.json, envdriver.json, envplugins.json);
-  //merge any environment JSON into configOverride
-  _.merge(configOverride, envdata.json, envdriver.json, envplugins.json);
-
-  confit(confitOptions).addOverride(configOverride).create(function (err, config) {
-    if (err) {
-      error('Error encountered during confit.create');
-      return cb(err);
-    }
-    //reset env variables
-    envdata.reset();
-    envdriver.reset();
-    envplugins.reset();
-    //check for vital information
-    if (config.get('driver') === undefined) {
-      var errorMessage = 'Nemo essential driver properties not found in configuration';
-      error(errorMessage);
-      var badDriverProps = new Error(errorMessage);
-      badDriverProps.name = 'nemoBadDriverProps';
-      cb(badDriverProps);
-      return;
-    }
-    setup(config, function (err, _nemo) {
-      if (err !== null) {
-        cb(err);
-        return;
-      }
-      _.merge(nemo, _nemo);
-      cb(null, nemo);
-    });
-  });
-
-  return nemo;
-}
-
-var setup = function setup(config, cb) {
-  var waterfallArray = [],
-    preDriverArray = [],
-    postDriverArray = [],
-    plugins = {},
-    pluginError = false;
-  var nemo = {
-    'data': config.get('data'),
-    'driver': {},
-    '_config': config
-  };
-  //config is for registering plugins
-  if (config && config.get('plugins')) {
-    plugins = config.get('plugins');
-  }
-
-
-  Object.keys(plugins).forEach(function pluginsKeys(key) {
-    var modulePath,
-      pluginConfig,
-      pluginArgs,
-      pluginModule;
-
-    log('register plugin %s', key);
-    //register this plugin
-    pluginConfig = plugins[key];
-    pluginArgs = plugins[key].arguments || [];
-    modulePath = pluginConfig.module;
-    log('modulePath %s', modulePath);
-    try {
-      pluginModule = require(modulePath);
-    } catch (err) {
-      error(err);
-      var noPluginModuleError = new Error('Nemo plugin has invalid module ' + modulePath + '. ' + err);
-      noPluginModuleError.name = 'nemoNoPluginModuleError';
-      cb(noPluginModuleError);
-      pluginError = true;
-      return;
-    }
-
-    if (plugins[key].priority && plugins[key].priority < 100) {
-      preDriverArray.push(pluginReg(nemo, pluginArgs, pluginModule));
-    } else {
-      postDriverArray.push(pluginReg(nemo, pluginArgs, pluginModule));
-    }
-  });
-  if (pluginError) {
-    return;
-  }
-  preDriverArray.unshift(function setWebdriver(callback) {
-    nemo.wd = require('selenium-webdriver');
-    callback(null);
-  });
-  if (config.get('driver:selenium.version')) {
-    //install before driver setup
-    log('Requested install of selenium version %s', config.get('driver:selenium.version'));
-    var seleniumInstall = require('./setup/seleniumInstall');
-    preDriverArray.unshift(seleniumInstall(config.get('driver:selenium.version')));
-  }
-  waterfallArray = preDriverArray.concat([driversetup(nemo)], postDriverArray);
-  log('waterfallArray', waterfallArray);
-  async.waterfall(waterfallArray, function waterfall(err) {
-    if (err) {
-      cb(err);
-    } else {
-      cb(null, nemo);
-    }
-  });
-};
-
-var driversetup = function (_nemo) {
-  return function driversetup(callback) {
-    var driverConfig = _nemo._config.get('driver');
-    //do driver/view/locator/vars setup
-    (Setup()).doSetup(driverConfig, function setupCallback(err, _driver) {
+  cb = (arguments.length && typeof arguments[arguments.length - 1] === 'function') ? arguments[arguments.length - 1] : undefined;
+  basedir = (arguments.length && typeof arguments[0] === 'string') ? arguments[0] : undefined;
+  configOverride = (!basedir && arguments.length && typeof arguments[0] === 'object') ? arguments[0] : undefined;
+  configOverride = (!configOverride && arguments.length && arguments[1] && typeof arguments[1] === 'object') ? arguments[1] : configOverride;
+  basedir = basedir || process.env.nemoBaseDir || undefined;
+  configOverride = configOverride || {};
+  if (!cb) {
+    log('returning promise');
+    promiz = Promiz();
+    cb = function (err, n) {
       if (err) {
-        callback(err);
-        return;
+        return promiz.reject(err);
       }
-      //set driver
-      _nemo.driver = _driver;
-      callback(null);
-
-    });
-  };
-};
-
-var pluginReg = function (_nemo, pluginArgs, pluginModule) {
-  return function pluginReg(callback) {
-
-    pluginArgs.push(_nemo);
-    pluginArgs.push(callback);
-    try {
-      pluginModule.setup.apply(this, pluginArgs);
-    } catch (err) {
-      //dang, someone wrote a crap plugin
-      error(err);
-      var pluginSetupError = new Error('Nemo plugin threw error during setup. ' + err);
-      pluginSetupError.name = 'nemoPluginSetupError';
-      callback(pluginSetupError);
-    }
-  };
-};
-
-var envToJSON = function (prop) {
-  var returnJSON = {};
-  var originalValue = process.env[prop];
-  if (originalValue === undefined) {
-    return {
-      'json': {},
-      'reset': function () {
-      }
+      promiz.fulfill(n);
     };
   }
-  try {
-    returnJSON[prop] = JSON.parse(process.env[prop]);
-    delete process.env[prop];
-  } catch (err) {
-    //noop
-  }
-  return {
-    'json': returnJSON,
-    'reset': function () {
-      process.env[prop] = originalValue;
-    }
-  };
-};
+  log('basedir', basedir);
+  log('configOverride', configOverride);
+  Configure(basedir, configOverride)
+    .then(function (config) {
+      log('Configure complete');
+      return Setup(config);
+    })
+    .then(function (_nemo) {
+      log('Setup complete');
+      _.merge(nemo, _nemo);
+      return cb(null, nemo);
+    })
+    .catch(cb);
+  return promiz && promiz.promise || nemo;
+}
 
 module.exports = Nemo;
+module.exports.Configure = Configure;
+module.exports.CompleteSetup = Setup;
