@@ -48,7 +48,7 @@ function Setup() {
         //are we running the tests on the local machine?
         if (localServer === true) {
           log('test locally');
-          if (tgtBrowser !== 'chrome' && tgtBrowser !== 'phantomjs') {
+          if (tgtBrowser !== 'chrome' && tgtBrowser !== 'phantomjs' && tgtBrowser !== 'firefox') {
             //make sure there is a jar file
             var jarExists = fs.existsSync(serverJar);
             if (!jarExists) {
@@ -126,11 +126,10 @@ function Setup() {
       }
       driver.getSession().then(function () {
         callback(null, driver);
-      }).thenCatch(function (err) {
+      }).catch(function (err) {
         error('Encountered an error during driver getSession: %s', err);
         callback(err);
       });
-
     }
   };
 }
