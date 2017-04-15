@@ -1,4 +1,5 @@
 {
+	"esversion": 6,
 	// Whether the scan should stop on first error.
 	"passfail": false,
 	// Maximum errors before stopping.
