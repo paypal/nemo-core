@@ -257,7 +257,7 @@ This illustrates how you can create a plugin, and the sorts of things you might 
 
 ## Nemo Constructor
 
-`var nemo = Nemo([[nemoBaseDir, ]config, ]callback);`
+`var nemo = Nemo([[[nemoBaseDir, ]config, ]callback]);`
 
 `@argument nemoBaseDir {String}` (optional) - If provided, should be a filesystem path to your test suite. Nemo will expect to find a `/config` directory beneath that.
 `<nemoBaseDir>/config/config.json` should have your default configuration (described below). `nemoBaseDir` can alternatively be set as an environment variable. If it is
@@ -265,9 +265,10 @@ not set, you need to pass your configuration as the `config` parameter (see belo
 
 `@argument config {Object}` (optional) - Can be a full configuration (if `nemoBaseDir` not provided) or additional/override configuration to what's in your config files.
 
-`@argument callback {Function}` - This function will be called once the `nemo` object is fully resolved. It may be called with an error as the first argument which has important debugging information. So make sure to check for an error. The second argument is the resolved `nemo` object.
+`@argument callback {Function}` (optional) - This function will be called once the `nemo` object is fully resolved. It may be called with an error as the first argument which has important debugging information. So make sure to check for an error. The second argument is the resolved `nemo` object.
 
-`@returns nemo {Object}` - The nemo object has the following properties:
+`@returns nemo {Object|Promise}` - Promise returned if no callback provided. Promise resolves with the same nemo object as would be given to the callback.
+ The nemo object has the following properties:
 
 * **driver** The live `selenium-webdriver` API. See WebDriver API Doc: http://seleniumhq.github.io/selenium/docs/api/javascript/module/selenium-webdriver/index_exports_WebDriver.html
 
@@ -327,8 +328,20 @@ describe('my nemo suite', function () {
 });
 
 ```
+## Configuration API
 
-## Nemo Configuration
+Nemo exports two functions "Configure" and "CompleteSetup". You can use these functions to achieve the same result as using the
+Nemo constructor (i.e. a live webdriver instance and the nemo object).
+
+### Configure
+
+Doc TBD
+
+### Setup
+
+Doc TBD
+
+## Configuration
 
 ```javascript
 {
