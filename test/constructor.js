@@ -109,4 +109,12 @@ describe('@constructor@', function () {
       });
     });
   });
+  it('should resolve when a Confit object is the only parameter', function () {
+    return Nemo.Configure({driver: {browser: 'phantomjs'}}).then(function (confit) {
+      return Nemo(confit);
+    })
+      .then(function (nemo) {
+        return assert(nemo.driver);
+      });
+  });
 });

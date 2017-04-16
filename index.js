@@ -33,11 +33,16 @@ error.log = console.error.bind(console);
  *
  */
 
-function Nemo(_basedir, _configOverride, _cb) {
+module.exports = function Nemo(_basedir, _configOverride, _cb) {
   log('Nemo constructor begin');
   //argument vars
   var basedir, configOverride, cb, promiz;
   var nemo = {};
+
+  //check for confit object as single parameter
+  if (arguments.length === 1 && arguments[0].get) {
+    return Setup(arguments[0]);
+  }
 
   //settle arguments
   cb = (arguments.length && typeof arguments[arguments.length - 1] === 'function') ? arguments[arguments.length - 1] : undefined;
@@ -72,6 +77,4 @@ function Nemo(_basedir, _configOverride, _cb) {
   return promiz && promiz.promise || nemo;
 }
 
-module.exports = Nemo;
 module.exports.Configure = Configure;
-module.exports.CompleteSetup = Setup;
