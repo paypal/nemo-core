@@ -75,6 +75,6 @@ module.exports = function Nemo(_basedir, _configOverride, _cb) {
     })
     .catch(cb);
   return promiz && promiz.promise || nemo;
-}
+};
 
 module.exports.Configure = Configure;
