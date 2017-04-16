@@ -255,9 +255,11 @@ $
 
 This illustrates how you can create a plugin, and the sorts of things you might want to do with a plugin.
 
-## Nemo Constructor
+## API
 
-`var nemo = Nemo([nemoBaseDir, ][config, ][callback]);`
+### Nemo
+
+`var nemo = Nemo([[nemoBaseDir, ][config, ][callback]] | [Confit object]);`
 
 `@argument nemoBaseDir {String}` (optional) - If provided, should be a filesystem path to your test suite. Nemo will expect to find a `/config` directory beneath that.
 `<nemoBaseDir>/config/config.json` should have your default configuration (described below). `nemoBaseDir` can alternatively be set as an environment variable. If it is
@@ -267,13 +269,14 @@ not set, you need to pass your configuration as the `config` parameter (see belo
 
 `@argument callback {Function}` (optional) - This function will be called once the `nemo` object is fully resolved. It may be called with an error as the first argument which has important debugging information. So make sure to check for an error. The second argument is the resolved `nemo` object.
 
-`@returns {Object} or Promise {Promise} ` - With no callback passed, Nemo returns a Promise which resolves to the `nemo` object. With a callback passed, Nemo returns an empty object `{}` which will be resolved to the `nemo` object once the callback is called without error.
+`@argument Confit object {Object}` (optional) - If a Confit object is passed, the configuration step is skipped and the passed object is used directly.
 
-The `nemo` object has the following properties:
+`@returns nemo {Object|Promise}` - Promise returned if no callback provided. Promise resolves with the same nemo object as would be given to the callback.
+ The nemo object has the following properties:
 
-* **driver** The live `selenium-webdriver` API. See WebDriver API Doc: http://selenium.googlecode.com/git/docs/api/javascript/class_webdriver_WebDriver.html
+* **driver** The live `selenium-webdriver` API. See WebDriver API Doc: http://seleniumhq.github.io/selenium/docs/api/javascript/module/selenium-webdriver/index_exports_WebDriver.html
 
-* **wd** This is a reference to the `selenium-webdriver` module: http://selenium.googlecode.com/git/docs/api/javascript/module_selenium-webdriver.html
+* **wd** This is a reference to the `selenium-webdriver` module: http://seleniumhq.github.io/selenium/docs/api/javascript/module/selenium-webdriver/index.html
 
 * **data** Pass through of any data included in the `data` property of the configuration
 
@@ -306,7 +309,7 @@ You could also have a config that looks like this, and `nemo-view` will still re
 
 But that's confusing. So please stick to the convention.
 
-### Typical usage of Nemo constructor
+#### Typical usage of Nemo constructor
 
 A typical pattern would be to use `mocha` as a test runner, resolve `nemo` in the context of the mocha `before` function, and use
 the mocha `done` function as the callback:
@@ -330,7 +333,24 @@ describe('my nemo suite', function () {
 
 ```
 
-## Nemo Configuration
+### Configure
+
+Calling `Configure` will return a promise which resolves as a Confit object. This is the same method Nemo calls internally in the basic use case. You might want to call `Configure` if
+you are interested in the resolved configuration object but not yet ready to start the webdriver. An example would be if you want to make further
+changes to the configuration based on what gets resolved, prior to starting the webdriver.
+
+`function Configure([nemoBaseDir, ][configOverride])`
+
+`@argument nemoBaseDir {String}` (optional) - If provided, should be a filesystem path. There should be a `/config` directory beneath that.
+`<nemoBaseDir>/config/config.json` should have your default configuration. `nemoBaseDir` can alternatively be set as an environment variable. If it is
+not set, you need to pass your configuration as the `config` parameter (see below).
+
+`@argument config {Object}` (optional) - Can be a full configuration (if `nemoBaseDir` not provided) or additional/override configuration to what's in your config files.
+
+`@returns {Promise}` - Promise resolves as a confit object:
+
+
+## Configuration Input
 
 ```javascript
 {
@@ -379,7 +399,7 @@ Path to your webdriver server Jar file. Leave unset if you aren't using a local 
 
 #### serverCaps (optional)
 
-serverCaps would map to the capabilities here: http://selenium.googlecode.com/git/docs/api/javascript/source/lib/webdriver/capabilities.js.src.html
+serverCaps would map to the capabilities here: http://seleniumhq.github.io/selenium/docs/api/javascript/module/selenium-webdriver/index_exports_Capabilities.html
 
 Some webdrivers (for instance ios-driver, or appium) would have additional capabilities which can be set via this variable. As an example, you can connect to saucelabs by adding this serverCaps:
 
@@ -393,7 +413,7 @@ Some webdrivers (for instance ios-driver, or appium) would have additional capab
 ```
 #### proxyDetails (optional)
 If you want to run test by setting proxy in the browser, you can use 'proxyDetails' configuration. Following options are available: direct, manual, pac and system.
-Default is 'direct'. For more information refer : https://selenium.googlecode.com/git/docs/api/javascript/module_selenium-webdriver_proxy.html
+Default is 'direct'. For more information refer : http://seleniumhq.github.io/selenium/docs/api/javascript/module/selenium-webdriver/proxy.html
 
 ```javascript
 "proxyDetails" : {
@@ -404,7 +424,7 @@ Default is 'direct'. For more information refer : https://selenium.googlecode.co
 
 #### builders (optional)
 
-This is a JSON interface to any of the Builder methods which take simple arguments and return the builder. See the Builder class here: http://selenium.googlecode.com/git/docs/api/javascript/module_selenium-webdriver_class_Builder.html
+This is a JSON interface to any of the Builder methods which take simple arguments and return the builder. See the Builder class here: http://seleniumhq.github.io/selenium/docs/api/javascript/module/selenium-webdriver/index_exports_Builder.html
 
 Useful such functions are:
 * forBrowser (can take the place of "browser", "local" and "jar" properties above)
@@ -502,6 +522,26 @@ Use config to reference data in other parts of the JSON configuration. E.g. in t
 
 The value of `plugins.myPlugin.arguments[0]` will be `someVal`
 
+
+### file
+
+Please see [https://github.com/krakenjs/shortstop-handlers#handlersfilebasedir-options](https://github.com/krakenjs/shortstop-handlers#handlersfilebasedir-options)
+
+### base64
+
+Please see [https://github.com/krakenjs/shortstop-handlers#handlersbase64](https://github.com/krakenjs/shortstop-handlers#handlersbase64)
+
+### require
+
+Please see [https://github.com/krakenjs/shortstop-handlers#handlersrequirebasedir](https://github.com/krakenjs/shortstop-handlers#handlersrequirebasedir)
+
+### exec
+
+Please see [https://github.com/krakenjs/shortstop-handlers#handlersexecbasedir](https://github.com/krakenjs/shortstop-handlers#handlersexecbasedir)
+
+### glob
+
+Please see [https://github.com/krakenjs/shortstop-handlers#handlersglobbasediroptions](https://github.com/krakenjs/shortstop-handlers#handlersglobbasediroptions)
 
 ## Plugins
 
