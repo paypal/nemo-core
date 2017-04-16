@@ -259,7 +259,7 @@ This illustrates how you can create a plugin, and the sorts of things you might 
 
 ### Nemo
 
-`var nemo = Nemo([[nemoBaseDir, ][config, ][callback]] | [Confit object]);`
+`function Nemo([[nemoBaseDir, ][config, ][callback]] | [Confit object]) { ... }`
 
 `@argument nemoBaseDir {String}` (optional) - If provided, should be a filesystem path to your test suite. Nemo will expect to find a `/config` directory beneath that.
 `<nemoBaseDir>/config/config.json` should have your default configuration (described below). `nemoBaseDir` can alternatively be set as an environment variable. If it is
@@ -339,7 +339,7 @@ Calling `Configure` will return a promise which resolves as a Confit object. Thi
 you are interested in the resolved configuration object but not yet ready to start the webdriver. An example would be if you want to make further
 changes to the configuration based on what gets resolved, prior to starting the webdriver.
 
-`function Configure([nemoBaseDir, ][configOverride])`
+`function Configure([nemoBaseDir, ][configOverride]) { ... }`
 
 `@argument nemoBaseDir {String}` (optional) - If provided, should be a filesystem path. There should be a `/config` directory beneath that.
 `<nemoBaseDir>/config/config.json` should have your default configuration. `nemoBaseDir` can alternatively be set as an environment variable. If it is
