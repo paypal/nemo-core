@@ -58,4 +58,12 @@ describe('@config@', function () {
       done();
     });
   });
+  it('should export a Configure method', function () {
+    return assert(Nemo.Configure && typeof Nemo.Configure === 'function');
+  });
+  it('should export a Configure method resolving to a Confit object', function () {
+    return Nemo.Configure().then(function (confit) {
+      return assert(confit.get);
+    });
+  });
 });

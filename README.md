@@ -255,9 +255,11 @@ $
 
 This illustrates how you can create a plugin, and the sorts of things you might want to do with a plugin.
 
-## Nemo Constructor
+## API
 
-`var nemo = Nemo([[nemoBaseDir, ]config, ]callback);`
+### Nemo
+
+`function Nemo([[nemoBaseDir, ][config, ][callback]] | [Confit object]) { ... }`
 
 `@argument nemoBaseDir {String}` (optional) - If provided, should be a filesystem path to your test suite. Nemo will expect to find a `/config` directory beneath that.
 `<nemoBaseDir>/config/config.json` should have your default configuration (described below). `nemoBaseDir` can alternatively be set as an environment variable. If it is
@@ -265,9 +267,12 @@ not set, you need to pass your configuration as the `config` parameter (see belo
 
 `@argument config {Object}` (optional) - Can be a full configuration (if `nemoBaseDir` not provided) or additional/override configuration to what's in your config files.
 
-`@argument callback {Function}` - This function will be called once the `nemo` object is fully resolved. It may be called with an error as the first argument which has important debugging information. So make sure to check for an error. The second argument is the resolved `nemo` object.
+`@argument callback {Function}` (optional) - This function will be called once the `nemo` object is fully resolved. It may be called with an error as the first argument which has important debugging information. So make sure to check for an error. The second argument is the resolved `nemo` object.
 
-`@returns nemo {Object}` - The nemo object has the following properties:
+`@argument Confit object {Object}` (optional) - If a Confit object is passed, the configuration step is skipped and the passed object is used directly.
+
+`@returns nemo {Object|Promise}` - Promise returned if no callback provided. Promise resolves with the same nemo object as would be given to the callback.
+ The nemo object has the following properties:
 
 * **driver** The live `selenium-webdriver` API. See WebDriver API Doc: http://seleniumhq.github.io/selenium/docs/api/javascript/module/selenium-webdriver/index_exports_WebDriver.html
 
@@ -304,7 +309,7 @@ You could also have a config that looks like this, and `nemo-view` will still re
 
 But that's confusing. So please stick to the convention.
 
-### Typical usage of Nemo constructor
+#### Typical usage of Nemo constructor
 
 A typical pattern would be to use `mocha` as a test runner, resolve `nemo` in the context of the mocha `before` function, and use
 the mocha `done` function as the callback:
@@ -328,7 +333,24 @@ describe('my nemo suite', function () {
 
 ```
 
-## Nemo Configuration
+### Configure
+
+Calling `Configure` will return a promise which resolves as a Confit object. This is the same method Nemo calls internally in the basic use case. You might want to call `Configure` if
+you are interested in the resolved configuration object but not yet ready to start the webdriver. An example would be if you want to make further
+changes to the configuration based on what gets resolved, prior to starting the webdriver.
+
+`function Configure([nemoBaseDir, ][configOverride]) { ... }`
+
+`@argument nemoBaseDir {String}` (optional) - If provided, should be a filesystem path. There should be a `/config` directory beneath that.
+`<nemoBaseDir>/config/config.json` should have your default configuration. `nemoBaseDir` can alternatively be set as an environment variable. If it is
+not set, you need to pass your configuration as the `config` parameter (see below).
+
+`@argument config {Object}` (optional) - Can be a full configuration (if `nemoBaseDir` not provided) or additional/override configuration to what's in your config files.
+
+`@returns {Promise}` - Promise resolves as a confit object:
+
+
+## Configuration Input
 
 ```javascript
 {

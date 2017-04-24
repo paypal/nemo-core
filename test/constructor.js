@@ -6,16 +6,24 @@ var assert = require('assert'),
   Nemo = require('../index');
 
 describe('@constructor@', function () {
-  it("should throw an error with @noArguments@", function (done) {
-    try {
-      Nemo();
-    } catch (err) {
-      if (err.name === 'nemoNoCallbackError') {
-        done();
-        return;
+  it("should return a promise with @noArguments@", function (done) {
+    Nemo().then(function (nemo) {
+      done(new Error('should have failed with nemoBadDriverProps'));
+    }).catch(function (err) {
+      done();
+    })
+  });
+
+  it("should return a promise with @noCallback@", function (done) {
+    Nemo({
+      "driver": {
+        "browser": "phantomjs"
       }
-      done(new Error('didnt get back the expected error'));
-    }
+    }).then(function (nemo) {
+      done();
+    }).catch(function (err) {
+      done(err);
+    })
   });
 
   it("should throw an error with @noDriverProps@", function (done) {
@@ -100,5 +108,13 @@ describe('@constructor@', function () {
         done();
       });
     });
+  });
+  it('should resolve when a Confit object is the only parameter', function () {
+    return Nemo.Configure({driver: {browser: 'phantomjs'}}).then(function (confit) {
+      return Nemo(confit);
+    })
+      .then(function (nemo) {
+        return assert(nemo.driver);
+      });
   });
 });

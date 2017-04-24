@@ -3,6 +3,7 @@
 ## UNRELEASED
 
 - Added missing shortstop handlers (glob, file, require, exec)
+- Separate public API into Configure and Setup steps in order to access the config prior to driver setup. Facilitates nemo-runner
 
 ## v2.3.1
 

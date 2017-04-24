@@ -5,7 +5,7 @@
   "scripts": {
     "test": "mocha --timeout=30000",
     "pretest": "npm run lint",
-    "lint": "jshint index.js setup/*.js"
+    "lint": "jshint index.js lib/*.js"
   },
   "dependencies": {
     "async": "^1.5.2",
