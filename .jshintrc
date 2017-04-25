@@ -46,6 +46,10 @@
 	"globalstrict": true,
 
 
+	// ECMAScript 6
+	"esversion":6,
+
+
 	// The Good Parts
 
 	// Whether automatic semicolon insertion should be allowed.
