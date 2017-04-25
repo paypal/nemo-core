@@ -1,6 +1,6 @@
 # nemo CHANGELOG
 
-## unreleased
+## v2.4.1 
 
 - fix a typo in lib/promise.js
 
