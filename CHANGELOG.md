@@ -1,5 +1,9 @@
 # nemo CHANGELOG
 
+## unreleased
+
+- fix a typo in lib/promise.js
+
 ## v2.4.0 
 
 - Added missing shortstop handlers (glob, file, require, exec)
