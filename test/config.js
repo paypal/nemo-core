@@ -7,6 +7,7 @@ var assert = require('assert'),
 
 describe('@config@', function () {
   process.env['NEMO_UNIT_TEST'] = 'true';
+
   it('should pass confit object as nemo._config', function (done) {
     Nemo({
       'driver': {
@@ -28,6 +29,7 @@ describe('@config@', function () {
       });
     });
   });
+
   it('should install provided @selenium.version@', function (done) {
     var ver = '^2.53.1';
     Nemo({
@@ -54,6 +56,14 @@ describe('@config@', function () {
     }, function (err, nemo) {
       assert(err);
       done();
+    });
+  });
+  it('should export a Configure method', function () {
+    return assert(Nemo.Configure && typeof Nemo.Configure === 'function');
+  });
+  it('should export a Configure method resolving to a Confit object', function () {
+    return Nemo.Configure().then(function (confit) {
+      return assert(confit.get);
     });
   });
 });

@@ -1,4 +1,5 @@
 {
+	"esversion": 6,
 	// Whether the scan should stop on first error.
 	"passfail": false,
 	// Maximum errors before stopping.
@@ -151,5 +152,5 @@
 	// Maximum number of statements per function.
 	"maxstatements": 50,
 	// Maximum cyclomatic complexity.
-	"maxcomplexity": 10
+	"maxcomplexity": 11
 }
