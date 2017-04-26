@@ -646,3 +646,10 @@ configuration, for example the browser section under `test/config/config.json` l
   * To run directly using mocha assuming its globally installed on your system `mocha -t 60s`
   * Or a specific test,  `mocha --grep @allArgs@ -t 60s`
   * Or post `npm install` on nemo module, you can run `node_modules/.bin/mocha --grep @allArgs@ -t 60s`
+
+
+## Contributing
+
+Please refer to the main
+[Nemo Contribution Guidelines](https://github.com/paypal/nemo-docs/blob/master/contributing.md)
+in the [nemo-docs](https://github.com/paypal/nemo-docs) repository.
