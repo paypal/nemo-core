@@ -1,6 +1,7 @@
-var Nemo = require('../');
-var path = require('path');
-var basedir = path.resolve(__dirname, 'plugin');
+const Nemo = require('../');
+const path = require('path');
+const basedir = path.resolve(__dirname, 'plugin');
+
 Nemo(basedir, function (err, nemo) {
   //always check for errors!
   if (err) {

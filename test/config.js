@@ -1,6 +1,6 @@
 /* global module: true, require: true, console: true */
-var assert = require('assert')
-  ,Nemo = require('../index');
+const assert = require('assert');
+const Nemo = require('../index');
 
 describe('@config@', function () {
   process.env.NEMO_UNIT_TEST = 'true';

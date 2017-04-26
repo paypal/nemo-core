@@ -1,5 +1,5 @@
-var Nemo = require('../index');
-var assert = require('assert');
+const Nemo = require('../index');
+const assert = require('assert');
 
 describe('@proxy@ ', function () {
 

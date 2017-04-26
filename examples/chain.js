@@ -1,5 +1,5 @@
-var Nemo = require('../');
-var config = {
+const Nemo = require('../');
+const config = {
   'driver': {
     'browser': 'phantomjs'
   }

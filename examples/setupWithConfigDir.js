@@ -1,4 +1,4 @@
-var Nemo = require('../');
+const Nemo = require('../');
 
 //passing __dirname as the first argument tells confit to
 //look in __dirname + '/config' for config files

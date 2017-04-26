@@ -1,5 +1,5 @@
-var webdriver = require('selenium-webdriver');
-var async = require('async');
+const webdriver = require('selenium-webdriver');
+const async = require('async');
 
 
 function driversetup(nemo) {
