@@ -1,6 +1,4 @@
 /* global module: true, require: true, console: true */
-'use strict';
-
 var assert = require('assert'),
   path = require('path'),
   Nemo = require('../index');

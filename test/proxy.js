@@ -1,5 +1,3 @@
-"use strict";
-
 var Nemo = require('../index');
 var assert = require('assert');
 var path = require('path');
