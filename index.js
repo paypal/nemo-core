@@ -34,48 +34,48 @@ error.log = console.error.bind(console);
  */
 
 module.exports = function Nemo(_basedir, _configOverride, _cb) {
-    log('Nemo constructor begin');
+  log('Nemo constructor begin');
 
-    //argument vars
-    let basedir, configOverride, cb, promiz;
-    const nemo = {};
+  //argument vars
+  let basedir, configOverride, cb, promiz;
+  const nemo = {};
 
-    //check for confit object as single parameter
-    if (arguments.length === 1 && arguments[0].get) {
-        return Setup(arguments[0]);
-    }
+  //check for confit object as single parameter
+  if (arguments.length === 1 && arguments[0].get) {
+      return Setup(arguments[0]);
+  }
 
-    //settle arguments
-    cb = (arguments.length && typeof arguments[arguments.length - 1] === 'function') ? arguments[arguments.length - 1] : undefined;
-    basedir = (arguments.length && typeof arguments[0] === 'string') ? arguments[0] : undefined;
-    configOverride = (!basedir && arguments.length && typeof arguments[0] === 'object') ? arguments[0] : undefined;
-    configOverride = (!configOverride && arguments.length && arguments[1] && typeof arguments[1] === 'object') ? arguments[1] : configOverride;
-    basedir = basedir || process.env.nemoBaseDir || undefined;
-    configOverride = configOverride || {};
-    if (!cb) {
-        log('returning promise');
-        promiz = Promiz();
-        cb = (err, n) => {
-            if (err) {
-                return promiz.reject(err);
-            }
-            promiz.fulfill(n);
-        };
-    }
-    log('basedir', basedir);
-    log('configOverride', configOverride);
-    Configure(basedir, configOverride)
-        .then(config => {
-            log('Configure complete');
-            return Setup(config);
-        })
-        .then(_nemo => {
-            log('Setup complete');
-            _.merge(nemo, _nemo);
-            return cb(null, nemo);
-        })
-        .catch(cb);
-    return promiz && promiz.promise || nemo;
+  //settle arguments
+  cb = (arguments.length && typeof arguments[arguments.length - 1] === 'function') ? arguments[arguments.length - 1] : undefined;
+  basedir = (arguments.length && typeof arguments[0] === 'string') ? arguments[0] : undefined;
+  configOverride = (!basedir && arguments.length && typeof arguments[0] === 'object') ? arguments[0] : undefined;
+  configOverride = (!configOverride && arguments.length && arguments[1] && typeof arguments[1] === 'object') ? arguments[1] : configOverride;
+  basedir = basedir || process.env.nemoBaseDir || undefined;
+  configOverride = configOverride || {};
+  if (!cb) {
+      log('returning promise');
+      promiz = Promiz();
+      cb = (err, n) => {
+          if (err) {
+              return promiz.reject(err);
+          }
+          promiz.fulfill(n);
+      };
+  }
+  log('basedir', basedir);
+  log('configOverride', configOverride);
+  Configure(basedir, configOverride)
+      .then(config => {
+          log('Configure complete');
+          return Setup(config);
+      })
+      .then(_nemo => {
+          log('Setup complete');
+          _.merge(nemo, _nemo);
+          return cb(null, nemo);
+      })
+      .catch(cb);
+  return promiz && promiz.promise || nemo;
 };
 
 module.exports.Configure = Configure;
