@@ -1,13 +1,13 @@
 /* global module: true, require: true, console: true */
 
-var assert = require('assert'),
-  path = require('path'),
-  Nemo = require('../index');
+var assert = require('assert')
+  ,path = require('path')
+  ,Nemo = require('../index');
 
 
 describe('@override@', function () {
 
-  it("@fromEnv@ over config.json data", function (done) {
+  it('@fromEnv@ over config.json data', function (done) {
     process.env.nemoBaseDir = __dirname;
     process.env.data = JSON.stringify({
       baseUrl: 'http://www.ebay.com'
@@ -21,7 +21,7 @@ describe('@override@', function () {
       done();
     });
   });
-  it("@fromArg@ over config.json data", function (done) {
+  it('@fromArg@ over config.json data', function (done) {
     process.env.nemoBaseDir = __dirname;
 
     Nemo({
@@ -37,14 +37,14 @@ describe('@override@', function () {
       done();
     });
   });
-  it("@builders@ overrides tgtBrowser abstraction", function (done) {
+  it('@builders@ overrides tgtBrowser abstraction', function (done) {
     process.env.nemoBaseDir = __dirname;
 
     Nemo({
       driver: {
         browser: 'firefox'
-      },
-      data: {
+      }
+      ,data: {
         baseUrl: 'http://www.ebay.com'
       }
     }, function (err, nemo) {

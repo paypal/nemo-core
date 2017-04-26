@@ -1,12 +1,12 @@
 /* global module: true, require: true, console: true */
-var assert = require('assert'),
-  path = require('path'),
-  Nemo = require('../index');
+var assert = require('assert')
+  ,path = require('path')
+  ,Nemo = require('../index');
 
 
 describe('@plugin@', function () {
 
-  it("should @priorityRegister@", function (done) {
+  it('should @priorityRegister@', function (done) {
     process.env.nemoBaseDir = path.resolve(__dirname);
 
     Nemo(function(err, nemo) {
@@ -19,10 +19,10 @@ describe('@plugin@', function () {
   it('should handle @nonexistPlugin@', function (done) {
     delete process.env.nemoBaseDir;
     Nemo(__dirname, {
-      "driver": {
-        "browser": "phantomjs"
-      },
-      'plugins': {
+      'driver': {
+        'browser': 'phantomjs'
+      }
+      ,'plugins': {
         'noexist': {
           'module': 'ModuleThatDoesNotExist'
         }
@@ -39,13 +39,13 @@ describe('@plugin@', function () {
     delete process.env.nemoBaseDir;
 
     Nemo(__dirname, {
-      "driver": {
-        "browser": "phantomjs"
-      },
-      'plugins': {
+      'driver': {
+        'browser': 'phantomjs'
+      }
+      ,'plugins': {
         'crappy': {
-          'module': 'path:plugin/sample',
-          'arguments': ['crap plugin']
+          'module': 'path:plugin/sample'
+          ,'arguments': ['crap plugin']
         }
       }
     }, function (err) {
