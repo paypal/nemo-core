@@ -3,7 +3,8 @@
   "version": "3.0.0-alpha.6",
   "description": "Abstraction for automation test components",
   "scripts": {
-    "test": "grunt",
+    "test": "mocha",
+    "test:default": "mocha --timeout 30000 --reporter spec",
     "lint": "eslint --fix lib examples test"
   },
   "dependencies": {
@@ -17,6 +18,8 @@
   },
   "main": "index.js",
   "devDependencies": {
+    "babel-core": "^6.24.1",
+    "babel-preset-env": "^1.4.0",
     "chai": "^3.5.0",
     "eslint": "^3.19.0",
     "eslint-plugin-json": "^1.2.0",
@@ -24,7 +27,8 @@
     "grunt-contrib-jshint": "^1.0.0",
     "grunt-simple-mocha": "~0.4.0",
     "mocha": "^2.0.0",
-    "nconf": "^0.8.4"
+    "nconf": "^0.8.4",
+    "phantomjs": "^2.1.7"
   },
   "repository": {
     "type": "git",
