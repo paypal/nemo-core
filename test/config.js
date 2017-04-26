@@ -31,7 +31,7 @@ describe('@config@', function () {
   });
 
   it('should install provided @selenium.version@', function (done) {
-    var ver = '^2.53.1';
+    var ver = '2.53.3';
     Nemo({
       'driver': {
         'browser': 'phantomjs',
