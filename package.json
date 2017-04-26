@@ -3,7 +3,8 @@
   "version": "3.0.0-alpha.6",
   "description": "Abstraction for automation test components",
   "scripts": {
-    "test": "grunt"
+    "test": "grunt",
+    "lint": "eslint --fix lib examples test"
   },
   "dependencies": {
     "async": "^1.5.2",
@@ -17,6 +18,8 @@
   "main": "index.js",
   "devDependencies": {
     "chai": "^3.5.0",
+    "eslint": "^3.19.0",
+    "eslint-plugin-json": "^1.2.0",
     "grunt": "^1.0.1",
     "grunt-contrib-jshint": "^1.0.0",
     "grunt-simple-mocha": "~0.4.0",
