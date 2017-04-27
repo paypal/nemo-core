@@ -3,32 +3,26 @@
   "version": "3.0.0-alpha.6",
   "description": "Abstraction for automation test components",
   "scripts": {
-    "test": "mocha",
-    "test:default": "mocha --timeout 30000 --reporter spec",
+    "test": "npm run lint && mocha",
+    "test:default": "npm run lint && mocha --timeout 30000 --reporter spec",
     "lint": "eslint --fix lib examples test"
   },
   "dependencies": {
-    "async": "^1.5.2",
+    "async": "^2.3.0",
     "confit": "^2.0.0",
     "debug": "^2.1.0",
     "lodash": "^4.12.0",
-    "selenium-webdriver": "^3.0.0",
+    "selenium-webdriver": "^3.4.0",
     "shortstop-handlers": "^1.0.0",
-    "yargs": "^4.7.1"
+    "yargs": "^7.1.0"
   },
   "main": "index.js",
   "devDependencies": {
-    "babel-core": "^6.24.1",
-    "babel-preset-env": "^1.4.0",
     "chai": "^3.5.0",
     "eslint": "^3.19.0",
     "eslint-plugin-json": "^1.2.0",
-    "grunt": "^1.0.1",
-    "grunt-contrib-jshint": "^1.0.0",
-    "grunt-simple-mocha": "~0.4.0",
     "mocha": "^2.0.0",
-    "nconf": "^0.8.4",
-    "phantomjs": "^2.1.7"
+    "nconf": "^0.8.4"
   },
   "repository": {
     "type": "git",
