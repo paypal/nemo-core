@@ -8,11 +8,11 @@
     "lint": "jshint index.js lib/*.js"
   },
   "dependencies": {
-    "async": "^1.5.2",
+    "async": "^2.3.0",
     "confit": "^2.0.0",
-    "debug": "^2.1.0",
+    "debug": "^2.6.4",
     "lodash": "^4.12.0",
-    "selenium-webdriver": "^2.53.2",
+    "selenium-webdriver": "^2.53.3",
     "shortstop-handlers": "^1.0.0",
     "yargs": "^4.7.1"
   },

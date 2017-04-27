@@ -14,14 +14,14 @@
  \*───────────────────────────────────────────────────────────────────────────*/
 'use strict';
 
-var Promiz = require('./lib/promise'),
-  Configure = require('./lib/configure'),
-  Setup = require('./lib/setup'),
-  debug = require('debug'),
-  log = debug('nemo:log'),
-  error = debug('nemo:error'),
-  _ = require('lodash'),
-  path = require('path');
+const Promiz = require('./lib/promise');
+const Configure = require('./lib/configure');
+const Setup = require('./lib/setup');
+const debug = require('debug');
+const log = debug('nemo:log');
+const error = debug('nemo:error');
+const _ = require('lodash');
+const path = require('path');
 
 log.log = console.log.bind(console);
 error.log = console.error.bind(console);
@@ -35,9 +35,10 @@ error.log = console.error.bind(console);
 
 module.exports = function Nemo(_basedir, _configOverride, _cb) {
   log('Nemo constructor begin');
+
   //argument vars
-  var basedir, configOverride, cb, promiz;
-  var nemo = {};
+  let basedir, configOverride, cb, promiz;
+  const nemo = {};
 
   //check for confit object as single parameter
   if (arguments.length === 1 && arguments[0].get) {
@@ -54,7 +55,7 @@ module.exports = function Nemo(_basedir, _configOverride, _cb) {
   if (!cb) {
     log('returning promise');
     promiz = Promiz();
-    cb = function (err, n) {
+    cb = (err, n) => {
       if (err) {
         return promiz.reject(err);
       }
@@ -64,11 +65,11 @@ module.exports = function Nemo(_basedir, _configOverride, _cb) {
   log('basedir', basedir);
   log('configOverride', configOverride);
   Configure(basedir, configOverride)
-    .then(function (config) {
+    .then(config => {
       log('Configure complete');
       return Setup(config);
     })
-    .then(function (_nemo) {
+    .then(_nemo => {
       log('Setup complete');
       _.merge(nemo, _nemo);
       return cb(null, nemo);
