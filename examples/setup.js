@@ -2,8 +2,8 @@ var Nemo = require('../');
 Nemo({
   'driver': {
     'browser': 'firefox'
-  }
-  ,'data': {
+  },
+  'data': {
     'baseUrl': 'https://www.paypal.com'
   }
 }, function (err, nemo) {

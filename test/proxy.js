@@ -8,10 +8,10 @@ describe('@proxy@ ', function () {
     Nemo({
       'driver': {
         'proxyDetails': {
-          method: 'manual'
-          ,args: [{'http': 'host:1234', 'ftp': 'host:1234', 'https': 'host:1234'}]
-        }
-        ,'builders': {
+          method: 'manual',
+          args: [{'http': 'host:1234', 'ftp': 'host:1234', 'https': 'host:1234'}]
+        },
+        'builders': {
           'forBrowser': ['phantomjs']
         }
       }

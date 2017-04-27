@@ -21,8 +21,8 @@ describe('@plugin@', function () {
     Nemo(__dirname, {
       'driver': {
         'browser': 'phantomjs'
-      }
-      ,'plugins': {
+      },
+      'plugins': {
         'noexist': {
           'module': 'ModuleThatDoesNotExist'
         }
@@ -41,8 +41,8 @@ describe('@plugin@', function () {
     Nemo(__dirname, {
       'driver': {
         'browser': 'phantomjs'
-      }
-      ,'plugins': {
+      },
+      'plugins': {
         'crappy': {
           'module': 'path:plugin/sample'
           ,'arguments': ['crap plugin']

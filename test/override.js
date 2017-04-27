@@ -43,8 +43,8 @@ describe('@override@', function () {
     Nemo({
       driver: {
         browser: 'firefox'
-      }
-      ,data: {
+      },
+      data: {
         baseUrl: 'http://www.ebay.com'
       }
     }, function (err, nemo) {

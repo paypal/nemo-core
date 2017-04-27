@@ -8,8 +8,8 @@ describe('@config@', function () {
     Nemo({
       'driver': {
         'browser': 'phantomjs'
-      }
-      ,'data': {
+      },
+      'data': {
         'Roger': {
           'Federer': {
             'is': 'GOAT'
@@ -46,8 +46,8 @@ describe('@config@', function () {
   it('should throw an error for invalid @invalid.selenium.version@', function (done) {
     Nemo({
       'driver': {
-        'browser': 'phantomjs'
-        ,'selenium.version': 'foo'
+        'browser': 'phantomjs',
+        'selenium.version': 'foo'
       }
     }, function (err, nemo) {
       assert(err);
