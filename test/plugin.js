@@ -44,8 +44,8 @@ describe('@plugin@', function () {
       },
       'plugins': {
         'crappy': {
-          'module': 'path:plugin/sample'
-          ,'arguments': ['crap plugin']
+          'module': 'path:plugin/sample',
+          'arguments': ['crap plugin']
         }
       }
     }, function (err) {

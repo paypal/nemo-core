@@ -2,8 +2,8 @@ const Nemo = require('../');
 const config = {
   'driver': {
     'browser': 'phantomjs'
-  }
-  ,'data': {
+  },
+  'data': {
     'baseUrl': 'http://www.google.com'
   }
 };
