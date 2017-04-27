@@ -1,14 +1,12 @@
 /* global module: true, require: true, console: true */
-'use strict';
-
-var assert = require('assert'),
-  path = require('path'),
-  Nemo = require('../index');
+const assert = require('assert');
+const path = require('path');
+const Nemo = require('../index');
 
 
 describe('@plugin@', function () {
 
-  it("should @priorityRegister@", function (done) {
+  it('should @priorityRegister@', function (done) {
     process.env.nemoBaseDir = path.resolve(__dirname);
 
     Nemo(function(err, nemo) {
@@ -21,8 +19,8 @@ describe('@plugin@', function () {
   it('should handle @nonexistPlugin@', function (done) {
     delete process.env.nemoBaseDir;
     Nemo(__dirname, {
-      "driver": {
-        "browser": "phantomjs"
+      'driver': {
+        'browser': 'phantomjs'
       },
       'plugins': {
         'noexist': {
@@ -41,8 +39,8 @@ describe('@plugin@', function () {
     delete process.env.nemoBaseDir;
 
     Nemo(__dirname, {
-      "driver": {
-        "browser": "phantomjs"
+      'driver': {
+        'browser': 'phantomjs'
       },
       'plugins': {
         'crappy': {

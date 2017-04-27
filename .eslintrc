@@ -1,0 +1,25 @@
+{
+  "extends": [
+    "eslint:recommended"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module"
+  },
+  "plugins": [
+    "json"
+  ],
+  "env": {
+    "es6": true,
+    "jasmine": true,
+    "node": true,
+    "mocha": true,
+    "browser": true,
+    "builtin": true
+  },
+  "rules": {
+    "no-console": 0,
+    "no-undef": 0,
+    "no-unused-vars": 0
+  }
+}

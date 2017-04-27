@@ -1,4 +1,4 @@
-'use strict';
+
 module.exports.waitForJSReady = function waitForJSReady(nemo) {
   return nemo.driver.wait(function() {
       //console.log('execute waitForJSReady');

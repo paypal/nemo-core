@@ -12,16 +12,15 @@
  │   See the License for the specific language governing permissions and       │
  │   limitations under the License.                                            │
  \*───────────────────────────────────────────────────────────────────────────*/
-'use strict';
 
-let Promiz = require('./lib/promise'),
-  Configure = require('./lib/configure'),
-  Setup = require('./lib/setup'),
-  debug = require('debug'),
-  log = debug('nemo:log'),
-  error = debug('nemo:error'),
-  _ = require('lodash'),
-  path = require('path');
+const Promiz = require('./lib/promise');
+const Configure = require('./lib/configure');
+const Setup = require('./lib/setup');
+const debug = require('debug');
+const log = debug('nemo:log');
+const error = debug('nemo:error');
+const _ = require('lodash');
+const path = require('path');
 
 log.log = console.log.bind(console);
 error.log = console.error.bind(console);

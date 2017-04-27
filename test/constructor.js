@@ -1,22 +1,20 @@
 /* global module: true, require: true, console: true */
-'use strict';
 
-var assert = require('assert'),
-  path = require('path'),
-  Nemo = require('../index');
+const assert = require('assert');
+const Nemo = require('../index');
 
 describe('@constructor@', function () {
-  it("should return a promise with @noArguments@", function (done) {
+  it('should return a promise with @noArguments@', function (done) {
       Nemo().then(function (nemo) {
         done(new Error('should have failed with nemoBadDriverProps'));
       }).catch(function (err) {
         done();
       })
   });
-  it("should return a promise with @noCallback@", function (done) {
+  it('should return a promise with @noCallback@', function (done) {
     Nemo({
-      "driver": {
-        "browser": "phantomjs"
+      'driver': {
+        'browser': 'phantomjs'
       }
     }).then(function (nemo) {
       done();
@@ -24,7 +22,7 @@ describe('@constructor@', function () {
       done(err);
     })
   });
-  it("should throw an error with @noDriverProps@", function (done) {
+  it('should throw an error with @noDriverProps@', function (done) {
 
     Nemo(function (err) {
       if (err.name === 'nemoBadDriverProps') {
@@ -36,11 +34,11 @@ describe('@constructor@', function () {
 
   });
 
-  it("should launch nemo with @noConfigPath@overrideArg@", function (done) {
+  it('should launch nemo with @noConfigPath@overrideArg@', function (done) {
     delete process.env.nemoBaseDir;
     Nemo({
-      "driver": {
-        "browser": "phantomjs"
+      'driver': {
+        'browser': 'phantomjs'
       }
     }, function (err, nemo) {
       assert(nemo.driver);
@@ -53,7 +51,7 @@ describe('@constructor@', function () {
   });
 
 
-  it("should launch nemo with @envConfigPath@noOverrideArg@", function (done) {
+  it('should launch nemo with @envConfigPath@noOverrideArg@', function (done) {
     process.env.nemoBaseDir = __dirname;
     Nemo(function (err, nemo) {
       assert(nemo.driver);
@@ -66,7 +64,7 @@ describe('@constructor@', function () {
   });
 
 
-  it("should launch nemo with @argConfigPath@noOverrideArg@", function (done) {
+  it('should launch nemo with @argConfigPath@noOverrideArg@', function (done) {
     var nemoBaseDir = __dirname;
 
     Nemo(nemoBaseDir, function (err, nemo) {
@@ -78,7 +76,7 @@ describe('@constructor@', function () {
       });
     });
   });
-  it("should launch nemo with @allArgs@", function (done) {
+  it('should launch nemo with @allArgs@', function (done) {
     var nemoBaseDir = __dirname;
     Nemo(nemoBaseDir, {
       'data': {
@@ -94,7 +92,7 @@ describe('@constructor@', function () {
       });
     });
   });
-  it("should return the resolved nemo object when the callback is called", function (done) {
+  it('should return the resolved nemo object when the callback is called', function (done) {
     var nemoBaseDir = __dirname;
     var returnedNemo = Nemo(nemoBaseDir, {
       'data': {

@@ -1,12 +1,9 @@
 /* global module: true, require: true, console: true */
-'use strict';
-
-var assert = require('assert'),
-  path = require('path'),
-  Nemo = require('../index');
+const assert = require('assert');
+const Nemo = require('../index');
 
 describe('@config@', function () {
-  process.env['NEMO_UNIT_TEST'] = 'true';
+  process.env.NEMO_UNIT_TEST = 'true';
   it('should pass confit object as nemo._config', function (done) {
     Nemo({
       'driver': {

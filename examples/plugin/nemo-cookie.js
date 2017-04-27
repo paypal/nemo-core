@@ -1,7 +1,5 @@
-'use strict';
-
 module.exports = {
-  "setup": function (nemo, callback) {
+  'setup': function (nemo, callback) {
     nemo.cookie = {};
     nemo.cookie.delete = function (name) {
       return nemo.driver.manage().deleteCookie(name);
