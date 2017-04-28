@@ -1,4 +1,4 @@
-var Nemo = require("../");
+const Nemo = require("../");
 Nemo({
   'driver': {
     'browser': 'firefox'
@@ -6,15 +6,15 @@ Nemo({
   'data': {
     'baseUrl': 'https://www.paypal.com'
   }
-}, function (err, nemo) {
+}, (err, nemo) => {
   //always check for errors!
   if (!!err) {
     console.log('Error during Nemo setup', err);
   }
   nemo.driver.get(nemo.data.baseUrl);
   nemo.driver.getCapabilities().
-    then(function (caps) {
-      console.log("Nemo successfully launched", caps.get('browserName'));
-    });
+  then(caps => {
+    console.log("Nemo successfully launched", caps.get('browserName'));
+  });
   nemo.driver.quit();
 });

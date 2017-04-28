@@ -1,18 +1,18 @@
 /* global module: true, require: true, console: true */
 'use strict';
 
-var assert = require('assert'),
+const assert = require('assert'),
   path = require('path'),
   Nemo = require('../index');
 
 
-describe('@override@', function () {
-  it("@fromEnv@ over config.json data", function (done) {
+describe('@override@', () => {
+  it("@fromEnv@ over config.json data", done => {
     process.env.nemoBaseDir = __dirname;
     process.env.data = JSON.stringify({
       baseUrl: 'http://www.ebay.com'
     });
-    Nemo(function (err, nemo) {
+    Nemo((err, nemo) => {
       if (err) {
         return done(err);
       }
@@ -22,14 +22,14 @@ describe('@override@', function () {
     });
   });
 
-  it("@fromArg@ over config.json data", function (done) {
+  it("@fromArg@ over config.json data", done => {
     process.env.nemoBaseDir = __dirname;
 
     Nemo({
       data: {
         baseUrl: 'http://www.ebay.com'
       }
-    }, function (err, nemo) {
+    }, (err, nemo) => {
       if (err) {
         return done(err);
       }
@@ -39,7 +39,7 @@ describe('@override@', function () {
     });
   });
 
-  it("@builders@ overrides tgtBrowser abstraction", function (done) {
+  it("@builders@ overrides tgtBrowser abstraction", done => {
     process.env.nemoBaseDir = __dirname;
 
     Nemo({
@@ -49,8 +49,8 @@ describe('@override@', function () {
       data: {
         baseUrl: 'http://www.ebay.com'
       }
-    }, function (err, nemo) {
-      nemo.driver.getCapabilities().then(function (caps) {
+    }, (err, nemo) => {
+      nemo.driver.getCapabilities().then(caps => {
         assert.notEqual(caps.browserName, 'firefox');
         nemo.driver.quit();
         done();

@@ -1,16 +1,16 @@
 /* global module: true, require: true, console: true */
 'use strict';
 
-var assert = require('assert'),
+const assert = require('assert'),
   path = require('path'),
   Nemo = require('../index');
 
 
-describe('@plugin@', function () {
-  it("should @priorityRegister@", function (done) {
+describe('@plugin@', () => {
+  it("should @priorityRegister@", done => {
     process.env.nemoBaseDir = path.resolve(__dirname);
 
-    Nemo(function(err, nemo) {
+    Nemo((err, nemo) => {
       assert.equal(nemo.preDriver.isDriverSetup, false);
       assert.equal(nemo.postDriver.isDriverSetup, true);
       nemo.driver.quit();
@@ -18,7 +18,7 @@ describe('@plugin@', function () {
     });
   });
 
-  it('should handle @nonexistPlugin@', function (done) {
+  it('should handle @nonexistPlugin@', done => {
     delete process.env.nemoBaseDir;
     Nemo(__dirname, {
       "driver": {
@@ -29,16 +29,16 @@ describe('@plugin@', function () {
           'module': 'ModuleThatDoesNotExist'
         }
       }
-  }, function (err) {
-        if (err) {
-            done();
-            return;
-        }
-        done(new Error('didnt get the correct exception'));
+    }, err => {
+      if (err) {
+        done();
+        return;
+      }
+      done(new Error('didnt get the correct exception'));
     });
   });
 
-  it('should handle @failedPluginRegistration@', function (done) {
+  it('should handle @failedPluginRegistration@', done => {
     delete process.env.nemoBaseDir;
 
     Nemo(__dirname, {
@@ -51,7 +51,7 @@ describe('@plugin@', function () {
           'arguments': ['crap plugin']
         }
       }
-    }, function (err) {
+    }, err => {
 
       if (err && err.name && err.name === 'nemoPluginSetupError') {
         return done();

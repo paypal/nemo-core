@@ -1,4 +1,4 @@
-var async = require("async");
+const async = require("async");
 module.exports = {
   "setup": function (whoami, nemo, callback) {
     if (arguments.length === 2) {
@@ -11,7 +11,7 @@ module.exports = {
     }
     nemo[whoami] = {};
     nemo[whoami].isDriverSetup = (!!nemo.driver.get);
-    process.nextTick(function () {
+    process.nextTick(() => {
       callback(null);
     });
 

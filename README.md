@@ -46,14 +46,14 @@ Nemo({
   'data': {
     'baseUrl': 'https://www.paypal.com'
   }
-}, function (err, nemo) {
+}, (err, nemo) => {
   //always check for errors!
   if (!!err) {
     console.log('Error during Nemo setup', err);
   }
   nemo.driver.get(nemo.data.baseUrl);
   nemo.driver.getCapabilities().
-    then(function (caps) {
+    then(caps => {
       console.info("Nemo successfully launched", caps.caps_.browserName);
     });
   nemo.driver.quit();
@@ -75,7 +75,7 @@ Look at `examples/setupWithConfigFiles.js`
 ```javascript
 //passing __dirname as the first argument tells confit to
 //look in __dirname + '/config' for config files
-Nemo(__dirname, function (err, nemo) {
+Nemo(__dirname, (err, nemo) => {
   //always check for errors!
   if (!!err) {
     console.log('Error during Nemo setup', err);
@@ -83,7 +83,7 @@ Nemo(__dirname, function (err, nemo) {
 
   nemo.driver.get(nemo.data.baseUrl);
   nemo.driver.getCapabilities().
-    then(function (caps) {
+    then(caps => {
       console.info("Nemo successfully launched", caps.caps_.browserName);
     });
   nemo.driver.quit();
@@ -169,24 +169,24 @@ Hopefully this was an instructive dive into the possibilities of Nemo + confit. 
 Look at the `example/setupWithPlugin.js` file:
 
 ```javascript
-Nemo(basedir, function (err, nemo) {
+Nemo(basedir, (err, nemo) => {
   //always check for errors!
   if (!!err) {
     console.log('Error during Nemo setup', err);
   }
   nemo.driver.getCapabilities().
-    then(function (caps) {
+    then(caps => {
       console.info("Nemo successfully launched", caps.caps_.browserName);
     });
   nemo.driver.get(nemo.data.baseUrl);
   nemo.cookie.deleteAll();
   nemo.cookie.set('foo', 'bar');
-  nemo.cookie.getAll().then(function (cookies) {
+  nemo.cookie.getAll().then(cookies => {
     console.log('cookies', cookies);
     console.log('=======================');
   });
   nemo.cookie.deleteAll();
-  nemo.cookie.getAll().then(function (cookies) {
+  nemo.cookie.getAll().then(cookies => {
     console.log('cookies', cookies);
   });
   nemo.driver.quit();
@@ -214,23 +214,17 @@ You'll see the `plugins.cookie` section, which is loading `examples/plugin/nemo-
 'use strict';
 
 module.exports = {
-  "setup": function (nemo, callback) {
+  "setup"(nemo, callback) {
     nemo.cookie = {};
-    nemo.cookie.delete = function (name) {
-      return nemo.driver.manage().deleteCookie(name);
-    };
-    nemo.cookie.deleteAll = function () {
-      return nemo.driver.manage().deleteAllCookies();
-    };
-    nemo.cookie.set = function (name, value, path, domain, isSecure, expiry) {
-      return nemo.driver.manage().addCookie(name, value, path, domain, isSecure, expiry)
-    };
-    nemo.cookie.get = function (name) {
-      return nemo.driver.manage().getCookie(name);
-    };
-    nemo.cookie.getAll = function () {
-      return nemo.driver.manage().getCookies();
-    };
+    nemo.cookie.delete = name => nemo.driver.manage().deleteCookie(name);
+    nemo.cookie.deleteAll = () => nemo.driver.manage().deleteAllCookies();
+    nemo.cookie.set = (name, value, path, domain, isSecure, expiry) => nemo.driver.manage().addCookie(name, value, path, domain, isSecure, expiry);
+    nemo.cookie.get = name => nemo.driver.manage().getCookie(name);
+    nemo.cookie.getAll = () => nemo.driver.manage().getCookies();
+    nemo.cookie.showAll = () => nemo.cookie.getAll().then(cookies => {
+      console.log('cookies', cookies);
+      console.log('=======================');
+    });
     callback(null);
 
   }
@@ -315,17 +309,17 @@ A typical pattern would be to use `mocha` as a test runner, resolve `nemo` in th
 the mocha `done` function as the callback:
 
 ```javascript
-var nemo;
-describe('my nemo suite', function () {
-  before(function (done) {
-    Nemo(config, function (err, resolvedNemo) {
+let nemo;
+describe('my nemo suite', () => {
+  before(done => {
+    Nemo(config, (err, resolvedNemo) => {
         nemo = resolvedNemo;
         done(err)
     });
   });
-  it('will launch browsers!', function (done) {
+  it('will launch browsers!', done => {
     nemo.driver.get('https://www.paypal.com');
-    nemo.driver.quit().then(function () {
+    nemo.driver.quit().then(() => {
        done();
     });
   });
@@ -574,7 +568,7 @@ plus the callback function to continue plugin initialization.
 Then in your module where you use Nemo, you will be able to access the plugin functionality:
 
 ```javascript
-var Nemo = require('nemo');
+const Nemo = require('nemo');
 Nemo({
   'driver': {
     'browser': 'firefox',

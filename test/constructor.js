@@ -1,34 +1,34 @@
 /* global module: true, require: true, console: true */
 'use strict';
 
-var assert = require('assert'),
+const assert = require('assert'),
   path = require('path'),
   Nemo = require('../index');
 
-describe('@constructor@', function () {
-  it("should return a promise with @noArguments@", function (done) {
-    Nemo().then(function (nemo) {
+describe('@constructor@', () => {
+  it("should return a promise with @noArguments@", done => {
+    Nemo().then(nemo => {
       done(new Error('should have failed with nemoBadDriverProps'));
-    }).catch(function (err) {
+    }).catch(err => {
       done();
     })
   });
 
-  it("should return a promise with @noCallback@", function (done) {
+  it("should return a promise with @noCallback@", done => {
     Nemo({
       "driver": {
         "browser": "phantomjs"
       }
-    }).then(function (nemo) {
+    }).then(nemo => {
       done();
-    }).catch(function (err) {
+    }).catch(err => {
       done(err);
     })
   });
 
-  it("should throw an error with @noDriverProps@", function (done) {
+  it("should throw an error with @noDriverProps@", done => {
 
-    Nemo(function (err) {
+    Nemo(err => {
       if (err.name === 'nemoBadDriverProps') {
         done();
         return;
@@ -38,83 +38,77 @@ describe('@constructor@', function () {
 
   });
 
-  it("should launch nemo with @noConfigPath@overrideArg@", function (done) {
+  it("should launch nemo with @noConfigPath@overrideArg@", done => {
     delete process.env.nemoBaseDir;
     Nemo({
       "driver": {
         "browser": "phantomjs"
       }
-    }, function (err, nemo) {
+    }, (err, nemo) => {
       assert(nemo.driver);
       nemo.driver.get('http://www.google.com');
-      nemo.driver.quit().then(function () {
+      nemo.driver.quit().then(() => {
         done();
       });
 
     });
   });
 
-  it("should launch nemo with @envConfigPath@noOverrideArg@", function (done) {
+  it("should launch nemo with @envConfigPath@noOverrideArg@", done => {
     process.env.nemoBaseDir = __dirname;
-    Nemo(function (err, nemo) {
+    Nemo((err, nemo) => {
       assert(nemo.driver);
       assert(nemo.data.passThroughFromJson);
       nemo.driver.get(nemo.data.baseUrl);
-      nemo.driver.quit().then(function () {
+      nemo.driver.quit().then(() => {
         done();
       });
     });
   });
 
-  it("should launch nemo with @argConfigPath@noOverrideArg@", function (done) {
-    var nemoBaseDir = __dirname;
+  it("should launch nemo with @argConfigPath@noOverrideArg@", done => {
+    const nemoBaseDir = __dirname;
 
-    Nemo(nemoBaseDir, function (err, nemo) {
+    Nemo(nemoBaseDir, (err, nemo) => {
       assert(nemo.driver);
       assert(nemo.data.passThroughFromJson);
       nemo.driver.get(nemo.data.baseUrl);
-      nemo.driver.quit().then(function () {
+      nemo.driver.quit().then(() => {
         done();
       });
     });
   });
 
-  it("should launch nemo with @allArgs@", function (done) {
-    var nemoBaseDir = __dirname;
+  it("should launch nemo with @allArgs@", done => {
+    const nemoBaseDir = __dirname;
     Nemo(nemoBaseDir, {
       'data': {
         'argPassthrough': true
       }
-    }, function (err, nemo) {
+    }, (err, nemo) => {
       assert(nemo.driver);
       assert(nemo.data.passThroughFromJson);
       assert(nemo.data.argPassthrough);
       nemo.driver.get(nemo.data.baseUrl);
-      nemo.driver.quit().then(function () {
+      nemo.driver.quit().then(() => {
         done();
       });
     });
   });
 
-  it("should return the resolved nemo object when the callback is called", function (done) {
-    var nemoBaseDir = __dirname;
-    var returnedNemo = Nemo(nemoBaseDir, {
+  it("should return the resolved nemo object when the callback is called", done => {
+    const nemoBaseDir = __dirname;
+    const returnedNemo = Nemo(nemoBaseDir, {
       'data': {
         'argPassthrough': true
       }
-    }, function (err, nemo) {
+    }, (err, nemo) => {
       assert.equal(nemo, returnedNemo);
-      nemo.driver.quit().then(function () {
+      nemo.driver.quit().then(() => {
         done();
       });
     });
   });
-  it('should resolve when a Confit object is the only parameter', function () {
-    return Nemo.Configure({driver: {browser: 'phantomjs'}}).then(function (confit) {
-      return Nemo(confit);
-    })
-      .then(function (nemo) {
-        return assert(nemo.driver);
-      });
-  });
+  it('should resolve when a Confit object is the only parameter', () => Nemo.Configure({driver: {browser: 'phantomjs'}}).then(confit => Nemo(confit))
+    .then(nemo => assert(nemo.driver)));
 });
