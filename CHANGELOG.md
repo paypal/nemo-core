@@ -1,5 +1,9 @@
 # nemo CHANGELOG
 
+## v3.0.0
+
+- alpha has been out and in use long enough. We don't expect further breaking API changes 
+
 ## v3.0.0-alpha
 
 - Add support for selenium-webdriver@^3.0.0
