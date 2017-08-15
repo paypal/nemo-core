@@ -1,5 +1,5 @@
-var Nemo = require("../");
-var config = {
+const Nemo = require("../");
+const config = {
   "driver": {
     "browser": "phantomjs"
   },
@@ -10,9 +10,9 @@ var config = {
 
 function recall() {
   console.log('start recall');
-  Nemo(config, function (err, nemo) {
+  Nemo(config, (err, nemo) => {
     nemo.driver.get(nemo.data.baseUrl);
-    nemo.driver.quit().then(function () {
+    nemo.driver.quit().then(() => {
       console.log('and again');
       recall();
     });

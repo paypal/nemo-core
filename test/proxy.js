@@ -1,12 +1,12 @@
 "use strict";
 
-var Nemo = require('../index');
-var assert = require('assert');
-var path = require('path');
+const Nemo = require('../index');
+const assert = require('assert');
+const path = require('path');
 
-describe("@proxy@ ", function () {
+describe("@proxy@ ", () => {
 
-  it("should load problem loading page error", function (done) {
+  it("should load problem loading page error", done => {
     process.env.nemoBaseDir = __dirname;
     Nemo({
       "driver": {
@@ -18,12 +18,12 @@ describe("@proxy@ ", function () {
           "forBrowser": ['phantomjs']
         }
       }
-    }, function (err, nemo) {
+    }, (err, nemo) => {
       if (err) {
         return done(err);
       }
-      nemo.driver.getCapabilities().then(function (caps) {
-        var proxy = caps.get('proxy');
+      nemo.driver.getCapabilities().then(caps => {
+        const proxy = caps.get('proxy');
         assert.equal(proxy.proxyType, 'manual');
         assert.equal(proxy.ftpProxy, 'host:1234');
         assert.equal(proxy.httpProxy, 'host:1234');

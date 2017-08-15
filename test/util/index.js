@@ -1,25 +1,23 @@
 'use strict';
 module.exports.waitForJSReady = function waitForJSReady(nemo) {
-  return nemo.driver.wait(function() {
-      //console.log('execute waitForJSReady');
-      return nemo.driver.executeScript(function() {
+  return nemo.driver.wait(() => //console.log('execute waitForJSReady');
+      nemo.driver.executeScript(() => {
         if (window.$) {
           return $('body').data('loaded');
         }
         return false;
-      });
-    }
+      })
     , 5000, 'JavaScript didn\'t load');
-};
+}
 
 module.exports.doneSuccess = function (done) {
-  return function () {
+  return () => {
     done();
   };
 };
 
 module.exports.doneError = function (done) {
-  return function (err) {
+  return err => {
     done(err);
   };
 };
