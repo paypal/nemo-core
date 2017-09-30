@@ -11,6 +11,50 @@ architecture, Nemo is flexible enough to handle any browser/device automation ne
 Nemo is built to easily plug into any task runner and test runner. But in this README we will only cover setup and architecture of Nemo
 as a standalone entity.
 
+Table of Contents
+=================
+* [Getting started](#getting-started)
+   * [Install](#install)
+   * [Pre-requisites](#pre-requisites)
+      * [Webdriver](#webdriver)
+   * [Nemo and Confit in 90 seconds](#nemo-and-confit-in-90-seconds)
+      * [Direct configuration](#direct-configuration)
+      * [Using config files](#using-config-files)
+* [Nemo and Plugins in 60 Seconds](#nemo-and-plugins-in-60-seconds)
+* [API](#api)
+   * [Nemo](#nemo)
+      * [Typical usage of Nemo constructor](#typical-usage-of-nemo-constructor)
+   * [Configure](#configure)
+* [Configuration Input](#configuration-input)
+   * [driver](#driver)
+      * [browser (optional)](#browser-optional)
+      * [local (optional, defaults to false)](#local-optional-defaults-to-false)
+      * [server (optional)](#server-optional)
+      * [serverProps (optional/conditional)](#serverprops-optionalconditional)
+      * [jar (optional/conditional)](#jar-optionalconditional)
+      * [serverCaps (optional)](#servercaps-optional)
+      * [proxyDetails (optional)](#proxydetails-optional)
+      * [builders (optional)](#builders-optional)
+      * [selenium.version (optional)](#seleniumversion-optional)
+   * [plugins](#plugins)
+   * [data](#data)
+* [Shortstop handlers](#shortstop-handlers)
+   * [path](#path)
+   * [env](#env)
+   * [argv](#argv)
+   * [config](#config)
+   * [file](#file)
+   * [base64](#base64)
+   * [require](#require)
+   * [exec](#exec)
+   * [glob](#glob)
+* [Plugins](#plugins-1)
+   * [plugin interface](#plugin-interface)
+* [Logging and debugging](#logging-and-debugging)
+* [Why Nemo?](#why-nemo)
+* [Unit Tests](#unit-tests)
+
+
 ## Getting started
 
 ### Install
