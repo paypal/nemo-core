@@ -1,14 +1,15 @@
-# Nemo [![Build Status](https://travis-ci.org/paypal/nemo.svg)](https://travis-ci.org/paypal/nemo)
+# Nemo-core [![Build Status](https://travis-ci.org/paypal/nemo-core.svg)](https://travis-ci.org/paypal/nemo-core)
 
-[![Join the chat at https://gitter.im/paypal/nemo](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/paypal/nemo?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Join the chat at https://gitter.im/paypal/nemo-core](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/paypal/nemo-core?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![JS.ORG](https://img.shields.io/badge/js.org-nemo-ffb400.svg?style=flat-square)](http://js.org)
-[![Dependency Status](https://david-dm.org/paypal/nemo.svg)](https://david-dm.org/paypal/nemo)
-[![devDependency Status](https://david-dm.org/paypal/nemo/dev-status.svg)](https://david-dm.org/paypal/nemo#info=devDependencies)
+[![Dependency Status](https://david-dm.org/paypal/nemo-core.svg)](https://david-dm.org/paypal/nemo-core)
+[![devDependency Status](https://david-dm.org/paypal/nemo-core/dev-status.svg)](https://david-dm.org/paypal/nemo-core#info=devDependencies)
 
-Nemo provides a simple way to add selenium automation to your NodeJS web projects. With a powerful configuration ability provided by [krakenjs/confit](https://github.com/krakenjs/confit), and plugin
-architecture, Nemo is flexible enough to handle any browser/device automation need.
+Nemo-core provides a simple way to add selenium automation to your NodeJS web projects. With a powerful configuration 
+ability provided by [krakenjs/confit](https://github.com/krakenjs/confit), and plugin
+architecture, Nemo-core is flexible enough to handle any browser/device automation need.
 
-Nemo is built to easily plug into any task runner and test runner. But in this README we will only cover setup and architecture of Nemo
+Nemo-core is built to easily plug into any task runner and test runner. But in this README we will only cover setup and architecture of Nemo-core
 as a standalone entity.
 
 ## Getting started
@@ -16,7 +17,7 @@ as a standalone entity.
 ### Install
 
 ```
-npm install --save-dev nemo
+npm install --save-dev nemo-core
 ```
 
 ### Pre-requisites
@@ -29,17 +30,17 @@ fine.
 
 
 
-### Nemo and Confit in 90 seconds
+### Nemo-core and Confit in 90 seconds
 
-Nemo uses confit - a powerful, expressive and intuitive configuration system - to elegantly expose the Nemo and selenium-webdriver APIs.
+Nemo-core uses confit - a powerful, expressive and intuitive configuration system - to elegantly expose the Nemo-core and selenium-webdriver APIs.
 
 #### Direct configuration
 
-If you install this repo you'll get the following in `examples/setup.js`. Note the `Nemo()` constructor is directly accepting the needed configuration,
+If you install this repo you'll get the following in `examples/setup.js`. Note the `NemoCore()` constructor is directly accepting the needed configuration,
 along with a callback function.
 
 ```javascript
-Nemo({
+NemoCore({
   "driver": {
     "browser": "firefox"
   },
@@ -49,12 +50,12 @@ Nemo({
 }, function (err, nemo) {
   //always check for errors!
   if (!!err) {
-    console.log('Error during Nemo setup', err);
+    console.log('Error during Nemo-core setup', err);
   }
   nemo.driver.get(nemo.data.baseUrl);
   nemo.driver.getCapabilities().
     then(function (caps) {
-      console.info("Nemo successfully launched", caps.caps_.browserName);
+      console.info("Nemo-core successfully launched", caps.caps_.browserName);
     });
   nemo.driver.quit();
 });
@@ -65,7 +66,7 @@ Run it:
 
 ```bash
 $ node examples/setup.js
-Nemo successfully launched firefox
+Nemo-core successfully launched firefox
 ```
 
 #### Using config files
@@ -75,22 +76,22 @@ Look at `examples/setupWithConfigFiles.js`
 ```javascript
 //passing __dirname as the first argument tells confit to
 //look in __dirname + '/config' for config files
-Nemo(__dirname, function (err, nemo) {
+NemoCore(__dirname, function (err, nemo) {
   //always check for errors!
   if (!!err) {
-    console.log('Error during Nemo setup', err);
+    console.log('Error during Nemo-core setup', err);
   }
 
   nemo.driver.get(nemo.data.baseUrl);
   nemo.driver.getCapabilities().
     then(function (caps) {
-      console.info("Nemo successfully launched", caps.caps_.browserName);
+      console.info("Nemo-core successfully launched", caps.caps_.browserName);
     });
   nemo.driver.quit();
 });
 ```
 
-Note the comment above that passing a filesystem path as the first argument to `Nemo()` will tell confit to look in that directory + `/config` for config files.
+Note the comment above that passing a filesystem path as the first argument to `NemoCore()` will tell confit to look in that directory + `/config` for config files.
 
 Look at `examples/config/config.json`
 
@@ -112,14 +113,14 @@ Run this and it will open the Firefox browser:
 
 ```bash
 $ node examples/setup.js
-Nemo successfully launched firefox
+Nemo-core successfully launched firefox
 ```
 
 Now run this command:
 
 ```bash
 $ node examples/setupWithConfigDir.js --BROWSER=chrome
-Nemo successfully launched chrome
+Nemo-core successfully launched chrome
 ```
 
 Here, confit resolves the `--BROWSER=chrome` command line argument and overrides the `BROWSER` value from config.json
@@ -128,7 +129,7 @@ Now this command:
 
 ```bash
 $ BROWSER=chrome node examples/setupWithConfigDir.js
-Nemo successfully launched chrome
+Nemo-core successfully launched chrome
 ```
 
 Here, confit resolves the `BROWSER` environment variable and overrides `BROWSER` from config.json
@@ -137,7 +138,7 @@ What if we set both?
 
 ```bash
 $ BROWSER=chrome node examples/setupWithConfigDir.js --BROWSER=phantomjs
-Nemo successfully launched chrome
+Nemo-core successfully launched chrome
 ```
 
 You can see that the environment variable wins.
@@ -146,7 +147,7 @@ Now try this command:
 
 ```
 $ NODE_ENV=special node examples/setupWithConfigDir.js
-Nemo successfully launched phantomjs
+Nemo-core successfully launched phantomjs
 ```
 
 Note that confit uses the value of NODE_ENV to look for an override config file. In this case `config/special.json`:
@@ -162,21 +163,21 @@ Note that confit uses the value of NODE_ENV to look for an override config file.
 }
 ```
 
-Hopefully this was an instructive dive into the possibilities of Nemo + confit. There is more to learn but hopefully this is enough to whet your appetite for now!
+Hopefully this was an instructive dive into the possibilities of Nemo-core + confit. There is more to learn but hopefully this is enough to whet your appetite for now!
 
-## Nemo and Plugins in 60 Seconds
+## Nemo-core and Plugins in 60 Seconds
 
 Look at the `example/setupWithPlugin.js` file:
 
 ```javascript
-Nemo(basedir, function (err, nemo) {
+NemoCore(basedir, function (err, nemo) {
   //always check for errors!
   if (!!err) {
-    console.log('Error during Nemo setup', err);
+    console.log('Error during Nemo-core setup', err);
   }
   nemo.driver.getCapabilities().
     then(function (caps) {
-      console.info("Nemo successfully launched", caps.caps_.browserName);
+      console.info("Nemo-core successfully launched", caps.caps_.browserName);
     });
   nemo.driver.get(nemo.data.baseUrl);
   nemo.cookie.deleteAll();
@@ -241,7 +242,7 @@ Running this example:
 
 ```bash
 $ node examples/setupWithPlugin.js
-Nemo successfully launched firefox
+Nemo-core successfully launched firefox
 cookies [ { name: 'foo',
    value: 'bar',
    path: '',
@@ -257,11 +258,11 @@ This illustrates how you can create a plugin, and the sorts of things you might 
 
 ## API
 
-### Nemo
+### Nemo-core
 
-`var nemo = Nemo([[nemoBaseDir, ][config, ][callback]] | [Confit object]);`
+`var nemo = NemoCore([[nemoBaseDir, ][config, ][callback]] | [Confit object]);`
 
-`@argument nemoBaseDir {String}` (optional) - If provided, should be a filesystem path to your test suite. Nemo will expect to find a `/config` directory beneath that.
+`@argument nemoBaseDir {String}` (optional) - If provided, should be a filesystem path to your test suite. Nemo-core will expect to find a `/config` directory beneath that.
 `<nemoBaseDir>/config/config.json` should have your default configuration (described below). `nemoBaseDir` can alternatively be set as an environment variable. If it is
 not set, you need to pass your configuration as the `config` parameter (see below).
 
@@ -309,7 +310,7 @@ You could also have a config that looks like this, and `nemo-view` will still re
 
 But that's confusing. So please stick to the convention.
 
-#### Typical usage of Nemo constructor
+#### Typical usage of Nemo-core constructor
 
 A typical pattern would be to use `mocha` as a test runner, resolve `nemo` in the context of the mocha `before` function, and use
 the mocha `done` function as the callback:
@@ -318,8 +319,8 @@ the mocha `done` function as the callback:
 var nemo;
 describe('my nemo suite', function () {
   before(function (done) {
-    Nemo(config, function (err, resolvedNemo) {
-        nemo = resolvedNemo;
+    NemoCore(config, function (err, resolvedNemo-core) {
+        nemo = resolvedNemo-core;
         done(err)
     });
   });
@@ -335,7 +336,7 @@ describe('my nemo suite', function () {
 
 ### Configure
 
-Calling `Configure` will return a promise which resolves as a Confit object. This is the same method Nemo calls internally in the basic use case. You might want to call `Configure` if
+Calling `Configure` will return a promise which resolves as a Confit object. This is the same method Nemo-core calls internally in the basic use case. You might want to call `Configure` if
 you are interested in the resolved configuration object but not yet ready to start the webdriver. An example would be if you want to make further
 changes to the configuration based on what gets resolved, prior to starting the webdriver.
 
@@ -354,7 +355,7 @@ not set, you need to pass your configuration as the `config` parameter (see belo
 
 ```javascript
 {
-  "driver": { /** properties used by Nemo to setup the driver instance **/ },
+  "driver": { /** properties used by Nemo-core to setup the driver instance **/ },
   "plugins": { /** plugins to initialize **/},
   "data": { /** arbitrary data to pass through to nemo instance **/ }
 }
@@ -364,7 +365,7 @@ This configuration object is optional, as long as you've got `nemoData` set as a
 
 ### driver
 
-Here are the `driver` properties recognized by Nemo. This is ALL of them. Please be aware that you really only need to supply "browser" to get things working initially.
+Here are the `driver` properties recognized by Nemo-core. This is ALL of them. Please be aware that you really only need to supply "browser" to get things working initially.
 
 #### browser (optional)
 
@@ -373,7 +374,7 @@ If both are specified, `builders.forBrowser` takes precedence.
 
 #### local (optional, defaults to false)
 
-Set local to true if you want Nemo to attempt to start a standalone binary on your system (like selenium-standalone-server) or use a local browser/driver like Chrome/chromedriver or PhantomJS.
+Set local to true if you want Nemo-core to attempt to start a standalone binary on your system (like selenium-standalone-server) or use a local browser/driver like Chrome/chromedriver or PhantomJS.
 
 #### server (optional)
 
@@ -444,7 +445,7 @@ You can do that by using `selenium.version`. E.g.
 }
 ```
 
-Nemo will upgrade its internal dependency to what is set in this property. The `npm install` will only run if the version specified is not already installed.
+Nemo-core will upgrade its internal dependency to what is set in this property. The `npm install` will only run if the version specified is not already installed.
 
 ### plugins
 
@@ -545,7 +546,7 @@ Please see [https://github.com/krakenjs/shortstop-handlers#handlersglobbasedirop
 
 ## Plugins
 
-Authoring a plugin, or using an existing plugin, is a great way to increase the power and usefulness of your Nemo installation. A plugin should add
+Authoring a plugin, or using an existing plugin, is a great way to increase the power and usefulness of your Nemo-core installation. A plugin should add
 its API to the `nemo` object it receives and passes on in its constructor (see "plugin interface" below)
 
 ### plugin interface
@@ -571,11 +572,11 @@ module.exports.setup = function myPlugin([arg1, arg2, ..., ]nemo, callback) {
 When nemo initializes your plugin, it will call the setup method with any arguments supplied in the config plus the nemo object,
 plus the callback function to continue plugin initialization.
 
-Then in your module where you use Nemo, you will be able to access the plugin functionality:
+Then in your module where you use Nemo-core, you will be able to access the plugin functionality:
 
 ```javascript
-var Nemo = require('nemo');
-Nemo({
+var Nemo-core = require('nemo');
+NemoCore({
   'driver': {
     'browser': 'firefox',
     'local': true,
@@ -597,7 +598,7 @@ Nemo({
   nemo.myPlugin.myMethod2();
   nemo.driver.sleep(5000).
     then(function() {
-      console.info('Nemo was successful!!');
+      console.info('Nemo-core was successful!!');
       nemo.driver.quit();
     });
 });
@@ -608,7 +609,7 @@ Nemo({
 
 ## Logging and debugging
 
-Nemo uses the [debug](https://github.com/visionmedia/debug.git) module for console logging and error output. There are two classes of logging, `nemo:log` and `nemo:error`
+Nemo-core uses the [debug](https://github.com/visionmedia/debug.git) module for console logging and error output. There are two classes of logging, `nemo:log` and `nemo:error`
 
 If you want to see both classes of output, simply use the appropriate value of the DEBUG environment variable when you run nemo:
 
@@ -623,7 +624,7 @@ $ DEBUG=nemo:error <nemo command>
 ```
 
 
-## Why Nemo?
+## Why Nemo-core?
 
 Because we NEed MOre automation testing!
 
@@ -637,7 +638,7 @@ Because we NEed MOre automation testing!
     * PhantomJS installation detailed guide on Ubuntu can be found [here](https://gist.github.com/julionc/7476620)
 
 * If you want to run unit tests on your local browser, like lets say Firefox/Chrome (make sure ChromeDriver is in current path), you need to update browser in unit test
-configuration, for example the browser section under `test/config/config.json` like [here](https://github.com/paypal/nemo/blob/master/test/config/config.json#L19)
+configuration, for example the browser section under `test/config/config.json` like [here](https://github.com/paypal/nemo-core/blob/master/test/config/config.json#L19)
 
 * How to run unit tests?
   * `npm test` will run unit tests as well as lint task

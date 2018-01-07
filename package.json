@@ -1,9 +1,9 @@
 {
-  "name": "nemo",
-  "version": "3.0.3",
-  "description": "Abstraction for automation test components",
+  "name": "nemo-core",
+  "version": "1.0.0",
+  "description": "Node.js based configuration and plugin platform for selenium-webdriver",
   "scripts": {
-    "test": "npm run lint && mocha",
+    "test": "npm run lint && mocha --timeout 30000 ",
     "test:default": "npm run lint && mocha --timeout 30000 --reporter spec",
     "lint": "eslint --fix lib examples test --ext .json"
   },
@@ -26,7 +26,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/paypal/nemo.git"
+    "url": "git://github.com/paypal/nemo-core.git"
   },
   "keywords": [
     "Selenium, Automation"
