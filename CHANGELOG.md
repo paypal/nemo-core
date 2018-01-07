@@ -1,4 +1,8 @@
-# nemo CHANGELOG
+# nemo-core CHANGELOG
+
+## nemo-core@1.0.0
+
+- renaming nemo to nemo-core
 
 ## v3.0.1
 

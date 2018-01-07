@@ -17,8 +17,8 @@ const Promiz = require('./lib/promise');
 const Configure = require('./lib/configure');
 const Setup = require('./lib/setup');
 const debug = require('debug');
-const log = debug('nemo:log');
-const error = debug('nemo:error');
+const log = debug('nemo-core:log');
+const error = debug('nemo-core:error');
 const _ = require('lodash');
 const path = require('path');
 
