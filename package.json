@@ -1,6 +1,6 @@
 {
   "name": "nemo",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Abstraction for automation test components",
   "scripts": {
     "test": "npm run lint && mocha",
@@ -10,7 +10,7 @@
   "dependencies": {
     "async": "^2.3.0",
     "confit": "^2.0.0",
-    "debug": "^2.1.0",
+    "debug": "^3",
     "lodash": "^4.12.0",
     "selenium-webdriver": "^3.4.0",
     "shortstop-handlers": "^1.0.0",
