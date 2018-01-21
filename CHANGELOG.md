@@ -1,5 +1,10 @@
 # nemo CHANGELOG
 
+## v3.0.2
+
+- upgrade confit to v2.3.0, removes insecure "uglify" module
+- add package-lock.json
+
 ## v3.0.1
 
 - upgrade "debug" dependency to resolve DoS vuln
