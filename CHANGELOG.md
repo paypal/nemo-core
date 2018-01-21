@@ -1,5 +1,9 @@
 # nemo CHANGELOG
 
+## v3.0.3
+
+- upgrading all deps and devDeps
+
 ## v3.0.2
 
 - upgrade confit to v2.3.0, removes insecure "uglify" module
