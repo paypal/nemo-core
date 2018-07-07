@@ -1,5 +1,13 @@
 # nemo-core CHANGELOG
 
+## UNRELEASED
+
+- feature: new boolean param to Nemo.Configure. When true, prepend handler keys with _
+  - helpful in use cases where the configuration is consumed twice (see krakenjs/nemo)
+- feature: allow passed in driver function
+  - helpful when custom driver desired, for which current internal convenience methods are not suitable
+  - allows use of latest constructors in selenium-webdriver
+
 ## nemo-core@1.0.0
 
 - renaming nemo to nemo-core
@@ -19,7 +27,7 @@
 
 ## v3.0.0
 
-- alpha has been out and in use long enough. We don't expect further breaking API changes 
+- alpha has been out and in use long enough. We don't expect further breaking API changes
 
 ## v3.0.0-alpha
 
