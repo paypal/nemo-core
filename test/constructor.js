@@ -113,14 +113,4 @@ describe('@constructor@', function () {
         return assert(nemo.driver);
       });
   });
-  it('@handlerOverride@ prepends handler keys with _', function () {
-    delete process.env.nemoBaseDir;
-    process.env.HANDLER_OVERRIDE_DATA = 'Alice';
-    return Nemo.Configure({driver: {browser: 'phantomjs'}, data: {ask: '_env:HANDLER_OVERRIDE_DATA'}}, true).then(function (confit) {
-      return Nemo(confit);
-    })
-      .then(function (nemo) {
-        assert(nemo.data.ask === 'Alice')
-      });
-  });
 });

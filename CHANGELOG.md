@@ -2,8 +2,6 @@
 
 ## UNRELEASED
 
-- feature: new boolean param to Nemo.Configure. When true, prepend handler keys with _
-  - helpful in use cases where the configuration is consumed twice (see krakenjs/nemo)
 - feature: allow passed in driver function
   - helpful when custom driver desired, for which current internal convenience methods are not suitable
   - allows use of latest constructors in selenium-webdriver
