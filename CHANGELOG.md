@@ -1,6 +1,6 @@
 # nemo-core CHANGELOG
 
-## UNRELEASED
+## v1.1.0
 
 - feature: allow passed in driver function
   - helpful when custom driver desired, for which current internal convenience methods are not suitable
