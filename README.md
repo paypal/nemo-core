@@ -5,7 +5,7 @@
 [![Dependency Status](https://david-dm.org/paypal/nemo-core.svg)](https://david-dm.org/paypal/nemo-core)
 [![devDependency Status](https://david-dm.org/paypal/nemo-core/dev-status.svg)](https://david-dm.org/paypal/nemo-core#info=devDependencies)
 
-Nemo-core provides a simple way to add selenium automation to your NodeJS web projects. With a powerful configuration 
+Nemo-core provides a simple way to add selenium automation to your NodeJS web projects. With a powerful configuration
 ability provided by [krakenjs/confit](https://github.com/krakenjs/confit), and plugin
 architecture, Nemo-core is flexible enough to handle any browser/device automation need.
 
@@ -446,6 +446,11 @@ You can do that by using `selenium.version`. E.g.
 ```
 
 Nemo-core will upgrade its internal dependency to what is set in this property. The `npm install` will only run if the version specified is not already installed.
+
+#### custom driver
+
+You can also provide a module, which exports a function that returns a fully formed `WebDriver` object. To do so, follow
+ this example: https://github.com/paypal/nemo-core/pull/177#issue-199917000
 
 ### plugins
 
