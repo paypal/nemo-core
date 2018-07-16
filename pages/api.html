@@ -1,0 +1,330 @@
+<!doctype html>
+<html>
+<head>
+    <title>Nemo</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.2.0/styles/default.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.2.0/styles/agate.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.2.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+</head>
+
+<body>
+<section class="container-fluid hero-bg">
+    <nav class="navbar" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <h2 class="branding">
+                    <a href="../">
+                        <img src="../images/logo.svg" class="nemo-logo-small"> <span>Nemo.js</span>
+                    </a>
+                </h2>
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="clearfix collapse navbar-collapse" id="navbar">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="getting-started.html">Getting started</a></li>
+                    <li><a href="api.html">API</a></li>
+                    <!--<li><a href="solutions.html">Solutions</a></li>-->
+                    <li><a href="http://paypal.github.io/"><img src="../images/pp.png" class="pp"></a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+</section>
+
+<section class="content container-fluid">
+    <div class="container">
+
+                <div class="clearfix"></div>
+                <h1>API Guide</h1>
+                <!--<p class="lead"></p>-->
+            <h2>nemo.driver</h2>
+            <p>This is an instance of <a href="https://seleniumhq.github.io/selenium/docs/api/javascript/module/selenium-webdriver/index_exports_WebDriver.html" rel="nofollow"><code>selenium-webdriver.WebDriver</code></a>.</p>
+            <p>Thus, you can consult the <code>selenium-webdriver</code> API docs for complete details.</p>
+            <h2>nemo.view</h2>
+            <p>This is the set of convenience methods provided by the <a href="https://www.npmjs.com/package/nemo-view" rel="nofollow"><code>nemo-view</code></a> plugin, included with nemo.</p>
+            <h3>Types</h3>
+            <p>Reference for the argument/return types</p>
+            <table>
+                <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><code>locatorDefinition</code></td>
+                    <td><a href="https://github.com/paypal/nemo-view#locatordefinition">Full details</a></td>
+                </tr>
+                <tr>
+                    <td><code>locatorObject</code></td>
+                    <td><a href="https://github.com/paypal/nemo-view#_firstvisiblelocatorobject-timeout">Full details</a></td>
+                </tr>
+                <tr>
+                    <td><code>WebElement</code></td>
+                    <td>an instance of <a href="https://seleniumhq.github.io/selenium/docs/api/javascript/module/selenium-webdriver/index_exports_WebElement.html" rel="nofollow"><code>selenium-webdriver.WebElement</code></a>
+                    </td>
+                </tr>
+                <tr>
+                    <td><code>parentWebElement</code></td>
+                    <td>an instance of <a href="https://seleniumhq.github.io/selenium/docs/api/javascript/module/selenium-webdriver/index_exports_WebElement.html" rel="nofollow"><code>selenium-webdriver.WebElement</code></a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <h3>Generic methods:</h3>
+            <table>
+                <thead>
+                <tr>
+                    <th>Method</th>
+                    <th>Resolves</th>
+                    <th>Notes</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><code>_find(locatorDefinition[, parentWebElement])</code></td>
+                    <td>
+                        <code>WebElement</code>or rejected</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><code>_finds(locatorDefinition[, parentWebElement])</code></td>
+                    <td>[<code>WebElement</code>] or rejected</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><code>_present(locatorDefinition[, parentWebElement])</code></td>
+                    <td>
+                        <code>true</code> or <code>false</code>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><code>_visible(locatorDefinition[, parentWebElement])</code></td>
+                    <td>
+                        <code>true</code> or <code>false</code>.  Rejected if element is not found</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><code>_wait(locatorDefinition[, timeout [, msg]])</code></td>
+                    <td>
+                        <code>true</code> or rejected</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><code>_waitVisible(locatorDefinition[, timeout [, msg]])</code></td>
+                    <td>
+                        <code>true</code> or rejected</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><code>_optionValue(locatorDefinition, value [, parentWebElement])</code></td>
+                    <td>reject if unable to perform</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><code>_optionText(locatorDefinition, value [, parentWebElement])</code></td>
+                    <td>reject if unable to perform</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><code>_firstVisible(locatorObject[, timeout])</code></td>
+                    <td>resolves to the found key or rejected</td>
+                    <td><a href="https://github.com/paypal/nemo-view#_firstvisiblelocatorobject-timeout">Full details</a></td>
+                </tr>
+                </tbody>
+            </table>
+            <h3>Locator methods</h3>
+            <p>These methods are generated for each locator in each locators JSON file, when a locator directory is specified to <code>nemo-view</code>. E.g.</p>
+        <pre><code class="javascript"><span class="pl-s"><span class="pl-pds">"</span>plugins
+            <span class="pl-pds">"</span></span><span class="pl-k">:</span> {
+    <span class="pl-s"><span class="pl-pds">"</span>view<span class="pl-pds">"</span></span><span class="pl-k">:</span> {
+      <span class="pl-s"><span class="pl-pds">"</span>module<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>nemo-view<span class="pl-pds">"</span></span>,
+      <span class="pl-s"><span class="pl-pds">"</span>arguments<span class="pl-pds">"</span></span><span class="pl-k">:</span> [<span class="pl-s"><span class="pl-pds">"</span>path:locator<span class="pl-pds">"</span></span>]
+    }
+  },
+</code></pre>
+            <p>And with associated directory and files:</p>
+            <pre><code>&lt;nemo base directory&gt;
+   |- locator
+      |- bank.json
+      |- card.json
+      |- login.json
+      |- nav.json
+</code></pre>
+            <p>You will get back a set of locator methods under the following namespaces:</p>
+        <pre><code class="bash">nemo.view.bank
+nemo.view.card
+nemo.view.login
+nemo.view.nav
+</code></pre>
+            <p>They can be used as follows:</p>
+        <pre><code class="javascript"><span class="pl-en">describe</span>(<span class="pl-s"><span class="pl-pds">'</span>PayFriend payment methods<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> () {
+  <span class="pl-en">beforeEach</span>(<span class="pl-k">async</span> <span class="pl-k">function</span> () {
+    <span class="pl-k">let</span> nemo <span class="pl-k">=</span> <span class="pl-c1">this</span>.<span class="pl-smi">nemo</span>;
+    <span class="pl-k">let</span> {nav, login, card} <span class="pl-k">=</span> <span class="pl-smi">nemo</span>.<span class="pl-smi">view</span>;
+    <span class="pl-k">await</span> <span class="pl-smi">nemo</span>.<span class="pl-smi">driver</span>.<span class="pl-c1">get</span>(<span class="pl-smi">nemo</span>.<span class="pl-c1">data</span>.<span class="pl-smi">baseUrl</span>);
+    <span class="pl-k">await</span> <span class="pl-smi">nav</span>.<span class="pl-smi">jsLoaded</span>.<span class="pl-en">wait</span>();
+    <span class="pl-k">await</span> <span class="pl-smi">login</span>.<span class="pl-en">email</span>().<span class="pl-en">sendKeys</span>(<span class="pl-s"><span class="pl-pds">'</span>me@mine.com<span class="pl-pds">'</span></span>);
+    <span class="pl-k">await</span> <span class="pl-smi">login</span>.<span class="pl-en">password</span>().<span class="pl-en">sendKeys</span>(<span class="pl-s"><span class="pl-pds">'</span>p4w3rD!<span class="pl-pds">'</span></span>);
+    <span class="pl-k">await</span> <span class="pl-smi">login</span>.<span class="pl-en">button</span>().<span class="pl-c1">click</span>();
+    <span class="pl-k">await</span> <span class="pl-smi">card</span>.<span class="pl-c1">form</span>.<span class="pl-en">waitVisible</span>(<span class="pl-c1">3000</span>);
+  });
+  <span class="pl-en">afterEach</span>(<span class="pl-k">async</span> <span class="pl-k">function</span> () {
+    <span class="pl-k">let</span> nemo <span class="pl-k">=</span> <span class="pl-c1">this</span>.<span class="pl-smi">nemo</span>;
+    <span class="pl-k">let</span> {nav, login} <span class="pl-k">=</span> <span class="pl-smi">nemo</span>.<span class="pl-smi">view</span>;
+    <span class="pl-k">await</span> <span class="pl-smi">nav</span>.<span class="pl-en">logoutLink</span>().<span class="pl-c1">click</span>();
+    <span class="pl-k">await</span> <span class="pl-smi">login</span>.<span class="pl-c1">form</span>.<span class="pl-en">waitVisible</span>(<span class="pl-c1">3000</span>);
+  });
+
+  <span class="pl-en">it</span>(<span class="pl-s"><span class="pl-pds">'</span>adds a credit card<span class="pl-pds">'</span></span>, <span class="pl-k">async</span> <span class="pl-k">function</span> () {
+    <span class="pl-k">let</span> nemo <span class="pl-k">=</span> <span class="pl-c1">this</span>.<span class="pl-smi">nemo</span>;
+    <span class="pl-k">let</span> {card} <span class="pl-k">=</span> <span class="pl-smi">nemo</span>.<span class="pl-smi">view</span>;
+    <span class="pl-k">await</span> <span class="pl-smi">card</span>.<span class="pl-c1">form</span>.<span class="pl-en">waitVisible</span>(<span class="pl-c1">5000</span>);
+    <span class="pl-k">await</span> <span class="pl-smi">card</span>.<span class="pl-en">ccn</span>().<span class="pl-en">sendKeys</span>(<span class="pl-s"><span class="pl-pds">'</span>4141545465654343<span class="pl-pds">'</span></span>);
+
+    <span class="pl-c"><span class="pl-c">//</span> do we have the CC type dropdown?</span>
+    <span class="pl-k">if</span> (<span class="pl-k">await</span> <span class="pl-smi">card</span>.<span class="pl-smi">cctype</span>.<span class="pl-en">present</span>()) {
+      <span class="pl-k">await</span> <span class="pl-smi">card</span>.<span class="pl-smi">cctype</span>.<span class="pl-en">optionValue</span>(<span class="pl-s"><span class="pl-pds">'</span>Misa<span class="pl-pds">'</span></span>);
+    }
+    <span class="pl-k">await</span> <span class="pl-smi">card</span>.<span class="pl-en">button</span>().<span class="pl-c1">click</span>();
+    <span class="pl-k">await</span> <span class="pl-smi">nemo</span>.<span class="pl-smi">view</span>.<span class="pl-en">_waitVisible</span>(<span class="pl-s"><span class="pl-pds">'</span>.result.good<span class="pl-pds">'</span></span>, <span class="pl-c1">5000</span>);
+  });
+});
+        </code></pre>
+            <p>Here are the generated helper methods per locator:</p>
+            <table>
+                <thead>
+                <tr>
+                    <th>Method</th>
+                    <th>Arguments</th>
+                    <th>Resolves</th>
+                    <th>Notes</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><code>{locator}</code></td>
+                    <td>none</td>
+                    <td>
+                        <code>WebElement</code> or rejected</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <code>{locator}By</code><br><code>{locator}.by</code>
+                    </td>
+                    <td>none</td>
+                    <td>JSON locator object</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <code>{locator}Present</code><br><code>{locator}.present</code>
+                    </td>
+                    <td>none</td>
+                    <td>
+                        <code>true</code> or <code>false</code>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <code>{locator}Wait</code><br><code>{locator}.wait</code>
+                    </td>
+                    <td>
+                        <code>timeout {Number} (optional)</code>: time to wait in milliseconds<br><code>msg {String} (optional)</code>
+                    </td>
+                    <td>
+                        <code>WebElement</code> or rejected</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <code>{locator}WaitVisible</code><br><code>{locator}.waitVisible</code>
+                    </td>
+                    <td>
+                        <code>timeout {Number} (optional)</code>: time to wait in milliseconds<br><code>msg {String} (optional)</code>
+                    </td>
+                    <td>
+                        <code>WebElement</code> or rejected</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <code>{locator}Visible</code><br><code>{locator}.visible</code>
+                    </td>
+                    <td>none</td>
+                    <td>
+                        <code>true</code> or <code>false</code> if element present. rejected if not present</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <code>{locator}OptionText</code><br><code>{locator}.optionText</code>
+                    </td>
+                    <td>
+                        <code>text {String}</code>: the text of the option you wish to select</td>
+                    <td>rejected if unable to perform</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <code>{locator}OptionValue</code><br><code>{locator}.optionValue</code>
+                    </td>
+                    <td>
+                        <code>value {String}</code>: the value of the option you wish to select</td>
+                    <td>rejected if unable to perform</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <code>{locator}TextEquals</code><br><code>{locator}.textEquals</code>
+                    </td>
+                    <td>
+                        <code>text {String}</code>: expected value of element text</td>
+                    <td>
+                        <code>true</code> or rejected</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <code>{locator}AttrEquals</code><br><code>{locator}.attrEquals</code>
+                    </td>
+                    <td>
+                        <code>attribute {String}</code>: name of attribute<br><code>value {String}</code>: the expected value of the attribute</td>
+                    <td>
+                        <code>true</code> or rejected</td>
+                    <td></td>
+                </tr>
+                </tbody>
+            </table>
+
+            </div>
+
+
+</section>
+
+<footer class="container-fluid">
+    <div class="container">
+        <a href="https://www.paypal.com/"><img src="../images/paypal.png" class="paypal"></a>
+        <ul class="list-inline navbar-right">
+            <li><a href="https://twitter.com/nemojs_news"><img src="../images/twitter.png"></a></li>
+        </ul>
+    </div>
+</footer>
+<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</body>
+</html>

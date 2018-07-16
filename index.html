@@ -21,7 +21,8 @@
             <div class="clearfix collapse navbar-collapse" id="navbar">
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="pages/getting-started.html">Getting started</a></li>
-                    <li><a href="pages/ecosystem.html">Ecosystem</a></li>
+                    <li><a href="pages/api.html">API</a></li>
+                    <!--<li><a href="pages/solutions.html">Solutions</a></li>-->
                     <li><a href="http://paypal.github.io/"><img src="images/pp.png" class="pp"></a></li>
                 </ul>
             </div>
@@ -39,18 +40,16 @@
 
             <div class="get-nemo-container">
                 <ul class="cmd">
-                    <li><span class="cmd-prompt">$ </span><span class="cmd-subject">git clone</span> <span
-                            class="cmd-predicate">git@github.com:paypal/nemo-example-app.git</span></li>
-                    <li><span class="cmd-prompt">$ </span><span class="cmd-subject">cd</span> <span
-                            class="cmd-predicate">nemo-example-app</span></li>
-                    <li><span class="cmd-prompt">$ </span><span class="cmd-subject">npm</span> <span
-                            class="cmd-predicate">install</li>
-                    <li><span class="cmd-prompt">$ </span><span class="cmd-subject">npm</span> <span
-                            class="cmd-predicate">start</li>
-                    <li><span class="cmd-prompt">$ </span><span class="cmd-subject">grunt</span> <span
-                            class="cmd-predicate">automation</li>
+                    <li><span class="cmd-prompt">$ </span><span class="cmd-subject">npm install</span> <span
+                            class="cmd-predicate">nemo</span></li>
+                    <li><span class="cmd-prompt">$ </span><span class="cmd-subject">nemo</span>
+                        <span
+                            class="cmd-predicate">-X test</span></li>
+                    <li><span class="cmd-prompt">$ </span><span class="cmd-subject">nemo</span> <span
+                            class="cmd-predicate">-B test</span></li>
+
                 </ul>
-                <a href="https://github.com/paypal/nemo" class="btn">GET NEMO</a>
+                <a href="https://github.com/krakenjs/nemo" class="btn">GET NEMO</a>
             </div>
         </div>
     </div>
@@ -78,12 +77,17 @@
                 <hr>
                 <div class="clearfix"></div>
                 <h2 class="section-heading">Why Nemo?</h2>
-                <p class="lead">Nemo adds a powerful configuration engine and plugin architecture to the <a
+                <p class="lead">Nemo combines <a href="https://mochajs.org">mocha.js</a>, the <a
+                        href="https://www.npmjs.com/package/confit">confit
+                    configuration
+                    engine</a>, plugin architecture, and flexible parallel options to
+                    the <a
                         href="http://www.seleniumhq.org/projects/webdriver/" target="_blank">selenium-webdriver</a>
-                    wrapper for node.js. It can be paired with most test runners (think mocha, cucumber, etc) and task
-                    runners (grunt, gulp) or used as a <a href="https://github.com/paypal/nemo">stand-alone tool</a> for
-                    convenience scripts.</p>
+                    bindings for node.js.</p>
+                <div class="clearfix"></div>
+                <div class="clearfix"></div>
 
+                <h3><a href="pages/getting-started.html">Let's get started!</a></h3>
             </div>
             <div class="col-lg-5 col-lg-push-1 col-sm-6 text-center">
                 <img class="img img-responsive" src="images/easy.png" alt="">
@@ -91,43 +95,7 @@
         </div>
     </div>
 </section>
-<section class="content container-fluid home-section-alt">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-5 col-lg-push-1 col-sm-6 text-center">
-                <img class="img img-responsive" src="images/config.png" alt="">
-            </div>
-            <div class="col-lg-5 col-lg-push-1 col-sm-6">
-                <hr>
-                <div class="clearfix"></div>
-                <h2 class="section-heading">Clever Configurability</h2>
 
-                <p class="lead">Using the clever, concise and powerful <a href="https://github.com/krakenjs/confit">confit
-                    configuration</a> module and its shortstop handler syntax, you have many elegant ways to configure
-                    and override.</p>
-            </div>
-        </div>
-    </div>
-</section>
-<section class="content container-fluid">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-5 col-lg-push-1 col-sm-6">
-                <hr>
-                <div class="clearfix"></div>
-                <h2 class="section-heading">Plugin architecture</h2>
-                <p class="lead">Nemo uses a plugin architecture to allow for a lightweight core module,
-                    customization, and the opportunity for you to <a
-                            href="https://github.com/paypal/nemo">contribute</a> easily to the Nemo ecosystem.</p>
-
-            </div>
-            <div class="col-lg-5 col-lg-push-1 col-sm-6 text-center">
-                <img src="images/plugins.png" class="img img-responsive" alt="">
-            </div>
-        </div>
-    </div>
-    <!-- /.container -->
-</section>
 <footer class="container-fluid">
     <div class="container">
         <a href="https://www.paypal.com/"><img src="images/paypal.png" class="paypal"></a>

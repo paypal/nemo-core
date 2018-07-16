@@ -31,7 +31,8 @@
             <div class="clearfix collapse navbar-collapse" id="navbar">
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="getting-started.html">Getting started</a></li>
-                    <li><a href="ecosystem.html">Ecosystem</a></li>
+                    <li><a href="api.html">API</a></li>
+                    <!--<li><a href="solutions.html">Solutions</a></li>-->
                     <li><a href="http://paypal.github.io/"><img src="../images/pp.png" class="pp"></a></li>
                 </ul>
             </div>
@@ -45,96 +46,298 @@
 
                 <div class="clearfix"></div>
                 <h1>Getting started</h1>
-                <p class="lead">Nemo can be combined with many plugins and test runners. Here is a recipe to combine nemo with <a href="https://www.npmjs.com/package/nemo-view">nemo-view</a> (handy webdriver abstractions and locator organization) and <a href="https://www.npmjs.com/package/mocha">MochaJS</a> (popular node.js unit testing framework).
-                </p>
-                <p>The instructions assume you are running shell commands from within a node.js project with a package.json file and a test directory.</p>
-                <h2>Installation</h2>
-<pre><code class="bash">npm install --save-dev nemo nemo-view mocha
-mkdir test
-mkdir test/functional
-mkdir test/functional/spec
-touch test/functional/spec/first-spec.js
-mkdir test/functional/config
-touch test/functional/config/config.json
-</code></pre>
-                <h2>Create files</h2>
-                <h3>first-spec.js</h3>
-<pre><code class="javascript">/*global describe:true, it:true */
+                <p class="lead">Getting started just takes a few quick steps.</p>
+            <ol>
+                <li>Install nemo</li>
+            </ol>
+        <pre><code class="bash">$ npm install --save-dev nemo</code></pre>
+            <ol start="2">
+                <li>Use the scaffold feature to add a basic nemo test suite</li>
+            </ol>
+        <pre><code class="bash">$ ./node_modules/.bin/nemo -X test
 
-var basedir = require('path').resolve(__dirname, '..');
-var Nemo = require('nemo');
-var nemo;
+  DONE<span class="pl-k">!</span>
 
-describe('suite using @generic@ nemo-view methods', function () {
-  before(function (done) {
-    nemo = Nemo(basedir, function (err) {
-      if (err) {
-        return done(err);
-      }
-      done();
-    });
-  });
-  after(function (done) {
-    nemo.driver.quit().then(done);
-  });
-  it('should automate the browser', function (done) {
-    //login
-    nemo.driver.get(nemo.data.baseUrl);
-    nemo.view._waitVisible('id:signup-button').click();
-    nemo.view._waitVisible('id:cta-btn').click();
-    nemo.view._waitVisible('id:email').sendKeys('mynewpaypalaccount@geemail.paypal');
-    nemo.driver.sleep(3000).then(function () {
-      done();
-    }, function (err) {
-      done(err);
-    })
-  });
-});
+  Next steps:
+  1. Add a script to package.json. E.g. <span class="pl-s"><span class="pl-pds">"</span>nemo<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>nemo -B test<span class="pl-pds">"</span></span>
+  2. Make sure you have latest chrome/chromedriver installed (https://sites.google.com/a/chromium.org/chromedriver/getting-started)
+     - The binary should be <span class="pl-k">in</span> your PATH
+  3. Run nemo<span class="pl-k">!</span> <span class="pl-s"><span class="pl-pds">"</span>npm run nemo<span class="pl-pds">"</span></span>
+  4. Explore the files under test
+  5. Learn more: http://nemo.js.
 </code></pre>
-        <h3>config.json</h3>
-<pre><code class="json">{
-  "plugins": {
-    "view": {
-      "module": "nemo-view",
-      "arguments": ["path:locator"]
+            <ol start="3">
+                <li>Get the chromedriver if necessary, then run nemo!</li>
+            </ol>
+        <pre><code class="bash">$ ./bin/nemo -B test
+
+  @firstTest@
+    ✓ should load a website (1926ms)
+
+  1 passing (3s)
+
+┌────────────────────────────────────────────────────────────────┬──────┬──────┬───────┐
+│ tags                                                           │ pass │ fail │ total │
+├────────────────────────────────────────────────────────────────┼──────┼──────┼───────┤
+│ profile: base                                                  │ 1    │ 0    │ 1     │
+│ reportFile: /07-14-2018/11-11-34/profile<span class="pl-k">!</span>base/nemo-report.html │      │      │       │
+│                                                                │      │      │       │
+├────────────────────────────────────────────────────────────────┼──────┼──────┼───────┤
+│ TOTALS                                                         │ 1    │ 0    │ 1     │
+└────────────────────────────────────────────────────────────────┴──────┴──────┴───────┘
+        </code></pre>
+            <h2>Suite structure</h2>
+            <h3>tests</h3>
+            <p>Tests are defined in the mochajs <code>describe</code> syntax:</p>
+        <pre><code class="javascript">describe</span>(<span class="pl-s"><span class="pl-pds">'</span>@firstTest@<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> () {
+  <span class="pl-en">it</span>(<span class="pl-s"><span class="pl-pds">'</span>should load a website<span class="pl-pds">'</span></span>, <span class="pl-k">async</span> <span class="pl-k">function</span> () {
+    <span class="pl-k">let</span> nemo <span class="pl-k">=</span> <span class="pl-c1">this</span>.<span class="pl-smi">nemo</span>;
+    <span class="pl-k">await</span> <span class="pl-smi">nemo</span>.<span class="pl-smi">driver</span>.<span class="pl-c1">get</span>(<span class="pl-c1">this</span>.<span class="pl-smi">nemo</span>.<span class="pl-c1">data</span>.<span class="pl-smi">baseUrl</span>);
+    <span class="pl-k">await</span> <span class="pl-smi">nemo</span>.<span class="pl-smi">view</span>.<span class="pl-en">_waitVisible</span>(<span class="pl-s"><span class="pl-pds">'</span>#searchForm<span class="pl-pds">'</span></span>);
+    <span class="pl-k">await</span> <span class="pl-smi">nemo</span>.<span class="pl-smi">view</span>.<span class="pl-en">_find</span>(<span class="pl-s"><span class="pl-pds">'</span>#searchInput<span class="pl-pds">'</span></span>).<span class="pl-en">sendKeys</span>(<span class="pl-s"><span class="pl-pds">'</span>Nemo.js Selenium<span class="pl-pds">'</span></span>);
+    <span class="pl-k">await</span> <span class="pl-smi">nemo</span>.<span class="pl-smi">view</span>.<span class="pl-en">_find</span>(<span class="pl-s"><span class="pl-pds">'</span>#searchButton<span class="pl-pds">'</span></span>).<span class="pl-c1">click</span>();
+  });
+});</code></pre>
+            <p>The <code>nemo</code> instance is injected to the mocha context for <code>it</code>, <code>before</code>, <code>after</code>, <code>beforeEach</code>, <code>afterEach</code>.</p>
+            <p>The main points of interaction will be with:</p>
+            <ul>
+                <li>
+                    <code>nemo.driver</code>: an instance of the <a href="https://seleniumhq.github.io/selenium/docs/api/javascript/module/selenium-webdriver/index_exports_WebDriver.html" rel="nofollow"><code>selenium-webdriver</code> Driver</a>
+                </li>
+                <li>
+                    <code>nemo.view</code>: nemo's built-in webdriver abstraction:
+                    <ul>
+                        <li>eases the finding of elements and simplifies the most common interactions with <a href="https://seleniumhq.github.io/selenium/docs/api/javascript/module/selenium-webdriver/index_exports_WebElement.html" rel="nofollow">WebElements</a>
+                        </li>
+                        <li>provides facility for grouping locators and building convenience methods around them</li>
+                    </ul>
+                </li>
+                <li>
+                    <code>nemo.data</code>: This is data you provide via your configuration to be used in your tests
+                    <ul>
+                        <li>you can data-drive your tests and define parallel behavior with <code>nemo.data</code> as well</li>
+                    </ul>
+                </li>
+            </ul>
+            <h3>config directory</h3>
+            <p>The main configuration will be in <code>&lt;suite base directory&gt;/config/config.json</code></p>
+            <p>Environment-specific override files may be added to the same directory, if desired. Please read more about configuration below.</p>
+            <h3>reports</h3>
+            <p>The example suite generated from <code>nemo -X</code> uses the <a href="https://www.npmjs.com/package/mochawesome" rel="nofollow">mochawesome reporter</a> by default. Nemo generates reports into folders based on <code>&lt;date&gt;/&lt;time&gt;/&lt;tag-based-directory&gt;/nemo-report.html</code>. This allows you to easily drill into reports over time, and see what run configuration generated them (critical for making sense of parallel runs).</p>
+            <p><img src="https://raw.githubusercontent.com/krakenjs/nemo/static/images/report-output.png"
+                    height="" alt=""></p>
+        <p>Below is a mochawesome report:</p>
+               <p> <img src="https://raw.githubusercontent.com/krakenjs/nemo/static/images/mochawesome.png"
+                     width="600" height="383" alt=""></p>
+            <p>Below is a mochawesome report with screen capture image:
+                <img src="https://raw.githubusercontent.com/krakenjs/nemo/static/images/mochawesome-snap.png"
+                     width="602" height="494" alt=""></p>
+            <p>You can take a screen capture any time with <code>nemo.snap()</code> and it will be automatically added to the report.</p>
+            <h2>Configuration</h2>
+            <p>Nemo's configuration is read by <a href="https://www.npmjs.com/package/confit" rel="nofollow">confit</a>. Confit allows you to add comments to your JSON files. It uses <a href="https://www.npmjs.com/package/shortstop" rel="nofollow">shortstop</a>, which allows you to configure special processing within your JSON.</p>
+            <p>Simple example:</p>
+        <pre><code class="javascript">{
+    <span class="pl-s"><span class="pl-pds">"</span>plugins<span class="pl-pds">"</span></span><span class="pl-k">:</span> {
+        <span class="pl-s"><span class="pl-pds">"</span>view<span class="pl-pds">"</span></span><span class="pl-k">:</span> {
+            <span class="pl-s"><span class="pl-pds">"</span>module<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>nemo-view<span class="pl-pds">"</span></span>
+        }
+    },
+    <span class="pl-s"><span class="pl-pds">"</span>output<span class="pl-pds">"</span></span><span class="pl-k">:</span> {
+<span class="pl-c"><span class="pl-c">//</span>                  using "path" shortstop handler</span>
+<span class="pl-c"><span class="pl-c">//</span>                  resolves to nemo base directory</span>
+        <span class="pl-s"><span class="pl-pds">"</span>reports<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>path:report<span class="pl-pds">"</span></span>
+    },
+    <span class="pl-s"><span class="pl-pds">"</span>profiles<span class="pl-pds">"</span></span><span class="pl-k">:</span> {
+        <span class="pl-s"><span class="pl-pds">"</span>base<span class="pl-pds">"</span></span><span class="pl-k">:</span> {
+            <span class="pl-s"><span class="pl-pds">"</span>data<span class="pl-pds">"</span></span><span class="pl-k">:</span> {
+                <span class="pl-s"><span class="pl-pds">"</span>baseUrl<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>https://www.google.com<span class="pl-pds">"</span></span>
+            },
+            <span class="pl-s"><span class="pl-pds">"</span>tests<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>path:./tests/*<span class="pl-pds">"</span></span>,
+            <span class="pl-s"><span class="pl-pds">"</span>mocha<span class="pl-pds">"</span></span><span class="pl-k">:</span> {
+                <span class="pl-s"><span class="pl-pds">"</span>timeout<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-c1">180000</span>,
+                <span class="pl-s"><span class="pl-pds">"</span>reporter<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>mochawesome<span class="pl-pds">"</span></span>,
+                <span class="pl-s"><span class="pl-pds">"</span>reporterOptions<span class="pl-pds">"</span></span><span class="pl-k">:</span> {
+                    <span class="pl-s"><span class="pl-pds">"</span>quiet<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-c1">true</span>
+                }
+            }
+        },
+        <span class="pl-s"><span class="pl-pds">"</span>firefox<span class="pl-pds">"</span></span><span class="pl-k">:</span> {
+            <span class="pl-s"><span class="pl-pds">"</span>driver<span class="pl-pds">"</span></span><span class="pl-k">:</span> {
+                <span class="pl-s"><span class="pl-pds">"</span>browser<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>firefox<span class="pl-pds">"</span></span>
+            }
+        }
     }
-  },
-  "driver": {
-    "browser": "firefox"
-  },
-  "data": {
-    "baseUrl": "https://www.paypal.com"
-  }
-}
+}</code></pre>
+            <h3>Profiles</h3>
+            <p>A "profile" configuration  has all information necessary to run <code>nemo</code> for a particular environment or scenario.</p>
+            <p><code>profiles.base</code> in <code>config.json</code> is required, and is the default and parent configuration. All other profiles will inherit from and merge with the base profile.</p>
+            <p>For example, with the <code>profiles</code> configuration from above:</p>
+        <pre><code class="javascript">    <span class="pl-s"><span class="pl-pds">"</span>profiles<span class="pl-pds">"</span></span><span class="pl-k">:</span> {
+        <span class="pl-s"><span class="pl-pds">"</span>base<span class="pl-pds">"</span></span><span class="pl-k">:</span> {
+            <span class="pl-s"><span class="pl-pds">"</span>data<span class="pl-pds">"</span></span><span class="pl-k">:</span> {
+                <span class="pl-s"><span class="pl-pds">"</span>baseUrl<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>https://www.google.com<span class="pl-pds">"</span></span>
+            },
+            <span class="pl-s"><span class="pl-pds">"</span>tests<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>path:./tests/*<span class="pl-pds">"</span></span>,
+            <span class="pl-s"><span class="pl-pds">"</span>mocha<span class="pl-pds">"</span></span><span class="pl-k">:</span> {
+                <span class="pl-s"><span class="pl-pds">"</span>timeout<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-c1">180000</span>,
+                <span class="pl-s"><span class="pl-pds">"</span>reporter<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>mochawesome<span class="pl-pds">"</span></span>,
+                <span class="pl-s"><span class="pl-pds">"</span>reporterOptions<span class="pl-pds">"</span></span><span class="pl-k">:</span> {
+                    <span class="pl-s"><span class="pl-pds">"</span>quiet<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-c1">true</span>
+                }
+            }
+        },
+        <span class="pl-s"><span class="pl-pds">"</span>firefox<span class="pl-pds">"</span></span><span class="pl-k">:</span> {
+            <span class="pl-s"><span class="pl-pds">"</span>driver<span class="pl-pds">"</span></span><span class="pl-k">:</span> {
+                <span class="pl-s"><span class="pl-pds">"</span>browser<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>firefox<span class="pl-pds">"</span></span>
+            }
+        }
+    }</code></pre>
+            <p>Running the firefox profile will merge the <code>base</code> profile object with <code>firefox</code> profile object. In this case the only difference is using "firefox" instead of "chrome" as the browser. But you could likewise override any other base profile setting with the <code>firefox</code> profile object.</p>
+            <p>You would run with the <code>base</code> profile this way:</p>
+        <pre><code class="bash">$ nemo -B <span class="pl-c1">test</span></code></pre>
+            <p>And with the <code>firefox</code> profile this way:</p>
+        <pre><code class="bash">$ nemo -B <span class="pl-c1">test</span> -P firefox</code></pre>
+            <p>You can also choose to run the two in parallel this way:</p>
+        <pre><code class="bash">$ nemo -B <span class="pl-c1">test</span> -P base,firefox</code></pre>
+            <p>Here are all the available profile configuration attributes</p>
+            <table>
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Required</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>driver</td>
+                    <td><code>Object</code></td>
+                    <td>yes</td>
+                    <td>none</td>
+                    <td>Configure browser/server capabilities. <a href="https://github.com/paypal/nemo-core#driver">Full details</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>tests</td>
+                    <td><code>Glob</code></td>
+                    <td>yes</td>
+                    <td>none</td>
+                    <td>
+                        <code>Glob</code> to select desired test file(s)</td>
+                </tr>
+                <tr>
+                    <td>mocha</td>
+                    <td><code>Object</code></td>
+                    <td>yes</td>
+                    <td>none</td>
+                    <td>mocha options. <a href="https://github.com/krakenjs/nemo#mocha-options">Full details</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>parallel</td>
+                    <td><code>String</code></td>
+                    <td>no</td>
+                    <td>none</td>
+                    <td>can specify <code>file</code> or <code>data</code>. <a href="https://github.com/krakenjs/nemo#parallel-functionality">More details on parallel functionality</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>driverPerTest</td>
+                    <td><code>Boolean</code></td>
+                    <td>no</td>
+                    <td><code>false</code></td>
+                    <td>by default a <code>driver</code> is created per-suite</td>
+                </tr>
+                <tr>
+                    <td>data</td>
+                    <td><code>Object</code></td>
+                    <td>no</td>
+                    <td>none</td>
+                    <td>pass in a data object for use as <code>nemo.data</code>. Can also be used to data-drive tests in parallel</td>
+                </tr>
+                <tr>
+                    <td>maxConcurrent</td>
+                    <td><code>Number</code></td>
+                    <td>no</td>
+                    <td>none</td>
+                    <td>limit the number of parallel instances nemo will launch</td>
+                </tr>
+                </tbody>
+            </table>
+            <h3>Output</h3>
+            <p>The output section is where you configure:</p>
+            <ul>
+                <li>placement of reports</li>
+                <li>custom event listeners</li>
+                <li>an InfluxDB server</li>
+            </ul>
+            <table>
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Required</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>reports</td>
+                    <td><code>String</code></td>
+                    <td>yes</td>
+                    <td>none</td>
+                    <td>
+                        <code>path:reports</code> will put reports into a "reports" directory under your suite base directory</td>
+                </tr>
+                <tr>
+                    <td>listeners</td>
+                    <td><code>String</code></td>
+                    <td>no</td>
+                    <td>none</td>
+                    <td>
+                        <code>require:./config/listeners</code> will require a module names <code>listeners.js</code> under the suite config directory. Export individual listeners from <code>listeners.js</code>. <a href="https://github.com/krakenjs/nemo#outputlisteners-optional">Full details</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>storage</td>
+                    <td><code>Object</code></td>
+                    <td>no</td>
+                    <td>none</td>
+                    <td>provide InfluxDB server/database/credentials to have test results pushed to that database. <a href="https://github.com/krakenjs/nemo#outputstorage-optional">Full details</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <h2>CLI arguments</h2>
+            <p>To view all CLI arguments, use <code>nemo --help</code></p>
+        <pre><code class="bash">$ ./bin/nemo --help
 
-</code></pre>
-        <h2>Run tests</h2>
-<pre><code class="bash">node_modules/.bin/mocha test/functional/spec/*.js --timeout 30000 --reporter spec</code></pre>
-        <h2>Results</h2>
-    <p>You should have seen a Firefox browser open, load paypal.com, and begin the personal account signup flow. If this didn't happen, some common issues/solutions are below:</p>
-    <ul>
-        <li><b>Problem:</b> Browser opens, nothing happens
-            <ul>
-                <li><b>Solution:</b> probably your Firefox version is not supported by the selenium-webdriver version installed under nemo</li>
-                <li>find your selenium-webdriver version (use the command "npm ls selenium-webdriver")</li>
-                <li>find your Firefox version (Firefox > About Firefox)</li>
-                <li>Cross-reference your Firefox version with the selenium-webdriver version installed with the <a href="https://github.com/SeleniumHQ/selenium/blob/master/java/CHANGELOG">selenium changelog</a>.</li>
-                <li>Either downgrade your Firefox browser, or upgrade selenium-webdriver via the <a href="https://github.com/paypal/nemo/tree/master#seleniumversion-optional">selenium.version</a> driver property</li>
-            </ul>
-        </li>
-        <li><b>Problem:</b> Firefox opens, paypal.com loads, but automation does not progress and test times out or fails
-            <ul><b>Solution:</b> It may be that the paypal.com website structure changed. Please file an issue here: https://github.com/paypal/nemo/issues</ul>
-        </li>
-    </ul>
-        <h2>Next steps</h2>
-        <p>To build a substantial test suite, you will probably want to:
-            <ul>
-                <li><a href="https://github.com/paypal/nemo-view">use the "locator" feature of nemo-view</a></li>
-                <li>integrate your test suite using a task runner like <a href="https://www.npmjs.com/package/grunt">grunt</a> or <a href="https://www.npmjs.com/package/gulp">gulp</a></li>
-                <li>differentiate test environments using the configuration features of nemo</li>
-                <li>The <a href="https://github.com/paypal/nemo-example-app">nemo-example-app</a> illustrates all of the above. It can be a good place to find ideas and patterns.</li>
-            </ul>
-        </p>
+  Usage: _nemo [options]
+
+  Options:
+
+    -V, --version                output the version number
+    -B, --base-directory <span class="pl-k">&lt;</span>path<span class="pl-k">&gt;</span>  parent directory <span class="pl-k">for</span> config/ and spec/ (or other <span class="pl-c1">test</span> file) directories. relative to cwd
+    -P, --profile [profile]      which profile(s) to run, out of the configuration
+    -G, --grep <span class="pl-k">&lt;</span>pattern<span class="pl-k">&gt;</span>         only run tests matching <span class="pl-k">&lt;</span>pattern<span class="pl-k">&gt;</span>
+    -F, --file                   run parallel by file
+    -D, --data                   run parallel by data
+    -S, --server                 run the nemo web server
+    -L, --logging                info level logging (errors log by default)
+    -X, --scaffold <span class="pl-k">&lt;</span>path<span class="pl-k">&gt;</span>        inject an example nemo suite under <span class="pl-k">&lt;</span>path<span class="pl-k">&gt;</span>
+    -U, --allow-unknown-args     allow <span class="pl-c1">command</span> line arguments not specified by Nemo
+    --debug-brk                  <span class="pl-c1">enable</span> node<span class="pl-s"><span class="pl-pds">'</span>s debugger breaking on the first line</span>
+<span class="pl-s">    --inspect                    activate devtools in chrome</span>
+<span class="pl-s">    --no-timeouts                remove timeouts in debug/inspect use case</span>
+<span class="pl-s">    -h, --help                   output usage information</span>
+        </code></pre>
+            <h3>Plugins</h3>
+            <p>Plugins help you add custom functionality to your nemo tests. Nemo comes by default with <a href="">nemo-view</a>. <a href="https://github.com/paypal/nemo-core#nemo-core-and-plugins-in-60-seconds">You can read further about plugins here</a>.</p>
+
+
             </div>
 
 
