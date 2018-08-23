@@ -1,10 +1,3 @@
-# nemo-core CHANGELOG
-
-## nemo-core@1.0.0
-
-- renaming nemo to nemo-core
-
-## v3.0.1
 
 - upgrade "debug" dependency to resolve DoS vuln
 
@@ -16,6 +9,7 @@
 
 - Add support for selenium-webdriver@^3.0.0
 - refactor index.js into several lib/ modules
+
 
 ## v2.3.1
 

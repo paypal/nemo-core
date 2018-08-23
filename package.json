@@ -1,6 +1,5 @@
-{
-  "name": "nemo-core",
-  "version": "1.0.0",
+
+  "version": "1.0.0"
   "description": "Node.js based configuration and plugin platform for selenium-webdriver",
   "scripts": {
     "test": "npm run lint && mocha --timeout 30000 ",
