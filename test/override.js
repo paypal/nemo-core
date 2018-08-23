@@ -55,24 +55,4 @@ describe('@override@', function () {
       });
     });
   });
-  it('@driverFunction@ overrides other driver abstractions', function (done) {
-    process.env.nemoBaseDir = __dirname;
-
-    Nemo({
-      driver: function () {
-        const {Builder} = require('selenium-webdriver');
-        return new Builder().forBrowser('phantomjs').build()
-      },
-      data: {
-        baseUrl: 'http://www.ebay.com'
-      }
-    }, function (err, nemo) {
-      nemo.driver.getCapabilities().then(function (caps) {
-        assert.notEqual(caps.browserName, 'firefox');
-        nemo.driver.quit();
-        done();
-      });
-    });
-  });
-
 });
