@@ -2,6 +2,7 @@
 const assert = require('assert');
 const path = require('path');
 const Nemo = require('../index');
+const chromeConfig = require('./driverconfig.chrome');
 
 
 describe('@plugin@', function () {
@@ -19,9 +20,7 @@ describe('@plugin@', function () {
   it('should handle @nonexistPlugin@', function (done) {
     delete process.env.nemoBaseDir;
     Nemo(__dirname, {
-      'driver': {
-        'browser': 'phantomjs'
-      },
+      driver: chromeConfig,
       'plugins': {
         'noexist': {
           'module': 'ModuleThatDoesNotExist'
@@ -39,13 +38,11 @@ describe('@plugin@', function () {
     delete process.env.nemoBaseDir;
 
     Nemo(__dirname, {
-      'driver': {
-        'browser': 'phantomjs'
-      },
-      'plugins': {
-        'crappy': {
-          'module': 'path:plugin/sample',
-          'arguments': ['crap plugin']
+      driver: chromeConfig,
+      plugins: {
+        crappy: {
+          module: 'path:plugin/sample',
+          arguments: ['crap plugin']
         }
       }
     }, function (err) {

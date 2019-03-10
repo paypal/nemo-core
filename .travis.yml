@@ -1,8 +1,11 @@
+os: osx
+
 language: node_js
 
 node_js:
-  - "6"
-  - "7"
-
+  - "8"
 env:
-  - NODE_ENV=travis
+  - MOZ_HEADLESS=1
+addons:
+  chrome: stable
+  firefox: latest

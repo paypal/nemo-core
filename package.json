@@ -5,13 +5,13 @@
   "scripts": {
     "test": "npm run lint && mocha --timeout 30000 ",
     "test:default": "npm run lint && mocha --timeout 30000 --reporter spec",
-    "lint": "eslint --fix lib examples test --ext .json"
+    "lint": "eslint --fix lib/* examples/* test/**/* --ext .json"
   },
   "dependencies": {
-    "async": "^2.3.0",
+    "async": "^2.6.2",
     "confit": "^2.0.0",
     "debug": "^3.1.0",
-    "lodash": "^4.12.0",
+    "lodash": "^4.17.11",
     "selenium-webdriver": "^3.4.0",
     "shortstop-handlers": "^1.0.0",
     "yargs": "^10.1.1"
@@ -19,8 +19,10 @@
   "main": "index.js",
   "devDependencies": {
     "chai": "^4.1.2",
-    "eslint": "^4.16.0",
-    "eslint-plugin-json": "^1.2.0",
+    "chromedriver": "^2.43.0",
+    "eslint": "^5.15.1",
+    "eslint-plugin-json": "^1.4.0",
+    "geckodriver": "^1.16.0",
     "mocha": "^5.0.0",
     "nconf": "^0.10.0"
   },

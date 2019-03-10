@@ -2,21 +2,20 @@
 
 const assert = require('assert');
 const Nemo = require('../index');
+const chromeConfig = require('./driverconfig.chrome');
 
 describe('@constructor@', function () {
   it('should return a promise with @noArguments@', function (done) {
-      Nemo().then(function (nemo) {
+      Nemo().then(function () {
         done(new Error('should have failed with nemoBadDriverProps'));
-      }).catch(function (err) {
+      }).catch(function () {
         done();
       })
   });
   it('should return a promise with @noCallback@', function (done) {
     Nemo({
-      'driver': {
-        'browser': 'phantomjs'
-      }
-    }).then(function (nemo) {
+      'driver': chromeConfig
+    }).then(function () {
       done();
     }).catch(function (err) {
       done(err);
@@ -37,9 +36,7 @@ describe('@constructor@', function () {
   it('should launch nemo with @noConfigPath@overrideArg@', function (done) {
     delete process.env.nemoBaseDir;
     Nemo({
-      'driver': {
-        'browser': 'phantomjs'
-      }
+      driver: chromeConfig
     }, function (err, nemo) {
       assert(nemo.driver);
       nemo.driver.get('http://www.google.com');
@@ -79,8 +76,8 @@ describe('@constructor@', function () {
   it('should launch nemo with @allArgs@', function (done) {
     var nemoBaseDir = __dirname;
     Nemo(nemoBaseDir, {
-      'data': {
-        'argPassthrough': true
+      data: {
+        argPassthrough: true
       }
     }, function (err, nemo) {
       assert(nemo.driver);
@@ -95,8 +92,8 @@ describe('@constructor@', function () {
   it('should return the resolved nemo object when the callback is called', function (done) {
     var nemoBaseDir = __dirname;
     var returnedNemo = Nemo(nemoBaseDir, {
-      'data': {
-        'argPassthrough': true
+      data: {
+        argPassthrough: true
       }
     }, function (err, nemo) {
       assert.equal(nemo, returnedNemo);

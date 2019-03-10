@@ -1,7 +1,6 @@
 /* global module: true, require: true, console: true */
 
 const assert = require('assert');
-const path = require('path');
 const Nemo = require('../index');
 
 
@@ -49,7 +48,7 @@ describe('@override@', function () {
       }
     }, function (err, nemo) {
       nemo.driver.getCapabilities().then(function (caps) {
-        assert.notEqual(caps.browserName, 'firefox');
+        assert.notEqual(caps.get('browserName'), 'chrome');
         nemo.driver.quit();
         done();
       });
@@ -61,14 +60,14 @@ describe('@override@', function () {
     Nemo({
       driver: function () {
         const {Builder} = require('selenium-webdriver');
-        return new Builder().forBrowser('phantomjs').build()
+        return new Builder().forBrowser('firefox').build()
       },
       data: {
         baseUrl: 'http://www.ebay.com'
       }
     }, function (err, nemo) {
       nemo.driver.getCapabilities().then(function (caps) {
-        assert.notEqual(caps.browserName, 'firefox');
+        assert.notEqual(caps.get('browserName'), 'chrome');
         nemo.driver.quit();
         done();
       });

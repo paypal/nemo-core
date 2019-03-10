@@ -1,26 +1,24 @@
 /* global module: true, require: true, console: true */
 const assert = require('assert');
 const Nemo = require('../index');
+const chromeConfig = require('./driverconfig.chrome');
 
 describe('@config@', function () {
   process.env.NEMO_UNIT_TEST = 'true';
   it('should pass confit object as nemo._config', function (done) {
     Nemo({
-      'driver': {
-        'browser': 'phantomjs'
-      },
-      'data': {
-        'Roger': {
-          'Federer': {
-            'is': 'GOAT'
+        driver: chromeConfig,
+      data: {
+        Roger: {
+          Federer: {
+            is: 'perhaps the GOAT... but Novak Djokovic is in the running'
           }
         }
       }
     }, function (err, nemo) {
       assert.equal(err, undefined);
       assert(nemo._config);
-      // console.log('hi there')
-      assert.equal(nemo._config.get('data:Roger:Federer:is'), 'GOAT');
+      assert.equal(nemo._config.get('data:Roger:Federer:is'), 'perhaps the GOAT... but Novak Djokovic is in the running');
       nemo.driver.quit().then(function () {
         done();
       });
@@ -45,11 +43,8 @@ describe('@config@', function () {
 
   it('should throw an error for invalid @invalid.selenium.version@', function (done) {
     Nemo({
-      'driver': {
-        'browser': 'phantomjs',
-        'selenium.version': 'foo'
-      }
-    }, function (err, nemo) {
+        driver: chromeConfig
+    }, function (err) {
       assert(err);
       done();
     });
