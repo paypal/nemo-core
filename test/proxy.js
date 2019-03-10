@@ -1,19 +1,18 @@
 const Nemo = require('../index');
 const assert = require('assert');
+const chromeConfig = require('./driverconfig.chrome');
 
 describe('@proxy@ ', function () {
 
   it('should load problem loading page error', function (done) {
     process.env.nemoBaseDir = __dirname;
     Nemo({
-      'driver': {
-        'proxyDetails': {
+      driver: {
+        proxyDetails: {
           method: 'manual',
           args: [{'http': 'host:1234', 'ftp': 'host:1234', 'https': 'host:1234'}]
         },
-        'builders': {
-          'forBrowser': ['phantomjs']
-        }
+        builders: chromeConfig.builders
       }
     }, function (err, nemo) {
       if (err) {
