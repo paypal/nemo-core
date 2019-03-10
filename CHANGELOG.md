@@ -1,6 +1,6 @@
 # nemo-core CHANGELOG
 
-## UNRELEASED
+## v1.1.1
 
 - Fix npm audit issues
 - Use headless chrome instead of phantomjs for unit tests
