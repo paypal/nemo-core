@@ -1,5 +1,10 @@
 # nemo-core CHANGELOG
 
+## UNRELEASED
+
+- Fix npm audit issues
+- Use headless chrome instead of phantomjs for unit tests
+
 ## v1.1.0
 
 - feature: allow passed in driver function
