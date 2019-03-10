@@ -22,6 +22,7 @@
     "chromedriver": "^2.43.0",
     "eslint": "^5.15.1",
     "eslint-plugin-json": "^1.4.0",
+    "geckodriver": "^1.16.0",
     "mocha": "^5.0.0",
     "nconf": "^0.10.0"
   },
