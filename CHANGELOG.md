@@ -1,6 +1,6 @@
 # nemo-core CHANGELOG
 
-## v1.1.2
+## v1.1.3
 
 - Fix npm audit issues
 
