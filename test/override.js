@@ -2,7 +2,7 @@
 
 const assert = require('assert');
 const Nemo = require('../index');
-
+const firefox = require('selenium-webdriver/firefox');
 
 describe('@override@', function () {
 
@@ -27,7 +27,7 @@ describe('@override@', function () {
       data: {
         baseUrl: 'http://www.ebay.com'
       }
-  }, function (err, nemo) {
+    }, function (err, nemo) {
       if (err) {
         return done(err);
       }
@@ -38,10 +38,15 @@ describe('@override@', function () {
   });
   it('@builders@ overrides tgtBrowser abstraction', function (done) {
     process.env.nemoBaseDir = __dirname;
+    const binary = new firefox.Binary();
+    binary.addArguments("--headless");
 
     Nemo({
       driver: {
-        browser: 'firefox'
+        builders: {
+          forBrowser: ['firefox'],
+          setFirefoxOptions: [new firefox.Options().setBinary(binary)]
+        }
       },
       data: {
         baseUrl: 'http://www.ebay.com'
@@ -59,8 +64,10 @@ describe('@override@', function () {
 
     Nemo({
       driver: function () {
-        const {Builder} = require('selenium-webdriver');
-        return new Builder().forBrowser('firefox').build()
+        const { Builder } = require('selenium-webdriver');
+        const binary = new firefox.Binary();
+        binary.addArguments("--headless");
+        return new Builder().forBrowser('firefox').setFirefoxOptions(new firefox.Options().setBinary(binary)).build()
       },
       data: {
         baseUrl: 'http://www.ebay.com'
