@@ -232,11 +232,11 @@ module.exports = {
     }</code></pre>
             <p>Running the firefox profile will merge the <code>base</code> profile object with <code>firefox</code> profile object. In this case the only difference is using "firefox" instead of "chrome" as the browser. But you could likewise override any other base profile setting with the <code>firefox</code> profile object.</p>
             <p>You would run with the <code>base</code> profile this way:</p>
-        <pre><code class="bash">$ nemo -B <span class="pl-c1">test</span></code></pre>
+        <pre><code class="bash">$ npx nemo</code></pre>
             <p>And with the <code>firefox</code> profile this way:</p>
-        <pre><code class="bash">$ nemo -B <span class="pl-c1">test</span> -P firefox</code></pre>
+        <pre><code class="bash">$ npx nemo -P firefox</code></pre>
             <p>You can also choose to run the two in parallel this way:</p>
-        <pre><code class="bash">$ nemo -B <span class="pl-c1">test</span> -P base,firefox</code></pre>
+        <pre><code class="bash">$ npx nemo -P base,firefox</code></pre>
             <p>Here are all the available profile configuration attributes</p>
             <table>
                 <thead>
