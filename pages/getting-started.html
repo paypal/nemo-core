@@ -134,9 +134,9 @@
                      width="602" height="494" alt=""></p>
             <p>You can take a screen capture any time with <code>nemo.snap()</code> and it will be automatically added to the report.</p>
             <h2>Configuration</h2>
-            <p>Nemo's configuration is read by <a href="https://www.npmjs.com/package/confit" rel="nofollow">confit</a>. Confit allows you to add comments to your JSON files. It uses <a href="https://www.npmjs.com/package/shortstop" rel="nofollow">shortstop</a>, which allows you to configure special processing within your JSON.</p>
-            <p>Simple example:</p>
-        <pre><code class="javascript">{
+           <!-- <p>Nemo's configuration can be read by <a href="https://www.npmjs.com/package/confit" rel="nofollow">confit</a>. Confit allows you to add comments to your JSON files. It uses <a href="https://www.npmjs.com/package/shortstop" rel="nofollow">shortstop</a>, which allows you to configure special processing within your JSON.</p>
+        <pre>
+        <code class="javascript">{
     <span class="pl-s"><span class="pl-pds">"</span>plugins<span class="pl-pds">"</span></span><span class="pl-k">:</span> {
         <span class="pl-s"><span class="pl-pds">"</span>view<span class="pl-pds">"</span></span><span class="pl-k">:</span> {
             <span class="pl-s"><span class="pl-pds">"</span>module<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>nemo-view<span class="pl-pds">"</span></span>
@@ -167,7 +167,44 @@
             }
         }
     }
-}</code></pre>
+}</code></pre>-->
+
+  <p>Nemo's default configuration file is nemo.config.js. Example below:</p>
+
+  <pre>
+  <code class="javascript">
+const path = require('path');
+  
+module.exports = {
+  plugins: {
+    view: {
+      module: 'nemo-view'
+    }
+  },
+  output: {
+    reports: path.resolve('test', 'report')
+  },
+  profiles: {
+    base: {
+      tests: path.resolve('test', '*test.js'),
+      driver: {
+        browser: 'chrome'
+      },
+      data: {
+        baseUrl: 'https://www.google.com'
+      },
+      mocha: {
+        timeout: 180000,
+        reporter: 'mochawesome',
+        reporterOptions: {
+          quiet: true
+        }
+      }
+    }
+  }
+}
+</code>
+</pre>
             <h3>Profiles</h3>
             <p>A "profile" configuration  has all information necessary to run <code>nemo</code> for a particular environment or scenario.</p>
             <p><code>profiles.base</code> in <code>config.json</code> is required, and is the default and parent configuration. All other profiles will inherit from and merge with the base profile.</p>
