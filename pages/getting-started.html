@@ -351,26 +351,28 @@ module.exports = {
             </table>
             <h2>CLI arguments</h2>
             <p>To view all CLI arguments, use <code>nemo --help</code></p>
-        <pre><code class="bash">$ ./bin/nemo --help
+        <pre><code class="bash">$ npx nemo --help
+Usage: _nemo [options]
 
-  Usage: _nemo [options]
+Options:
+  -V, --version                  output the version number
+  -B, --base-directory <path>    parent directory for config/ and spec/ (or other test file) directories. relative to cwd
+  -C, --config-file <path>       config file. can be JS or JSON
+  -P, --profile [profile]        which profile(s) to run, out of the configuration
+  -G, --grep <pattern>           only run tests matching <pattern>
+  -F, --file                     run parallel by file
+  -D, --data                     run parallel by data
+  -S, --server                   run the nemo web server
+  -L, --logging                  info level logging (errors log by default)
+  -X, --scaffold <path>          inject an example nemo suite under <path>
+  -Z, --scaffold-complex <path>  inject a full-featured (complex) example nemo suite under <path>
+  -U, --allow-unknown-args       allow command line arguments not specified by Nemo
+  -E, --exit                     force shutdown of the event loop after test run: nemo will call process.exit
+  --debug-brk                    enable node's debugger breaking on the first line
+  --inspect                      activate devtools in chrome
+  --no-timeouts                  remove timeouts in debug/inspect use case
+  -h, --help                     output usage information
 
-  Options:
-
-    -V, --version                output the version number
-    -B, --base-directory <span class="pl-k">&lt;</span>path<span class="pl-k">&gt;</span>  parent directory <span class="pl-k">for</span> config/ and spec/ (or other <span class="pl-c1">test</span> file) directories. relative to cwd
-    -P, --profile [profile]      which profile(s) to run, out of the configuration
-    -G, --grep <span class="pl-k">&lt;</span>pattern<span class="pl-k">&gt;</span>         only run tests matching <span class="pl-k">&lt;</span>pattern<span class="pl-k">&gt;</span>
-    -F, --file                   run parallel by file
-    -D, --data                   run parallel by data
-    -S, --server                 run the nemo web server
-    -L, --logging                info level logging (errors log by default)
-    -X, --scaffold <span class="pl-k">&lt;</span>path<span class="pl-k">&gt;</span>        inject an example nemo suite under <span class="pl-k">&lt;</span>path<span class="pl-k">&gt;</span>
-    -U, --allow-unknown-args     allow <span class="pl-c1">command</span> line arguments not specified by Nemo
-    --debug-brk                  <span class="pl-c1">enable</span> node<span class="pl-s"><span class="pl-pds">'</span>s debugger breaking on the first line</span>
-<span class="pl-s">    --inspect                    activate devtools in chrome</span>
-<span class="pl-s">    --no-timeouts                remove timeouts in debug/inspect use case</span>
-<span class="pl-s">    -h, --help                   output usage information</span>
         </code></pre>
             <h3>Plugins</h3>
             <p>Plugins help you add custom functionality to your nemo tests. Nemo comes by default with <a href="">nemo-view</a>. <a href="https://github.com/paypal/nemo-core#nemo-core-and-plugins-in-60-seconds">You can read further about plugins here</a>.</p>
