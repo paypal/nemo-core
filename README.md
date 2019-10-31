@@ -82,7 +82,7 @@ const Nemo = require('nemo-core');
 
 ##### make sure to handle errors when using async/await
 You can modify the example above to handle errors.  Make sure to define nemo outside of your try block, so you can "quit" the driver if an error occurs after nemo has been successfully created
-```
+```javascript
 const Nemo = require('nemo-core');
 let nemo;
 (async () => {
