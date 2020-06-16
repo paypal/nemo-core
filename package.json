@@ -19,7 +19,7 @@
   "main": "index.js",
   "devDependencies": {
     "chai": "^4.2.0",
-    "chromedriver": "^2.43.0",
+    "chromedriver": "^83.0.0",
     "eslint": "^5.16.0",
     "eslint-plugin-json": "^1.4.0",
     "geckodriver": "^1.16.2",
