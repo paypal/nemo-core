@@ -61,6 +61,52 @@ NemoCore({
 });
 ```
 
+##### you can use async/await as well
+```javascript
+const Nemo = require('nemo-core');
+(async () => {
+  const nemo = await Nemo({
+    driver: {
+      browser: 'firefox'
+    },
+    data: {
+      baseUrl: 'https://www.paypal.com'
+    }
+  });
+  await nemo.driver.get(nemo.data.baseUrl);
+  const caps = await nemo.driver.getCapabilities();
+  console.log(`nemo-core successfully launched with ${caps.get('browserName')}`);
+  await nemo.driver.quit();
+})();
+```
+
+##### make sure to handle errors when using async/await
+You can modify the example above to handle errors.  Make sure to define nemo outside of your try block, so you can "quit" the driver if an error occurs after nemo has been successfully created
+```javascript
+const Nemo = require('nemo-core');
+let nemo;
+(async () => {
+  try {
+    nemo = await Nemo({
+      driver: {
+        browser: 'firefox'
+      },
+      data: {
+        baseUrl: 'https://www.paypal.com'
+      }
+    });
+    await nemo.driver.get(nemo.data.baseUrl);
+    throw new Error('artificial error to test error handling!');
+    nemo.driver.quit(); // this is not called, but we can call it in our catch block
+  } catch (err) {
+    console.log(err);
+    // attempt to quit the driver in error scenarios
+    if (nemo) {
+      nemo.driver.quit();
+    }
+  }
+})();
+```
 
 Run it:
 
