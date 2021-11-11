@@ -3,12 +3,8 @@ os: osx
 language: node_js
 
 node_js:
-  - "8"
   - "10"
   - "12"
 
-env:
-  - MOZ_HEADLESS=1
 addons:
   chrome: stable
-  firefox: latest
