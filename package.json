@@ -8,22 +8,22 @@
     "lint": "eslint --fix lib/* examples/* test/**/* --ext .json"
   },
   "dependencies": {
-    "async": "^2.6.2",
+    "async": "^3.2.2",
     "confit": "^2.0.0",
-    "debug": "^3.2.6",
-    "lodash": "^4.17.11",
-    "selenium-webdriver": "^3.4.0",
+    "debug": "^4.3.3",
+    "lodash": "^4.17.21",
+    "selenium-webdriver": "^4.1.0",
     "shortstop-handlers": "^1.0.0",
-    "yargs": "^13.2.4"
+    "yargs": "^17.2.1"
   },
   "main": "index.js",
   "devDependencies": {
     "chai": "^4.2.0",
-    "chromedriver": "^79.0.3",
+    "chromedriver": "^96.0.0",
     "eslint": "^5.16.0",
     "eslint-plugin-json": "^1.4.0",
-    "geckodriver": "^1.16.2",
-    "mocha": "^5.0.0"
+    "geckodriver": "^2.0.4",
+    "mocha": "^9.1.3"
   },
   "repository": {
     "type": "git",
