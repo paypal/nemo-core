@@ -3,10 +3,9 @@ const assert = require('assert');
 const chromeConfig = require('./driverconfig.chrome');
 
 describe('@proxy@ ', function () {
-
-  it('should load problem loading page error', function (done) {
+  it('should load problem loading page error', async function () {
     process.env.nemoBaseDir = __dirname;
-    Nemo({
+    let nemo = await Nemo({
       driver: {
         proxyDetails: {
           method: 'manual',
@@ -14,20 +13,14 @@ describe('@proxy@ ', function () {
         },
         builders: chromeConfig.builders
       }
-    }, function (err, nemo) {
-      if (err) {
-        return done(err);
-      }
-      nemo.driver.getCapabilities().then(function (caps) {
-        var proxy = caps.get('proxy');
-        assert.equal(proxy.proxyType, 'manual');
-        assert.equal(proxy.ftpProxy, 'host:1234');
-        assert.equal(proxy.httpProxy, 'host:1234');
-        assert.equal(proxy.sslProxy, 'host:1234');
-        done();
-
-      });
-
     });
+    let caps = await nemo.driver.getCapabilities();
+    let proxy = caps.get('proxy');
+    assert.equal(proxy.proxyType, 'manual');
+    assert.equal(proxy.ftpProxy, 'host:1234');
+    assert.equal(proxy.httpProxy, 'host:1234');
+    assert.equal(proxy.sslProxy, 'host:1234');
+    await nemo.driver.quit();
+    return Promise.resolve();
   });
 });
