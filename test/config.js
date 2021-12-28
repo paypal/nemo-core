@@ -5,50 +5,56 @@ const chromeConfig = require('./driverconfig.chrome');
 
 describe('@config@', function () {
   process.env.NEMO_UNIT_TEST = 'true';
-  it('should pass confit object as nemo._config', function (done) {
-    Nemo({
+  it('should pass confit object as nemo._config', async function () {
+    let nemo;
+    try {
+      nemo = await Nemo({
         driver: chromeConfig,
-      data: {
-        Roger: {
-          Federer: {
-            is: 'perhaps the GOAT... but Novak Djokovic is in the running'
+        data: {
+          Roger: {
+            Federer: {
+              is: 'perhaps the GOAT... but Novak Djokovic is in the running'
+            }
           }
         }
-      }
-    }, function (err, nemo) {
-      assert.equal(err, undefined);
-      assert(nemo._config);
-      assert.equal(nemo._config.get('data:Roger:Federer:is'), 'perhaps the GOAT... but Novak Djokovic is in the running');
-      nemo.driver.quit().then(function () {
-        done();
       });
-    });
+    } catch (err) {
+      return Promise.reject(err);
+    }
+    assert(nemo._config);
+    assert.equal(nemo._config.get('data:Roger:Federer:is'), 'perhaps the GOAT... but Novak Djokovic is in the running');
+    await nemo.driver.quit();
+    return Promise.resolve();
+      
   });
-  // it('should install provided @selenium.version@', function (done) {
-  //   var ver = '^2.53.1';
-  //   Nemo({
-  //     'driver': {
-  //       'browser': 'phantomjs',
-  //       'selenium.version': ver
-  //     }
-  //   }, function (err, nemo) {
-  //     assert.equal(err, undefined);
-  //     var pac = require('selenium-webdriver/package.json');
-  //     assert.ok(pac.version.indexOf('2.53') !== -1);
-  //     nemo.driver.quit().then(function () {
-  //       done();
-  //     });
-  //   });
-  // });
+  it('should install provided @selenium.version@', async function () {
+    let conf = {
+      driver: Object.assign({}, chromeConfig, {"selenium.version": 'latest'})
+    }
+    let nemo;
+    try {
+      nemo = await Nemo(conf);
+    } catch (err) {
+      return Promise.reject(err);
+    }
+    //TODO: not doing any specific verification here right now
+    await nemo.driver.quit();
+    return Promise.resolve();
+  });
 
-  it('should throw an error for invalid @invalid.selenium.version@', function (done) {
-    Nemo({
-        driver: chromeConfig
-    }, function (err) {
-      assert(err);
-      done();
-    });
+  it('should throw an error for invalid @invalid.selenium.version@', async function () {
+    let conf = {
+      driver: Object.assign({}, chromeConfig, {"selenium.version": "1.2.3.4"})
+    }
+    let nemo;
+    try {
+      nemo = await Nemo(conf);
+    } catch (err) {
+      return Promise.resolve();
+    }
+    return Promise.reject(new Error('Didnt get expected failure'));
   });
+
   it('should export a Configure method', function () {
     return assert(Nemo.Configure && typeof Nemo.Configure === 'function');
   });
