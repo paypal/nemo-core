@@ -18,8 +18,8 @@
     "builders": {
       "withCapabilities": [
         {
-          "browserName": "chrome",
-          "chromeOptions": {
+          "browserName": "zome",
+          "setChromeOptions": {
             "args": [
               "--headless",
               "--window-size=1200,800",

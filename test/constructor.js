@@ -38,7 +38,15 @@ describe('@constructor@', function () {
     }
     return Promise.reject(new Error('should have thrown nemoBadDriverProps'))
   });
-
+  it('should callback an error with @noDriverProps@', function (done) {
+    let nemo;
+    Nemo(err => {
+      if (err.name === 'nemoBadDriverProps') {
+        return done();
+      }
+      return done(new Error('didnt get callback error'))
+    });
+  });
   it('should launch nemo with @noConfigPath@overrideArg@', function (done) {
     delete process.env.nemoBaseDir;
     let nemo;
@@ -101,18 +109,19 @@ describe('@constructor@', function () {
       });
     });
   });
-  it('should return the resolved nemo object when the callback is called', function (done) {
+  it('should return the resolved nemo object when the callback is called', async function () {
     var nemoBaseDir = __dirname;
-    var returnedNemo = Nemo(nemoBaseDir, {
+    var cbNemo;
+    var returnedNemo = await Nemo(nemoBaseDir, {
       data: {
         argPassthrough: true
       }
     }, function (err, nemo) {
-      assert.equal(nemo, returnedNemo);
-      nemo.driver.quit().then(function () {
-        done();
-      });
+      cbNemo = nemo
     });
+    assert.equal(cbNemo, returnedNemo);
+    await returnedNemo.driver.quit();
+    return Promise.resolve();
   });
   it('should resolve when a Confit object is the only parameter', async function () {
     let confit = await Nemo.Configure({driver: {browser: 'phantomjs'}});
