@@ -67,7 +67,7 @@ describe('@override@', function () {
     try {
       nemo = await Nemo({
         driver: function () {
-          return new Builder().forBrowser('firefox').setFirefoxOptions((new firefox.Options()).setBinary(firefox.Channel.RELEASE)).build()
+          return new Builder().forBrowser('firefox').setFirefoxOptions((new firefox.Options()).setBinary(firefox.Channel.RELEASE).headless()).build()
         },
         data: {
           baseUrl: 'http://www.ebay.com'

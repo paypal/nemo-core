@@ -1,13 +1,19 @@
 const chrome = require('selenium-webdriver/chrome')
 const { Builder } = require('selenium-webdriver')
-module.exports = function () {
+
+function getConfig() {
   const width = 640
   const height = 480
-  let driver = new Builder()
+  return new Builder()
     .forBrowser('chrome')
     .setChromeOptions(
       new chrome.Options().headless().windowSize({ width, height })
     )
-    .build()
-  return driver;
 }
+
+module.exports = function () {
+  return getConfig()
+    .build()
+};
+
+module.exports.getConfig = getConfig;
