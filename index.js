@@ -13,14 +13,11 @@
  │   limitations under the License.                                            │
  \*───────────────────────────────────────────────────────────────────────────*/
 
-const Promiz = require('./lib/promise');
 const Configure = require('./lib/configure');
 const Setup = require('./lib/setup');
 const debug = require('debug');
 const log = debug('nemo-core:log');
 const error = debug('nemo-core:error');
-const _ = require('lodash');
-const path = require('path');
 
 log.log = console.log.bind(console);
 error.log = console.error.bind(console);
@@ -32,12 +29,15 @@ error.log = console.error.bind(console);
  *
  */
 
-module.exports = function Nemo(_basedir, _configOverride, _cb) {
+module.exports = async function Nemo(_basedir, _configOverride, _cb) {
   log('Nemo constructor begin');
   //argument vars
-  var basedir, configOverride, cb, promiz;
+  var basedir, configOverride, cb;
   var nemo = {};
 
+  //promise
+  let resolve, reject;
+  let prom;
   //check for confit object as single parameter
   if (arguments.length === 1 && arguments[0].get) {
     return Setup(arguments[0]);
@@ -52,28 +52,31 @@ module.exports = function Nemo(_basedir, _configOverride, _cb) {
   configOverride = configOverride || {};
   if (!cb) {
     log('returning promise');
-    promiz = Promiz();
+    prom = new Promise((yay, boo) => {
+      resolve = yay;
+      reject = boo;
+    });
     cb = function (err, n) {
       if (err) {
-        return promiz.reject(err);
+        return reject(err);
       }
-      promiz.fulfill(n);
+      return resolve(n);
     };
-  }
+  } 
   log('basedir', basedir);
   log('configOverride', configOverride);
-  Configure(basedir, configOverride)
-    .then(function (config) {
-      log('Configure complete');
-      return Setup(config);
-    })
-    .then(function (_nemo) {
-      log('Setup complete');
-      _.merge(nemo, _nemo);
-      return cb(null, nemo);
-    })
-    .catch(cb);
-  return promiz && promiz.promise || nemo;
+  try {
+    let config = await Configure(basedir, configOverride);
+    let _nemo = await Setup(config);
+    log('Setup complete');
+    nemo = Object.assign({}, nemo, _nemo);
+    cb(null, nemo);
+  } catch(err) {
+    error(`error in Nemo constructor ${err}`)
+    cb(err);
+  }
+  
+  return prom || nemo;
 };
 
 module.exports.Configure = Configure;

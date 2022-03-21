@@ -1,5 +1,11 @@
 # nemo-core CHANGELOG
 
+## UNRELEASED (breaking)
+
+- upgrade to selenium@4
+- refactor away from callbacks (where required so far)
+- remove the `selenium.version` feature
+
 ## v1.1.3
 
 - Fix npm audit issues

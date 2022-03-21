@@ -5,36 +5,56 @@ const Nemo = require('../index');
 const chromeConfig = require('./driverconfig.chrome');
 
 describe('@constructor@', function () {
-  it('should return a promise with @noArguments@', function (done) {
-      Nemo().then(function () {
-        done(new Error('should have failed with nemoBadDriverProps'));
-      }).catch(function () {
-        done();
-      })
-  });
-  it('should return a promise with @noCallback@', function (done) {
-    Nemo({
-      'driver': chromeConfig
-    }).then(function () {
-      done();
-    }).catch(function (err) {
-      done(err);
-    })
-  });
-  it('should throw an error with @noDriverProps@', function (done) {
-
-    Nemo(function (err) {
-      if (err.name === 'nemoBadDriverProps') {
-        done();
-        return;
+  it('should return a promise with @noArguments@', async function () {
+      let nemo;
+      try {
+        nemo = await Nemo();
+      } catch (err) {
+        return Promise.resolve();
       }
-      done(new Error('didnt get back the expected error'));
-    });
-
+      return Promise.reject(new Error('should have failed with nemoBadDriverProps'));
   });
-
+  it('should return a promise with @noCallback@', async function () {
+    let nemo;
+    try {
+      nemo = await Nemo({
+        'driver': chromeConfig
+      });
+      await nemo.driver.quit();
+      return Promise.resolve();
+    } catch (err) {
+      return Promise.reject(err);
+    }
+    
+  });
+  it('should throw an error with @noDriverProps@', async function () {
+    let nemo;
+    try {
+      nemo = await Nemo();
+    } catch (err) {
+      if (err.name === 'nemoBadDriverProps') {
+        return Promise.resolve();
+      }
+    }
+    return Promise.reject(new Error('should have thrown nemoBadDriverProps'))
+  });
+  it('should callback an error with @noDriverProps@', function (done) {
+    let nemo;
+    Nemo(err => {
+      if (err.name === 'nemoBadDriverProps') {
+        return done();
+      }
+      return done(new Error('didnt get callback error'))
+    });
+  });
   it('should launch nemo with @noConfigPath@overrideArg@', function (done) {
     delete process.env.nemoBaseDir;
+    let nemo;
+    try {
+      
+    } catch (err) {
+      
+    }
     Nemo({
       driver: chromeConfig
     }, function (err, nemo) {
@@ -89,25 +109,25 @@ describe('@constructor@', function () {
       });
     });
   });
-  it('should return the resolved nemo object when the callback is called', function (done) {
+  it('should return the resolved nemo object when the callback is called', async function () {
     var nemoBaseDir = __dirname;
-    var returnedNemo = Nemo(nemoBaseDir, {
+    var cbNemo;
+    var returnedNemo = await Nemo(nemoBaseDir, {
       data: {
         argPassthrough: true
       }
     }, function (err, nemo) {
-      assert.equal(nemo, returnedNemo);
-      nemo.driver.quit().then(function () {
-        done();
-      });
+      cbNemo = nemo
     });
+    assert.equal(cbNemo, returnedNemo);
+    await returnedNemo.driver.quit();
+    return Promise.resolve();
   });
-  it('should resolve when a Confit object is the only parameter', function () {
-    return Nemo.Configure({driver: {browser: 'phantomjs'}}).then(function (confit) {
-      return Nemo(confit);
-    })
-      .then(function (nemo) {
-        return assert(nemo.driver);
-      });
+  it('should resolve when a Confit object is the only parameter', async function () {
+    let confit = await Nemo.Configure({driver: {browser: 'phantomjs'}});
+    let nemo = await Nemo(confit);
+    assert(nemo.driver);
+    await nemo.driver.quit();
+    return Promise.resolve();
   });
 });

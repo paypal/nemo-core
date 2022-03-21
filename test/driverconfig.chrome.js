@@ -1,17 +1,19 @@
-module.exports = {
-    builders: {
-        withCapabilities: [
-            {
-                browserName: 'chrome',
-                chromeOptions: {
-                    args: [
-                        'headless',
-                        'window-size=1200,800',
-                        'disable-dev-shm-usage'
-                    ]
-                }
+const chrome = require('selenium-webdriver/chrome')
+const { Builder } = require('selenium-webdriver')
 
-            }
-        ]
-    }
+function getConfig() {
+  const width = 640
+  const height = 480
+  return new Builder()
+    .forBrowser('chrome')
+    .setChromeOptions(
+      new chrome.Options().headless().windowSize({ width, height })
+    )
 }
+
+module.exports = function () {
+  return getConfig()
+    .build()
+};
+
+module.exports.getConfig = getConfig;
