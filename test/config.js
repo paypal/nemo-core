@@ -35,4 +35,12 @@ describe('@config@', function () {
       return assert(confit.get);
     });
   });
+  it('should use a config object to successfully launch nemo', async function () {
+    let config = await Nemo.Configure(__dirname);
+    assert(config.get);
+    let nemo = await Nemo(config);
+    await nemo.driver.get('http://www.google.com');
+    await nemo.driver.quit();
+    return Promise.resolve();
+  });
 });
