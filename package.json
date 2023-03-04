@@ -23,7 +23,7 @@
     "eslint": "^5.16.0",
     "eslint-plugin-json": "^1.4.0",
     "geckodriver": "^1.16.2",
-    "mocha": "^5.0.0"
+    "mocha": "^10.2.0"
   },
   "repository": {
     "type": "git",
