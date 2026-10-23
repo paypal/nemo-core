@@ -13,5 +13,5 @@ jobs:
         with:
           node-version: '20'
       - name: Install dependencies
-        run: npm ci --no-audit --no-fund
+        run: npm ci --no-audit --no-fund --ignore-scripts  # skip chromedriver download (browser tests not run in CI)
       - run: npx eslint lib/* examples/* test/**/* --ext .json
